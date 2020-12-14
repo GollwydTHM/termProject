@@ -12,7 +12,7 @@
         </style>
     </head>
     <body>
-        <h1>Team Name</h1>
+        <h1>Tournament Game List</h1>
 
         <button id="btnView">View Games</button>
         
