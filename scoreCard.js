@@ -1,0 +1,247 @@
+let balls = "";
+let ballVals = [];
+let theFrame;
+let theThrow;
+let bonusBalls = 2;
+let complete = false;
+
+window.onload = function () {
+    //fill the card with any values already in balls string (from InProgress game)
+    FillCard();
+
+    //EVENT HANDLERS
+    document.querySelector("#btnAdd").addEventListener("click", AddToBalls);
+    document.querySelector("#btnUndo").addEventListener("click", UndoLastMessage);
+};
+
+function FillCard() {
+    theFrame = 0;
+    theThrow = 0;
+    let ballRow = document.querySelector("#ballRow").querySelectorAll("td");
+    for (let i = 0; i < balls.length; i++) {
+        if (theThrow === 0) {
+            ballRow[theFrame + 1].innerHTML = balls[i];
+            if (balls[i] === "X") {
+                if (theFrame !== 10) {
+                    theFrame++;
+                } else {
+                    theThrow++;
+                }
+            } else {
+                theThrow++;
+            }
+        } else if (theThrow === 1) {
+            ballRow[theFrame + 1].innerHTML += balls[i];
+            theFrame++;
+            theThrow--;
+        }
+    }
+    BuildBallValues();
+    CalcScores();
+
+    //declare what frame and throw the user is about to enter a value for
+    let frameDisplay = "Bonus";
+    if (theFrame < 10) {
+        frameDisplay = "Frame " + (theFrame + 1);
+    }
+    document.querySelector("#frameThrowDisplay").innerHTML =
+            frameDisplay + ", Throw " + (theThrow + 1) + ":";
+
+    if (theFrame >= 10) {
+        CheckComplete();
+    }
+}
+
+// Takes ball string and builds an array of numbers, where X = 10 and / = 10 - previous num
+function BuildBallValues() {
+    ballVals = []; //new array
+    for (let i = 0; i < balls.length; i++) {
+        if (balls[i] === "X") {
+            ballVals.push(10);
+        } else if (balls[i] === "/") {
+            ballVals.push(10 - parseInt(balls[i - 1]));
+        } else {
+            ballVals.push(parseInt(balls[i]));
+        }
+    }
+}
+
+function CalcScores() {
+    let ballFrames = document.querySelector("#ballRow").querySelectorAll("td");
+    let scoreFrames = document.querySelector("#scoreRow").querySelectorAll("td");
+    let ballMap = balls.split("");
+//    console.log(ballVals);
+//    console.log(ballMap);
+    frameScore = [];
+    for (let i = 0; i < 11; i++) {
+        frameScore.push(0);
+    }
+    counter = 0; //to scan through ballMap and ballVals arrays
+    for (let i = 1; i < 11; i++) { //loop through each frame (bonus ball frame doesn't have own score)
+        let tempScore = 0;
+        let secondVal = true; //use this to skip getting second value in case of 'X' strike
+
+        if (ballVals[counter] !== "undefined") {
+            if (ballMap[counter] === "X") { //IF STRIKE
+                tempScore += ballVals[counter++];
+                if (typeof ballVals[counter] !== "undefined") {
+                    tempScore += ballVals[counter];
+                    if (typeof ballVals[counter + 1] !== "undefined") {
+                        tempScore += ballVals[counter + 1];
+                    }
+                }
+                secondVal = false;
+            } else {
+                tempScore += ballVals[counter++]; //NOT A STRIKE
+            }
+            if (!isNaN(tempScore)) {
+                frameScore[i] = tempScore;
+                scoreFrames[i].innerHTML = tempScore;
+            }
+        }
+
+        if (secondVal === true && ballVals[counter] !== "undefined") {
+            if (ballMap[counter] === "/") { //IF SPARE
+                tempScore += (10 - ballVals[counter - 1]);
+                counter++;
+                if (typeof ballVals[counter] !== "undefined") {
+                    tempScore += ballVals[counter];
+                }
+            } else { //NOT A SPARE
+                tempScore += ballVals[counter++];
+            }
+            if (!isNaN(tempScore)) {
+                frameScore[i] = tempScore;
+                scoreFrames[i].innerHTML = tempScore;
+            }
+        }
+    }
+
+    //running total of frame scores placed into total scores row;
+    let runningTotal = 0;
+    let ttlScoreFrames = document.querySelector("#ttlScoreRow").querySelectorAll("td");
+    for (let i = 1; i < scoreFrames.length; i++) {
+        runningTotal += parseInt(scoreFrames[i].innerHTML);
+        if (!isNaN(runningTotal)) {
+            ttlScoreFrames[i].innerHTML = runningTotal;
+        }
+    }
+}
+
+function AddToBalls() {
+    let input = document.querySelector("#ballValue").value;
+
+    if (input.match("[^0-9xX\/]")) { //if entered value isn't valid character, stop function
+        document.querySelector("#inputErr").innerHTML = "\"" + input + "\" is not a valid character!";
+        document.querySelector("#ballValue").value = "";
+        document.querySelector("#inputErr").classList.remove("hidden");
+        return;
+    }
+    //remove error msg
+    document.querySelector("#inputErr").classList.add("hidden");
+
+    if (bonusBalls === 2 || bonusBalls === 1) {
+        if (input !== "") { //skip if input value non-existent
+            //should the input be a lowercase 'x', make it upper (looks nicer)
+            if (input === "x") { //
+                input = "X";
+            }
+            if (theThrow === 0) { //FIRST THROW
+                if (input !== "/") { //cant be a spare
+                    balls += input;
+                    document.querySelector("#ballValue").value = "";
+                } else {
+                    document.querySelector("#inputErr").innerHTML = "Cannot throw a spare on your first throw!";
+                    document.querySelector("#inputErr").classList.remove("hidden");
+                }
+            }
+            if (bonusBalls === 2) {
+                if (theThrow === 1) { //SECOND THROW
+                    if (input !== "X") { //cant be a strike
+                        if (parseInt(balls[balls.length - 1]) + parseInt(input) > 10) {
+                            document.querySelector("#inputErr").innerHTML = "Cannot score more than 10 in a frame!";
+                            document.querySelector("#inputErr").classList.remove("hidden");
+                        } else {
+                            //if user inputs 2nd throw equalling 10 change val to "/", else add input to string
+                            if (parseInt(balls[balls.length - 1]) + parseInt(input) === 10) {
+                                input = "/";
+                            }
+                            balls += input;
+                            document.querySelector("#ballValue").value = "";
+                        }
+                    } else {
+                        if (theFrame === 10) {
+                            balls += input; //can only get strike in second throw in bonus frame!
+                        } else {
+                            document.querySelector("#inputErr").innerHTML = "Cannot throw a strike on your second throw!";
+                            document.querySelector("#inputErr").classList.remove("hidden");
+                        }
+                    }
+                }
+            }
+        }
+        //end of ball input
+        FillCard();
+    }
+}
+
+function UndoLastMessage() {
+    if (complete === false) {
+        if (confirm('Would you like to UNDO the last entered value (' + (balls[balls.length - 1]) + ')?')) {
+            UndoLast();
+        }
+    }
+}
+
+function UndoLast() {
+    balls = balls.slice(0, -1);
+    ResetCard();
+    FillCard();
+}
+
+function ResetCard() {
+    let ballFrames = document.querySelector("#ballRow").querySelectorAll("td");
+    let scoreFrames = document.querySelector("#scoreRow").querySelectorAll("td");
+    let ttlScoreFrames = document.querySelector("#ttlScoreRow").querySelectorAll("td");
+    for (let i = 1; i <= 11; i++) {
+        ballFrames[i].innerHTML = "";
+        scoreFrames[i].innerHTML = "";
+        ttlScoreFrames[i].innerHTML = "";
+    }
+}
+
+function CheckComplete() {
+    let gameComplete = false;
+
+    let frameTen = document.querySelector("#ballRow").querySelectorAll("td")[10];
+    let bonusFrame = document.querySelector("#ballRow").querySelectorAll("td")[11];
+    frameTen = frameTen.innerHTML.split("");
+    bonusFrame = bonusFrame.innerHTML.split("");
+    if (frameTen.length === 1) { //got stike in tenth frame
+        if (frameTen[0] === "X" && bonusFrame.length === 2) {
+            gameComplete = true;
+        }
+    } else {
+        if (frameTen[1] === "/" && bonusFrame.length === 1) {
+            gameComplete = true;
+        } else if (parseInt(frameTen[1]) >= 0 && parseInt(frameTen[1]) < 10) {
+            gameComplete = true;
+        }
+    }
+    if (gameComplete === true) {
+        if (confirm('ATTENTION: The last entered value (' + balls[balls.length - 1] + ') will end the game!\n\n' + 
+                'Are you certain there are no user errors?\n' +
+                '"OK": Game is complete, no further changes can be made!\n' +
+                '"Cancel": the last entered value will be removed.')) {
+            //lock all inputs
+            document.querySelector("#ballValue").disabled = true;
+            document.querySelector("#btnAdd").disabled = true;
+            document.querySelector("#btnUndo").disabled = true;
+            //declare games completion
+            document.querySelector("#frameThrowDisplay").innerHTML =
+                    "Game Complete!";
+        } else {
+            UndoLast();
+        }
+    }
+}
