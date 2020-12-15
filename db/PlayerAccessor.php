@@ -14,8 +14,8 @@ class PlayerAccessor {
     private $insertStmtStr = "INSERT INTO player "
             . "VALUES(:playerID, :teamID, :firstName, :lastName, :hometown, :provinceCode )";
     private $updateStmtStr = "UPDATE player SET "
-            . "teamID  = :teamID, firstName = :firstName, lastName = :lastName, hometown = :hometown, provinceCode = :provinceCode  "
-            . "WHERE playerID  = :playerID ";
+            . "teamID = :teamID, firstName = :firstName, lastName = :lastName, hometown = :hometown, provinceCode = :provinceCode "
+            . "WHERE playerID = :playerID";
     private $conn = null;
     private $getByPlayerIDStmt = null;
     private $deleteStmt = null;
@@ -177,13 +177,13 @@ class PlayerAccessor {
         $provinceCode = $player->getProvinceCode();
 
         try {
-            $this->insertStmt->bindParam(":playerID", $playerID);
-            $this->insertStmt->bindParam(":teamID", $teamID);
-            $this->insertStmt->bindParam(":firstName", $firstName);
-            $this->insertStmt->bindParam(":lastName", $lastName);
-            $this->insertStmt->bindParam(":hometown", $hometown);
-            $this->insertStmt->bindParam(":provinceCode", $provinceCode);
-            $success = $this->insertStmt->execute();
+            $this->updateStmt->bindParam(":playerID", $playerID);
+            $this->updateStmt->bindParam(":teamID", $teamID);
+            $this->updateStmt->bindParam(":firstName", $firstName);
+            $this->updateStmt->bindParam(":lastName", $lastName);
+            $this->updateStmt->bindParam(":hometown", $hometown);
+            $this->updateStmt->bindParam(":provinceCode", $provinceCode);
+            $success = $this->updateStmt->execute();
         } catch (PDOException $e) {
             $success = false;
         } finally {
