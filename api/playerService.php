@@ -55,7 +55,7 @@ function doPost() {
     $contents = json_decode($body, true);
 
     $playerObj = new Player($contents['playerID'], $contents['teamID'], $contents['firstName'], $contents['lastName'], $contents['hometown'], $contents['provinceCode']);
-
+    ChromePhp::log($playerObj);
     $t = new PlayerAccessor();
     $success = $t->addPlayer($playerObj);
     echo $success;

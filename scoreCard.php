@@ -83,7 +83,6 @@ require 'utils/chromePhp.php';
         
         <h1 class="title">Bowling Tournament</h1>
         <h2 class="subtitle">GameID: <?php echo $gameID; ?></h2>
-        
         <span id="frameThrowDisplay"></span> <input id="ballValue" type="text" maxlength="1">
         <button type="submit" id="btnAdd">Enter Value</button><span id="inputErr" class="hidden"></span>
         <table>
