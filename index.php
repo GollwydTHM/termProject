@@ -2,7 +2,7 @@
 <html> 
     <head>
         <meta charset="UTF-8">
-        <title>Project - Bowling Tournament</title>
+        <title>Project - Bowling Tournamentt</title>
         <script src=""></script>
 
         <style>
