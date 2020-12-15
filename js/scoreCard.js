@@ -258,13 +258,6 @@ function CheckComplete() {
 }
 
 function updateGame(inScore) {
-//    gameID; -------------------------------------
-//    matchID;
-//    gameNumber;
-//    gameStateID; --------------------------------*****************************
-//    score; --------------------------------------
-//    balls; --------------------------------------
-
     let gameID = Number(document.querySelector("#gameID").value);
     let matchID = Number(document.querySelector("#matchID").value);
     let gameNumber = Number(document.querySelector("#gameNumber").value);
@@ -279,7 +272,6 @@ function updateGame(inScore) {
     console.log("score--->" + inScore + " is a " + typeof inScore);
     console.log("balls--->" + balls + " is a " + typeof balls);
 
-
     //validation successful, create team object
     let obj = {
         "gameID": gameID,
@@ -290,22 +282,20 @@ function updateGame(inScore) {
         "balls": balls
     };
 
-
     //determine the directory for AJAX call
-    let url = "../gameService/games/" + gameID;
+    let url = "gameService/games/" + gameID;
 
     //AJAX
     let xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-            console.log("HEY!")
+            console.log("HEY!");
             let resp = xmlhttp.responseText;
             if (resp.search("ERROR") >= 0 || resp != "1") {
                 console.log(resp);
                 alert("Error occered when PUT");
             } else {
                 alert("Updated!");
-                getAll();
             }
         }
     };
