@@ -45,7 +45,7 @@ function getAll() {
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
             let response = xmlhttp.responseText;
-            console.log(response);
+            //console.log(response);
             if (response.search("ERROR") >= 0) {
                 alert("Whoops!");
             } else {

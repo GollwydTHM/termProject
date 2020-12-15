@@ -44,7 +44,10 @@ function FillCard() {
         }
     }
     BuildBallValues();
-    CalcScores();
+
+    //will be passing these values at end of this method to UpdateGame()
+    let gameStateID = document.querySelector("#gameStateID")
+    let score = CalcScores();
 
     //declare what frame and throw the user is about to enter a value for
     let frameDisplay = "Bonus";
@@ -55,8 +58,10 @@ function FillCard() {
             frameDisplay + ", Throw " + (theThrow + 1) + ":";
 
     if (theFrame >= 10) {
-        CheckComplete();
+        gameStateID = CheckComplete(gameStateID);
     }
+
+    UpdateGame(gameStateID, score);
 }
 
 // Takes ball string and builds an array of numbers, where X = 10 and / = 10 - previous num
@@ -131,9 +136,10 @@ function CalcScores() {
     for (let i = 1; i < scoreFrames.length; i++) {
         if (!isNaN(parseInt(scoreFrames[i].innerHTML))) {
             runningTotal += parseInt(scoreFrames[i].innerHTML);
+            ttlScoreFrames[i].innerHTML = runningTotal;
         }
     }
-    updateGame(runningTotal);
+    return runningTotal; //this is the current game score
 }
 
 function AddToBalls() {
@@ -221,7 +227,7 @@ function ResetCard() {
     }
 }
 
-function CheckComplete() {
+function CheckComplete(gameStateID) {
     let gameComplete = false;
 
     let frameTen = document.querySelector("#ballRow").querySelectorAll("td")[10];
@@ -251,26 +257,35 @@ function CheckComplete() {
             //declare games completion
             document.querySelector("#frameThrowDisplay").innerHTML =
                     "Game Complete!";
+            gameStateID = "COMPLETE";
         } else {
             UndoLast();
         }
     }
+    return gameStateID;
 }
 
-function updateGame(inScore) {
+function UpdateGame(inGameStateID, score) {
     let gameID = Number(document.querySelector("#gameID").value);
     let matchID = Number(document.querySelector("#matchID").value);
     let gameNumber = Number(document.querySelector("#gameNumber").value);
 
-    // NOTE: THIS MUST BE REMOVED AFTER GAMESTATE IMPLEMENTATION
-    let gameStateID = document.querySelector("#gameStateID").value;
+    //confirm gameState
+    let gameStateID = inGameStateID;
+    if (gameStateID !== "COMPLETE") {
+        if (balls === "") {
+            gameStateID = "AVAILABLE";
+        } else {
+            gameStateID = "INPROGRESS";
+        }
+    }
 
-//    console.log("gameID--->" + gameID + " is a " + typeof gameID);
-//    console.log("matchID--->" + matchID + " is a " + typeof matchID);
-//    console.log("gameNumber--->" + gameNumber + " is a " + typeof gameNumber);
-//    console.log("gameStateID--->" + gameStateID + " is a " + typeof gameStateID);
-//    console.log("score--->" + inScore + " is a " + typeof inScore);
-//    console.log("balls--->" + balls + " is a " + typeof balls);
+    console.log("gameID--->" + gameID + " is a " + typeof gameID);
+    console.log("matchID--->" + matchID + " is a " + typeof matchID);
+    console.log("gameNumber--->" + gameNumber + " is a " + typeof gameNumber);
+    console.log("gameStateID--->" + gameStateID + " is a " + typeof gameStateID);
+    console.log("score--->" + score + " is a " + typeof score);
+    console.log("balls--->" + balls + " is a " + typeof balls);
 
     //validation successful, create team object
     let obj = {
@@ -278,7 +293,7 @@ function updateGame(inScore) {
         "matchID": matchID,
         "gameNumber": gameNumber,
         "gameStateID": gameStateID,
-        "score": inScore,
+        "score": score,
         "balls": balls
     };
 
