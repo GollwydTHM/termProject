@@ -61,6 +61,7 @@ function FillCard() {
         gameStateID = CheckComplete(gameStateID);
     }
 
+    score = CalcScores();
     UpdateGame(gameStateID, score);
 }
 
