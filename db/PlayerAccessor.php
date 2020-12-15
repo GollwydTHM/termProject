@@ -88,7 +88,7 @@ class PlayerAccessor {
         return $this->getPlayersByQuery("SELECT * FROM player");
     }
 
-    public function getPlayerByGameID($playerID) {
+    public function getPlayerByPlayerID($playerID) {
         $result = NULL;
 
         try {
@@ -124,7 +124,7 @@ class PlayerAccessor {
 
     public function deletePlayer($player) {
         $success = false;
-        $playerID = $player->getGameID();
+        $playerID = $player->getPlayerID();
         try {
             $this->deleteStmt->bindParam(":playerID", $playerID);
             $success = $this->deleteStmt->execute();
