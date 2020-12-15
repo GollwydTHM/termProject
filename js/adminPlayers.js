@@ -64,8 +64,9 @@ function processForm() {
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
             let resp = xmlhttp.responseText;
+            console.log(resp);
             if (resp.search("ERROR") >= 0 || resp != "1") {
-                console.log(resp);
+                
                 alert("Error occered when " + method);
             } else {
                 alert("Updated!");
