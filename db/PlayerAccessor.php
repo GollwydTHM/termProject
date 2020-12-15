@@ -12,9 +12,9 @@ class PlayerAccessor {
     private $deleteStmtStr = "DELETE FROM player "
             . "WHERE playerID = :playerID";
     private $insertStmtStr = "INSERT INTO player "
-            . "VALUES(:playerID, :teamID , :firstName, :lastName, :hometown, :provinceCode )";
+            . "VALUES(:playerID, :teamID, :firstName, :lastName, :hometown, :provinceCode )";
     private $updateStmtStr = "UPDATE player SET "
-            . "teamID  = :teamID , firstName = :firstName, lastName = :lastName, hometown = :hometown, provinceCode = :provinceCode  "
+            . "teamID  = :teamID, firstName = :firstName, lastName = :lastName, hometown = :hometown, provinceCode = :provinceCode  "
             . "WHERE playerID  = :playerID ";
     private $conn = null;
     private $getByPlayerIDStmt = null;
