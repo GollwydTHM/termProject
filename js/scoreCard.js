@@ -292,12 +292,13 @@ function updateGame(inScore) {
 
 
     //determine the directory for AJAX call
-    let url = "../gameService/games" + gameID;
+    let url = "../gameService/games/" + gameID;
 
     //AJAX
     let xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            console.log("HEY!")
             let resp = xmlhttp.responseText;
             if (resp.search("ERROR") >= 0 || resp != "1") {
                 console.log(resp);
