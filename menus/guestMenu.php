@@ -16,7 +16,7 @@
         <form action="viewTeams.php">
             <button type="submit" id="btnViewTeams">View Teams and Statistics</button>
         </form>
-        <form action="viewStandings.php">
+        <form action="matchups.php">
             <button type="submit">Tournament Standings</button>
         </form>
     </body>

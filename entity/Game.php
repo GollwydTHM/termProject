@@ -40,7 +40,7 @@ class Game implements JsonSerializable{
         $this->balls = $balls;
     }
 
-        public function getGameID(){
+    public function getGameID(){
         return $this->gameID;
     }
     
