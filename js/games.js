@@ -77,7 +77,10 @@ function buildTable(text) {
         html += "<td class='btnCell hidden'>" +
                 "<form action='../scoreCard.php' method='POST'>" +
                 "<input type='hidden' name='gameID' value='" + record.gameID + "'>" +
-                "<input type='hidden' name='gameBalls' value='" + record.gameBalls + "'>" +
+                "<input type='hidden' name='matchID' value='" + record.matchID + "'>" +
+                "<input type='hidden' name='gameNumber' value='" + record.gameNumber + "'>" +
+                "<input type='hidden' name='gameStateID' value='" + record.gameStateID + "'>" +
+                "<input type='hidden' name='gameBalls' value='" + ((record.gameBalls === undefined) ? "" : record.gameBalls) + "'>" +
                 "<button type='submit' class='cellBtn'>Play</button>" +
                 "</form>" +
                 "</td>";

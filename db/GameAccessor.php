@@ -18,7 +18,7 @@ class GameAccessor {
             . "VALUES(:gameID, :matchID, :gameNumber, :gameStateID, :score, :balls)";
     private $updateStmtStr = 
             "UPDATE game SET "
-            . "matchID = :matchID, gameNumber = :gameNumber, gameStateID = :gameStateID, score = :score, balls = :balls  "
+            . "matchID = :matchID, gameNumber = :gameNumber, gameStateID = :gameStateID, score = :score, balls = :balls "
             . "WHERE gameID = :gameID";
     private $conn = null;
     private $getByGameIDStmt = null;
@@ -183,12 +183,12 @@ class GameAccessor {
         $balls = $game->getBalls();
         
         try {
-            $this->insertStmt->bindParam(":gameID", $gameID);
-            $this->insertStmt->bindParam(":matchID", $matchID);
-            $this->insertStmt->bindParam(":gameNumber", $gameNumber);
-            $this->insertStmt->bindParam(":gameStateID", $gameStateID);
-            $this->insertStmt->bindParam(":score", $score);
-            $this->insertStmt->bindParam(":balls", $balls);
+            $this->updateStmt->bindParam(":gameID", $gameID);
+            $this->updateStmt->bindParam(":matchID", $matchID);
+            $this->updateStmt->bindParam(":gameNumber", $gameNumber);
+            $this->updateStmt->bindParam(":gameStateID", $gameStateID);
+            $this->updateStmt->bindParam(":score", $score);
+            $this->updateStmt->bindParam(":balls", $balls);
             $success = $this->updateStmt->execute();
         } catch (PDOException $e) {
             $success = false;

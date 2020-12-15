@@ -6,6 +6,8 @@ let bonusBalls = 2;
 let complete = false;
 
 window.onload = function () {
+    //get current ball value from record (only runs once in onload)
+    InitBall();
     //fill the card with any values already in balls string (from InProgress game)
     FillCard();
 
@@ -13,6 +15,11 @@ window.onload = function () {
     document.querySelector("#btnAdd").addEventListener("click", AddToBalls);
     document.querySelector("#btnUndo").addEventListener("click", UndoLastMessage);
 };
+
+function InitBall() {
+    balls = document.querySelector("#gameBalls").value;
+    //console.log(balls);
+}
 
 function FillCard() {
     theFrame = 0;
@@ -119,16 +126,20 @@ function CalcScores() {
 
     //running total of frame scores placed into total scores row;
     let runningTotal = 0;
+    let sendScore = 0;
     let ttlScoreFrames = document.querySelector("#ttlScoreRow").querySelectorAll("td");
     for (let i = 1; i < scoreFrames.length; i++) {
-        runningTotal += parseInt(scoreFrames[i].innerHTML);
-        if (!isNaN(runningTotal)) {
-            ttlScoreFrames[i].innerHTML = runningTotal;
+        if (!isNaN(parseInt(scoreFrames[i].innerHTML))) {
+            runningTotal += parseInt(scoreFrames[i].innerHTML);
         }
     }
+    updateGame(runningTotal);
 }
 
 function AddToBalls() {
+    //place focus back on textbox
+    document.querySelector("#ballValue").focus();
+
     let input = document.querySelector("#ballValue").value;
 
     if (input.match("[^0-9xX\/]")) { //if entered value isn't valid character, stop function
@@ -229,7 +240,7 @@ function CheckComplete() {
         }
     }
     if (gameComplete === true) {
-        if (confirm('ATTENTION: The last entered value (' + balls[balls.length - 1] + ') will end the game!\n\n' + 
+        if (confirm('ATTENTION: The last entered value (' + balls[balls.length - 1] + ') will end the game!\n\n' +
                 'Are you certain there are no user errors?\n' +
                 '"OK": Game is complete, no further changes can be made!\n' +
                 '"Cancel": the last entered value will be removed.')) {
@@ -244,4 +255,59 @@ function CheckComplete() {
             UndoLast();
         }
     }
+}
+
+function updateGame(inScore) {
+//    gameID; -------------------------------------
+//    matchID;
+//    gameNumber;
+//    gameStateID; --------------------------------*****************************
+//    score; --------------------------------------
+//    balls; --------------------------------------
+
+    let gameID = Number(document.querySelector("#gameID").value);
+    let matchID = Number(document.querySelector("#matchID").value);
+    let gameNumber = Number(document.querySelector("#gameNumber").value);
+
+    // NOTE: THIS MUST BE REMOVED AFTER GAMESTATE IMPLEMENTATION
+    let gameStateID = document.querySelector("#gameStateID").value;
+
+    console.log("gameID--->" + gameID + " is a " + typeof gameID);
+    console.log("matchID--->" + matchID + " is a " + typeof matchID);
+    console.log("gameNumber--->" + gameNumber + " is a " + typeof gameNumber);
+    console.log("gameStateID--->" + gameStateID + " is a " + typeof gameStateID);
+    console.log("score--->" + inScore + " is a " + typeof inScore);
+    console.log("balls--->" + balls + " is a " + typeof balls);
+
+
+    //validation successful, create team object
+    let obj = {
+        "gameID": gameID,
+        "matchID": matchID,
+        "gameNumber": gameNumber,
+        "gameStateID": gameStateID,
+        "score": inScore,
+        "balls": balls
+    };
+
+
+    //determine the directory for AJAX call
+    let url = "../gameService/games" + gameID;
+
+    //AJAX
+    let xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            let resp = xmlhttp.responseText;
+            if (resp.search("ERROR") >= 0 || resp != "1") {
+                console.log(resp);
+                alert("Error occered when PUT");
+            } else {
+                alert("Updated!");
+                getAll();
+            }
+        }
+    };
+    xmlhttp.open("PUT", url, true);
+    xmlhttp.send(JSON.stringify(obj));
 }

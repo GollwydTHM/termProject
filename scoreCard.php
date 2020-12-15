@@ -6,7 +6,7 @@ require 'utils/chromePhp.php';
     <head>
         <meta charset="UTF-8">
         <title>Project - Bowling Tournament</title>
-        <script src="scoreCard.js"></script>
+        <script src="js/scoreCard.js"></script>
 
         <style>
             .title {
@@ -70,11 +70,19 @@ require 'utils/chromePhp.php';
         <?php
         // get post superglobal values (gameID and gameBalls)
         $gameID = $_POST['gameID'];
+        $matchID = $_POST['matchID'];
+        $gameNumber = $_POST['gameNumber'];
+        $gameStateID = $_POST['gameStateID'];
         $gameBalls = $_POST['gameBalls'];
         ?>
+        <input type="hidden" id="gameID" value="<?php echo $gameID ?>">
+        <input type="hidden" id="matchID" value="<?php echo $matchID ?>">
+        <input type="hidden" id="gameNumber" value="<?php echo $gameNumber ?>">
+        <input type="hidden" id="gameStateID" value="<?php echo $gameStateID ?>">
+        <input type="hidden" id="gameBalls" value="<?php echo $gameBalls ?>">
+        
         <h1 class="title">Bowling Tournament</h1>
         <h2 class="subtitle">GameID: <?php echo $gameID; ?></h2>
-        <input type="hidden" id="gameBalls" value="<?php echo $gameBalls ?>">
         
         <span id="frameThrowDisplay"></span> <input id="ballValue" type="text" maxlength="1">
         <button type="submit" id="btnAdd">Enter Value</button><span id="inputErr" class="hidden"></span>

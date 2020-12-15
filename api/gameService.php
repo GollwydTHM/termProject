@@ -69,6 +69,6 @@ function doPut() {
     $gameObj = new Game($contents['gameID'], $contents['matchID'], $contents['gameNumber'], $contents['gameStateID'], $contents['score'], $contents['balls']);
 
     $g = new GameAccessor();
-    $success = $g->updateTeam($gameObj);
+    $success = $g->updateGame($gameObj);
     echo $success;
 }
