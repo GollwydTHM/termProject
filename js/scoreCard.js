@@ -250,7 +250,7 @@ function CheckComplete() {
             gameComplete = true;
         }
     }
-    if (gameComplete === true && ) {
+    if (gameComplete === true && gameStateID !== "COMPLETE") {
         if (confirm('ATTENTION: The last entered value (' + balls[balls.length - 1] + ') will end the game!\n\n' +
                 'Are you certain there are no user errors?\n' +
                 '"OK": Game is complete, no further changes can be made!\n' +
