@@ -17,9 +17,9 @@ class GameAccessor {
             "INSERT INTO game "
             . "VALUES(:gameID, :matchID, :gameNumber, :gameStateID, :score, :balls)";
     private $updateStmtStr = 
-            "UPDATE team SET "
-            . "teamName = :teamName, earnings = :earnings "
-            . "WHERE teamID = :teamID";
+            "UPDATE game SET "
+            . "matchID = :matchID, gameNumber = :gameNumber, gameStateID = :gameStateID, score = :score, balls = :balls  "
+            . "WHERE gameID = :gameID";
     private $conn = null;
     private $getByGameIDStmt = null;
     private $deleteStmt = null;
@@ -94,7 +94,7 @@ class GameAccessor {
         return $this->getGamesByQuery("SELECT * FROM game");
     }
 
-    public function getGameByGameID($teamID) {
+    public function getGameByGameID($gameID) {
         $result = NULL;
 
         try {
