@@ -1,5 +1,6 @@
 let balls = "";
 let ballVals = [];
+let gameStateID = "";
 let theFrame;
 let theThrow;
 let bonusBalls = 2;
@@ -7,7 +8,7 @@ let complete = false;
 
 window.onload = function () {
     //get current ball value from record (only runs once in onload)
-    InitBall();
+    initializeGame();
     //fill the card with any values already in balls string (from InProgress game)
     FillCard();
 
@@ -16,8 +17,9 @@ window.onload = function () {
     document.querySelector("#btnUndo").addEventListener("click", UndoLastMessage);
 };
 
-function InitBall() {
+function initializeGame() {
     balls = document.querySelector("#gameBalls").value;
+    gameStateID = document.querySelector("#gameStateID").value;
     //console.log(balls);
 }
 
@@ -46,7 +48,6 @@ function FillCard() {
     BuildBallValues();
 
     //will be passing these values at end of this method to UpdateGame()
-    let gameStateID = document.querySelector("#gameStateID")
     let score = CalcScores();
 
     //declare what frame and throw the user is about to enter a value for
@@ -58,11 +59,11 @@ function FillCard() {
             frameDisplay + ", Throw " + (theThrow + 1) + ":";
 
     if (theFrame >= 10) {
-        gameStateID = CheckComplete(gameStateID);
+        CheckComplete();
     }
 
     score = CalcScores();
-    UpdateGame(gameStateID, score);
+    UpdateGame(score);
 }
 
 // Takes ball string and builds an array of numbers, where X = 10 and / = 10 - previous num
@@ -144,62 +145,65 @@ function CalcScores() {
 }
 
 function AddToBalls() {
-    //place focus back on textbox
-    document.querySelector("#ballValue").focus();
+    //console.log(gameStateID);
+    if (gameStateID === "AVAILABLE" || gameStateID === "INPROGRESS") {
+        //place focus back on textbox
+        document.querySelector("#ballValue").focus();
 
-    let input = document.querySelector("#ballValue").value;
+        let input = document.querySelector("#ballValue").value;
 
-    if (input.match("[^0-9xX\/]")) { //if entered value isn't valid character, stop function
-        document.querySelector("#inputErr").innerHTML = "\"" + input + "\" is not a valid character!";
-        document.querySelector("#ballValue").value = "";
-        document.querySelector("#inputErr").classList.remove("hidden");
-        return;
-    }
-    //remove error msg
-    document.querySelector("#inputErr").classList.add("hidden");
+        if (input.match("[^0-9xX\/]")) { //if entered value isn't valid character, stop function
+            document.querySelector("#inputErr").innerHTML = "\"" + input + "\" is not a valid character!";
+            document.querySelector("#ballValue").value = "";
+            document.querySelector("#inputErr").classList.remove("hidden");
+            return;
+        }
+        //remove error msg
+        document.querySelector("#inputErr").classList.add("hidden");
 
-    if (bonusBalls === 2 || bonusBalls === 1) {
-        if (input !== "") { //skip if input value non-existent
-            //should the input be a lowercase 'x', make it upper (looks nicer)
-            if (input === "x") { //
-                input = "X";
-            }
-            if (theThrow === 0) { //FIRST THROW
-                if (input !== "/") { //cant be a spare
-                    balls += input;
-                    document.querySelector("#ballValue").value = "";
-                } else {
-                    document.querySelector("#inputErr").innerHTML = "Cannot throw a spare on your first throw!";
-                    document.querySelector("#inputErr").classList.remove("hidden");
+        if (bonusBalls === 2 || bonusBalls === 1) {
+            if (input !== "") { //skip if input value non-existent
+                //should the input be a lowercase 'x', make it upper (looks nicer)
+                if (input === "x") { //
+                    input = "X";
                 }
-            }
-            if (bonusBalls === 2) {
-                if (theThrow === 1) { //SECOND THROW
-                    if (input !== "X") { //cant be a strike
-                        if (parseInt(balls[balls.length - 1]) + parseInt(input) > 10) {
-                            document.querySelector("#inputErr").innerHTML = "Cannot score more than 10 in a frame!";
-                            document.querySelector("#inputErr").classList.remove("hidden");
-                        } else {
-                            //if user inputs 2nd throw equalling 10 change val to "/", else add input to string
-                            if (parseInt(balls[balls.length - 1]) + parseInt(input) === 10) {
-                                input = "/";
-                            }
-                            balls += input;
-                            document.querySelector("#ballValue").value = "";
-                        }
+                if (theThrow === 0) { //FIRST THROW
+                    if (input !== "/") { //cant be a spare
+                        balls += input;
+                        document.querySelector("#ballValue").value = "";
                     } else {
-                        if (theFrame === 10) {
-                            balls += input; //can only get strike in second throw in bonus frame!
+                        document.querySelector("#inputErr").innerHTML = "Cannot throw a spare on your first throw!";
+                        document.querySelector("#inputErr").classList.remove("hidden");
+                    }
+                }
+                if (bonusBalls === 2) {
+                    if (theThrow === 1) { //SECOND THROW
+                        if (input !== "X") { //cant be a strike
+                            if (parseInt(balls[balls.length - 1]) + parseInt(input) > 10) {
+                                document.querySelector("#inputErr").innerHTML = "Cannot score more than 10 in a frame!";
+                                document.querySelector("#inputErr").classList.remove("hidden");
+                            } else {
+                                //if user inputs 2nd throw equalling 10 change val to "/", else add input to string
+                                if (parseInt(balls[balls.length - 1]) + parseInt(input) === 10) {
+                                    input = "/";
+                                }
+                                balls += input;
+                                document.querySelector("#ballValue").value = "";
+                            }
                         } else {
-                            document.querySelector("#inputErr").innerHTML = "Cannot throw a strike on your second throw!";
-                            document.querySelector("#inputErr").classList.remove("hidden");
+                            if (theFrame === 10) {
+                                balls += input; //can only get strike in second throw in bonus frame!
+                            } else {
+                                document.querySelector("#inputErr").innerHTML = "Cannot throw a strike on your second throw!";
+                                document.querySelector("#inputErr").classList.remove("hidden");
+                            }
                         }
                     }
                 }
             }
+            //end of ball input
+            FillCard();
         }
-        //end of ball input
-        FillCard();
     }
 }
 
@@ -228,7 +232,7 @@ function ResetCard() {
     }
 }
 
-function CheckComplete(gameStateID) {
+function CheckComplete() {
     let gameComplete = false;
 
     let frameTen = document.querySelector("#ballRow").querySelectorAll("td")[10];
@@ -246,7 +250,7 @@ function CheckComplete(gameStateID) {
             gameComplete = true;
         }
     }
-    if (gameComplete === true) {
+    if (gameComplete === true && ) {
         if (confirm('ATTENTION: The last entered value (' + balls[balls.length - 1] + ') will end the game!\n\n' +
                 'Are you certain there are no user errors?\n' +
                 '"OK": Game is complete, no further changes can be made!\n' +
@@ -263,16 +267,14 @@ function CheckComplete(gameStateID) {
             UndoLast();
         }
     }
-    return gameStateID;
 }
 
-function UpdateGame(inGameStateID, score) {
+function UpdateGame(score) {
     let gameID = Number(document.querySelector("#gameID").value);
     let matchID = Number(document.querySelector("#matchID").value);
     let gameNumber = Number(document.querySelector("#gameNumber").value);
 
     //confirm gameState
-    let gameStateID = inGameStateID;
     if (gameStateID !== "COMPLETE") {
         if (balls === "") {
             gameStateID = "AVAILABLE";
@@ -297,7 +299,7 @@ function UpdateGame(inGameStateID, score) {
         "score": score,
         "balls": balls
     };
-    
+
     //determine the directory for AJAX call
     let url = "gameService/games/" + gameID;
 
