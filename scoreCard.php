@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php
+require 'utils/chromePhp.php';
+?>
 <html> 
     <head>
         <meta charset="UTF-8">
@@ -6,6 +9,12 @@
         <script src="scoreCard.js"></script>
 
         <style>
+            .title {
+                margin-bottom: 0px;
+            }
+            .subtitle {
+                margin-top: 0px;
+            }
             table, tr, th, td {
                 border: 1px solid black;
                 border-collapse: collapse;
@@ -58,7 +67,15 @@
         </style>
     </head>
     <body>
-        <h1>Bowling Tournament</h1>
+        <?php
+        // get post superglobal values (gameID and gameBalls)
+        $gameID = $_POST['gameID'];
+        $gameBalls = $_POST['gameBalls'];
+        ?>
+        <h1 class="title">Bowling Tournament</h1>
+        <h2 class="subtitle">GameID: <?php echo $gameID; ?></h2>
+        <input type="hidden" id="gameBalls" value="<?php echo $gameBalls ?>">
+        
         <span id="frameThrowDisplay"></span> <input id="ballValue" type="text" maxlength="1">
         <button type="submit" id="btnAdd">Enter Value</button><span id="inputErr" class="hidden"></span>
         <table>

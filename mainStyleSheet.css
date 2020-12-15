@@ -34,3 +34,7 @@ tr:hover {
 .highlighted {
     background-color: yellow;
 }
+
+.highlightedBtn td:not(:last-child) {
+    background-color: yellow;
+}
