@@ -2,7 +2,7 @@
 <html> 
     <head>
         <meta charset="UTF-8">
-        <title>Project - Bowling Tournamentt</title>
+        <title>Project - Bowling TournamenTorontOhio</title>
         <script src=""></script>
 
         <style>
