@@ -36,11 +36,11 @@ function processForm() {
     //variable declarations for validation
 
     let playerID = Number(document.querySelector("#inputID").value);
-    let teamID = document.querySelector("#inputTeamID").value;
-    let firstName = Number(document.querySelector("#inputFirstName").value);
-    let lastName = Number(document.querySelector("#inputLastName").value);
-    let hometown = Number(document.querySelector("#inputHometown").value);
-    let provinceCode = Number(document.querySelector("#inputProvinceCode").value);
+    let teamID = Number(document.querySelector("#inputTeamID").value);
+    let firstName = document.querySelector("#inputFirstName").value;
+    let lastName = document.querySelector("#inputLastName").value;
+    let hometown = document.querySelector("#inputHometown").value;
+    let provinceCode = document.querySelector("#inputProvinceCode").value;
 
 
     //validation successful, create team object
