@@ -22,5 +22,8 @@
         <form method="POST" action="menus/adminMenu.php">
             <button name="admin" type="submit">Admin Login</button>
         </form>
+        <form method="POST" action="reset/resetMenu.php">
+            <button name="reset" type="submit">Reset Database Sets</button>
+        </form>
     </body>
 </html>
