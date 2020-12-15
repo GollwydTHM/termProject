@@ -17,7 +17,6 @@
         <button id="btnAdd">Add Team</button>
         <button id="btnUpdate" disabled>Update Team</button>
         <button id="btnDelete" disabled>Delete Team</button>
-
         <div id="AddUpdatePanel" class="hidden">
             <div> 
                 <div>
