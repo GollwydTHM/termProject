@@ -265,12 +265,12 @@ function updateGame(inScore) {
     // NOTE: THIS MUST BE REMOVED AFTER GAMESTATE IMPLEMENTATION
     let gameStateID = document.querySelector("#gameStateID").value;
 
-    console.log("gameID--->" + gameID + " is a " + typeof gameID);
-    console.log("matchID--->" + matchID + " is a " + typeof matchID);
-    console.log("gameNumber--->" + gameNumber + " is a " + typeof gameNumber);
-    console.log("gameStateID--->" + gameStateID + " is a " + typeof gameStateID);
-    console.log("score--->" + inScore + " is a " + typeof inScore);
-    console.log("balls--->" + balls + " is a " + typeof balls);
+//    console.log("gameID--->" + gameID + " is a " + typeof gameID);
+//    console.log("matchID--->" + matchID + " is a " + typeof matchID);
+//    console.log("gameNumber--->" + gameNumber + " is a " + typeof gameNumber);
+//    console.log("gameStateID--->" + gameStateID + " is a " + typeof gameStateID);
+//    console.log("score--->" + inScore + " is a " + typeof inScore);
+//    console.log("balls--->" + balls + " is a " + typeof balls);
 
     //validation successful, create team object
     let obj = {
@@ -289,13 +289,12 @@ function updateGame(inScore) {
     let xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-            console.log("HEY!");
             let resp = xmlhttp.responseText;
             if (resp.search("ERROR") >= 0 || resp != "1") {
                 console.log(resp);
                 alert("Error occered when PUT");
             } else {
-                alert("Updated!");
+                //alert("Updated!");
             }
         }
     };

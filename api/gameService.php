@@ -5,7 +5,6 @@ require_once '../entity/Game.php';
 require_once '../utils/ChromePhp.php';
 
 $method = filter_input(INPUT_SERVER, 'REQUEST_METHOD');
-ChromePhp::log($method);
 if ($method === "GET") {
     doGet();
 }
