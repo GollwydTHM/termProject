@@ -15,7 +15,7 @@ class Game implements JsonSerializable{
         $this->gameStateID = $gameStateID;
         $this->score = $score;
         $this->balls = $balls;
-    }
+    } 
     function setGameID($gameID) {
         $this->gameID = $gameID;
     }

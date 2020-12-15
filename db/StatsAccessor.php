@@ -9,7 +9,10 @@ class StatsAccessor {
     private $getByMatchIDStmtStr = "SELECT * "
             . "FROM matchup "
             . "WHERE teamID = :teamID";
-    
+    private $updateScoreByCompleteGameState = "UPDATE matchup"
+            . "SET score = (SELECT SUM(g.score) from game g"
+            . "WHERE g.matchID = :matchID AND g.gameStateID = 'COMPLETE'"
+            . "WHERE matchID = :matchID;";
     private $conn = null;
     private $getByMatchIDStmt = null;
 

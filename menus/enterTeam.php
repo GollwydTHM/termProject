@@ -23,7 +23,7 @@
         
         <h1>Team ID</h1>
         <form action="" method="POST">
-        <input type="number" name="ID">
+            <input type="number" name="ID" required>
         <button id="btnGetStats" name="btnGetStats">View Statistics</button>
         </form>
         </table>
