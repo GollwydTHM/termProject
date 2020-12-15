@@ -45,7 +45,7 @@ function getAll() {
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
             let response = xmlhttp.responseText;
-            //console.log(response);
+            console.log(response);
             if (response.search("ERROR") >= 0) {
                 alert("Whoops!");
             } else {
@@ -62,7 +62,6 @@ function getAll() {
 
 function buildTable(text) {
     let temp = JSON.parse(text);
-    //console.log(temp);
     let theTable = document.querySelector("table");
     let html = theTable.querySelector("tr").innerHTML;
     for (let i = 0; i < temp.length; i++) {
@@ -72,15 +71,15 @@ function buildTable(text) {
         html += "<td>" + record.matchID + "</td>";
         html += "<td>" + record.gameNumber + "</td>";
         html += "<td>" + record.gameStateID + "</td>";
-        html += "<td>" + record.gameScore + "</td>";
-        html += "<td>" + record.gameBalls + "</td>";
+        html += "<td>" + record.score + "</td>";
+        html += "<td>" + record.balls + "</td>";
         html += "<td class='btnCell hidden'>" +
                 "<form action='../scoreCard.php' method='POST'>" +
                 "<input type='hidden' name='gameID' value='" + record.gameID + "'>" +
                 "<input type='hidden' name='matchID' value='" + record.matchID + "'>" +
                 "<input type='hidden' name='gameNumber' value='" + record.gameNumber + "'>" +
                 "<input type='hidden' name='gameStateID' value='" + record.gameStateID + "'>" +
-                "<input type='hidden' name='gameBalls' value='" + ((record.gameBalls === undefined) ? "" : record.gameBalls) + "'>" +
+                "<input type='hidden' name='gameBalls' value='" + ((record.balls === null) ? "" : record.balls) + "'>" +
                 "<button type='submit' class='cellBtn'>Play</button>" +
                 "</form>" +
                 "</td>";
