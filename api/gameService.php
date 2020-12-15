@@ -24,7 +24,7 @@ function doGet() {
             $g = new GameAccessor();
             $results = $g->getGames();
             //ChromePhp::log($results);
-            $results = json_encode($results, JSON_NUMERIC_CHECK);
+            $results = json_encode($results);
             echo $results;
         }
         catch (Exception $e) {
@@ -66,8 +66,8 @@ function doPut() {
     $body = file_get_contents('php://input');
     $contents = json_decode($body, true);
 
-    $gameObj = new Game($contents['gameID'], $contents['matchID'], $contents['gameNumber'], $contents['gameStateID'], $contents['score'], $contents['balls']);
-
+    $gameObj = new Game($contents['gameID'], $contents['matchID'], $contents['gameNumber'], $contents['gameStateID'], $contents['score'], strval($contents['balls']));
+    
     $g = new GameAccessor();
     $success = $g->updateGame($gameObj);
     echo $success;

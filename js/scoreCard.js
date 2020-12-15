@@ -296,7 +296,7 @@ function UpdateGame(inGameStateID, score) {
         "score": score,
         "balls": balls
     };
-
+    
     //determine the directory for AJAX call
     let url = "gameService/games/" + gameID;
 

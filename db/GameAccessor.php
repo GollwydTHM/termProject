@@ -182,6 +182,7 @@ class GameAccessor {
         $score = $game->getScore();
         $balls = $game->getBalls();
         
+        
         try {
             $this->updateStmt->bindParam(":gameID", $gameID);
             $this->updateStmt->bindParam(":matchID", $matchID);
