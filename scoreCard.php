@@ -139,7 +139,7 @@ require 'utils/chromePhp.php';
             </tr>
         </table>
         <button type="submit" id="btnUndo">Undo Last</button>
-        <form method="POST" action="index.php">
+        <form method="POST" action="menus/games.php">
             <button type="submit">&larrhk; Go Back</button>
         </form>
     </body>
