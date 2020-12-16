@@ -2,7 +2,7 @@ window.onload = function () {
     // btn event handlers
     document.querySelector("#btnView").addEventListener("click", generateList);
     document.querySelector("#btnRank").addEventListener("click", generateRankings);
-    
+
     document.querySelector("#rounds").addEventListener("change", populateMatchSelect);
 };
 
@@ -80,7 +80,7 @@ function generateList() {
     let matchGroup = document.querySelector("#matchGroup").value;
     console.log(matchGroup);
     //AJAX
-    let url = "../matchupService/matchup/" + roundID +"/"+matchGroup;
+    let url = "../matchupService/matchup/" + roundID + "/" + matchGroup;
     let xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
@@ -97,6 +97,8 @@ function generateList() {
     };
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
+    
+    updateMatchup();
 }
 
 function buildTable(text) {
@@ -118,28 +120,49 @@ function buildTable(text) {
     theTable.innerHTML = html;
 }
 
-function populateMatchSelect(){
+function populateMatchSelect() {
     let roundID = document.querySelector("#rounds").value;
     let idNum = roundID.charAt(4);
     let total = 0;
     let output = "<select id='matchGroup' name='matchGroup'>";
     if (idNum === "1") {
         total = 8;
-    }else if(idNum === "2"){
+    } else if (idNum === "2") {
         total = 4
-    }
-    else if(idNum === "3"){
+    } else if (idNum === "3") {
         total = 2
-    }
-    else{
+    } else {
         total = 1
     }
     let number = 0;
     for (var i = 0; i < total; i++) {
         number = i + 1;
-        output += "<option value='"+number+"'>"+number+"</option>";
+        output += "<option value='" + number + "'>" + number + "</option>";
     }
     output += "</select>";
     document.getElementById('optionList').innerHTML = output;
     console.log(output);
+}
+
+function updateMatchup() {
+    for (var i = 0; i < 50; i++) {
+        let url = "../matchupService/matchup/ScoreMatch/" + i;
+
+        let xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                let resp = xmlhttp.responseText;
+                if (resp.search("ERROR") >= 0 || resp != "1") {
+                    console.log(resp);
+                    alert("Error occered when PUT");
+                } else {
+                    //alert("Updated!");
+                }
+            }
+        };
+        xmlhttp.open("PUT", url, true);
+        xmlhttp.send();
+    }
+
+
 }
