@@ -25,8 +25,49 @@ function buildTable(text) {
 }
 
 
-function generateMatchups(){
-    alert("test");
+function generateMatchups() {
+    let roundID = "QUAL";
+    //AJAX
+    let url = "../matchupService/matchup/" + roundID;
+    let xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+
+            let response = xmlhttp.responseText;
+            //console.log(response);
+            if (response.search("ERROR") >= 0) {
+                alert("Whoops!");
+            } else {
+                let responseArr = JSON.parse(response);
+                //console.log(responseArr);
+                let output = [];
+                for (var i = 0; i < responseArr.length; i++) {
+                    let team = responseArr[i].teamID;
+                    let rank = responseArr[i].ranking;
+                    output[i] = [team, rank];
+                }
+                output.sort(function (a, b) {
+                    return b[1] - a[1];
+                });
+                let top16 = output.slice(34);
+                top16.sort(function (a, b) {
+                    return a[1] - b[1];
+                });
+                for (var i = 0; i < 8; i++) {
+                    console.log(i);
+                    
+                    
+                }
+
+                //console.log(top16);
+//                for (var i = 0; i < 8; i++) {
+//                    
+//                }
+            }
+        }
+    };
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
 }
 
 function generateList() {
