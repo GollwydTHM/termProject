@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Project - Bowling Tournament</title>
+        <link rel="stylesheet" href="../mainStyleSheet.css">
         <!--<script src="mainMenu.js"></script>-->
 
         <style>
@@ -13,7 +14,8 @@
         </style>
     </head>
     <body>
-        <h1>Admin Menu</h1>
+        <h1>Bowling Tournament</h1>
+        <h2>Admin Menu</h2>
         <form action="viewTeamsCRUD.php">
             <button type="submit" id="btnViewTeams">View Teams</button>
         </form>

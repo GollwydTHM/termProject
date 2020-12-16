@@ -3,15 +3,9 @@
     <head>
         <meta charset="UTF-8">
         <title>Project - Bowling Tournament</title>
-        <script src=""></script>
+        <link rel="stylesheet" href="mainStyleSheet.css">
 
         <style>
-            h1 {
-                margin-bottom: 0px;
-            }
-            h2 {
-                margin-top: 0px;
-            }
             button {
                 width: 175px;
                 margin-bottom: 10px;

@@ -139,6 +139,6 @@ require 'utils/chromePhp.php';
             </tr>
         </table>
         <button type="submit" id="btnUndo">Undo Last</button>
-        <button type="submit" id="btnBack">&larrhk; Go Back</button>
+        <button type="submit" id="btnBack">&larr; Go Back</button>
     </body>
 </html>
