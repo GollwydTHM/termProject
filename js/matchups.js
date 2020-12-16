@@ -4,6 +4,7 @@ window.onload = function () {
     
     document.querySelector("table").addEventListener("click", selectHandler);
     document.querySelector("#btnView").addEventListener("click", getAll);
+    document.querySelector("#btnUpdate").addEventListener("click", updateScore);
 //    hideAddUpdate();
 };
 function clearSelections() {
@@ -16,7 +17,7 @@ function selectHandler(e) {
     //add style to parent of clicked cell
     clearSelections();
     e.target.parentElement.classList.add("highlighted");
-     
+    document.querySelector("#btnUpdate").removeAttribute("disabled");
 }
 
 function getAll() {
@@ -43,11 +44,47 @@ function getAll() {
     
      
 }
-
+function updateScore(){
+    
+    console.log("im hhere");
+    var tds = document.querySelector(".highlighted").querySelectorAll("td");
+    let matchID = tds[0].innerHTML;
+    let roundID = tds[1].innerHTML;
+    let matchGroup = tds[2].innerHTML;
+    let teamID = tds[3].innerHTML;
+    let score = tds[4].innerHTML;
+    let ranking = tds[5].innerHTML;
+    
+    
+    let obj = {
+        "matchID": matchID,
+        "roundID": roundID,
+        "matchGroup": matchGroup,
+        "teamID": teamID,
+        "score": score,
+        "ranking": ranking
+    };
+    //AJAX
+    let url = "../matchupService/matchup/" + matchID;
+    let xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            let response = xmlhttp.responseText;
+            //console.log(response);
+            if (response.search("ERROR") >= 0) {
+                alert("Whoops!");
+            } else {
+                alert("Updated");
+                getAll();
+            }
+        }
+    };
+    xmlhttp.open("PUT", url, true);
+    xmlhttp.send(JSON.stringify(obj));
+}
 function buildTable(text) {
     
     let temp = JSON.parse(text);
-    console.log(temp);
     let theTable = document.querySelector("table");
     let html = theTable.querySelector("tr").innerHTML;
     for (let i = 0; i < temp.length; i++) {

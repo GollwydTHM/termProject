@@ -15,7 +15,7 @@
         <h1>Tournament Matchup List</h1>
 
         <button id="btnView">View Matchups</button>
-        
+        <button id="btnUpdate">Update Score</button>
 
         <table>
             <tr>
