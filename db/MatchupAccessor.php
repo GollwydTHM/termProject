@@ -30,7 +30,6 @@ class MatchupAccessor {
     private $updateStmt = null;
     private $updateScoreByMatchIdStmt = null;
     private $updateTeamIDByMatchStmt = null;
-    
 
     public function __construct() {
         $dbConn = new DBConnect();
@@ -59,7 +58,7 @@ class MatchupAccessor {
         if (is_null($this->updateStmt)) {
             throw new Exception("bad statement: '" . $this->updateStmtStr . "'");
         }
-        
+
         $this->updateScoreByMatchIdStmt = $this->conn->prepare($this->updateScoreByMatchIdStmtStr);
         if (is_null($this->updateScoreByMatchIdStmt)) {
             throw new Exception("bad statement: '" . $this->updateScoreByMatchIdStmtStr . "'");
@@ -108,14 +107,14 @@ class MatchupAccessor {
     public function getMatchup() {
         return $this->getMatchupByQuery("SELECT * FROM matchup");
     }
-    
-    public function getMatchupByRoundID($roundID) {
-        return $this->getMatchupByQuery("SELECT * FROM matchup WHERE roundID ='".$roundID."'");
-    }
-    
-    public function getMatchupByRoundIDAndMatchGroup($roundID,$matchRound) {
 
-        return $this->getMatchupByQuery("SELECT * FROM matchup WHERE roundID ='".$roundID."' AND matchgroup ='".$matchRound."'");
+    public function getMatchupByRoundID($roundID) {
+        return $this->getMatchupByQuery("SELECT * FROM matchup WHERE roundID ='" . $roundID . "'");
+    }
+
+    public function getMatchupByRoundIDAndMatchGroup($roundID, $matchRound) {
+
+        return $this->getMatchupByQuery("SELECT * FROM matchup WHERE roundID ='" . $roundID . "' AND matchgroup ='" . $matchRound . "'");
     }
 
     public function getMatchByMatchID($matchID) {
@@ -225,7 +224,7 @@ class MatchupAccessor {
             return $success;
         }
     }
-    
+
     public function updateScore($matchID) {
         $success = false;
 
@@ -243,10 +242,13 @@ class MatchupAccessor {
             return $success;
         }
     }
-    
-    public function updateTeam($teamID,$matchID){
+
+    public function updateTeam($match) {
         $success = false;
         try {
+            $matchID = $match->getMatchID();
+            $teamID = $match->getTeamID();
+
             $this->updateTeamIDByMatchStmt->bindParam(":matchID", $matchID);
             $this->updateTeamIDByMatchStmt->bindParam(":teamID", $teamID);
             $success = $this->updateScoreByMatchIdStmt->execute(); //not what you think
