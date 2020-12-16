@@ -18,7 +18,7 @@ window.onload = function () {
 };
 
 function InitializeGame() {
-    balls = document.querySelector("#gameBalls").value.trim();
+    balls = document.querySelector("#gameBalls").value.replace(/\s+/g, "");
     gameStateID = document.querySelector("#gameStateID").value;
     //console.log(balls);
 }
@@ -327,7 +327,7 @@ function UpdateGame(score) {
     xmlhttp.send(JSON.stringify(obj));
 }
 
-function updateMatchup(){
+function updateMatchup() {
     let matchID = Number(document.querySelector("#matchID").value);
 
     let url = "matchupService/matchup/ScoreMatch/" + matchID;
