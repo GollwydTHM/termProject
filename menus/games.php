@@ -34,7 +34,6 @@
 
         <button id="btnView">View Games</button>
 
-
         <table>
             <tr>
                 <th>Game ID</th>

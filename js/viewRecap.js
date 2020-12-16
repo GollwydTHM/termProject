@@ -1,4 +1,4 @@
-var addOrUpdate;
+var gameStateID;
 
 window.onload = function () {
     document.querySelector("table").addEventListener("click", selectHandler);
@@ -33,6 +33,8 @@ function selectHandler(e) {
     }
     let row = rows[selection].querySelectorAll("td");
     row[6].classList.remove("hidden");
+    gameStateID = row[3].innerHTML;
+    console.log(gameStateID);
 }
 
 function getAll() {
@@ -40,7 +42,7 @@ function getAll() {
     //hideAddUpdate();
 
     //AJAX
-    let url = "../gameService/games";
+    let url = "../gameService/games/Cplt";
     let xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
@@ -84,8 +86,4 @@ function buildTable(text) {
         html += "</tr>";
     }
     theTable.innerHTML = html;
-}
-
-function viewStatistics() {
-
 }

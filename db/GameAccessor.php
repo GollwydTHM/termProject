@@ -93,6 +93,10 @@ class GameAccessor {
     public function getGames() {
         return $this->getGamesByQuery("SELECT * FROM game WHERE gameStateID = 'AVAILABLE' OR gameStateID = 'INPROGRESS'");
     }
+    
+    public function getCpltGames() {
+        return $this->getGamesByQuery("SELECT * FROM game WHERE gameStateID = 'COMPLETE'");
+    }    
 
     public function getGameByGameID($gameID) {
         $result = NULL;

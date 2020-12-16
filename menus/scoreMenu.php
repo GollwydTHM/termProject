@@ -13,12 +13,8 @@
     </head>
     <body>
         <h1>Scorekeeper Menu</h1>
-        <form action="../scoreCard.php">
-            <button type="submit">ScoreCard</button>
-        </form>
         <form action="games.php">
             <button type="submit">Display All Scheduled Games</button>
         </form>
-        
     </body>
 </html>
