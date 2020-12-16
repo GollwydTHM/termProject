@@ -44,8 +44,8 @@ function doGet() {
             echo "ERROR " . $e->getMessage();
         }
     } 
-    else if (filter_has_var(INPUT_GET, 'teamID')){
-        $teamID = filter_input(INPUT_GET, "teamID");
+    else if (filter_has_var(INPUT_GET, 'games')){
+        $teamID = filter_input(INPUT_GET, 'games');
         try { 
             ChromePhp::log($teamID . "inside");
             $t = new StatsAccessor();

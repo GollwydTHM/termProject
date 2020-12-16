@@ -14,12 +14,14 @@
     <body>
         <h1>List of Teams</h1>
         
-         
-        <div>
-            <button id="btnView">Get Data</button>
-        </div>
+        
         <div>
             <button id="btnTopRank">View Top 16</button>
+        </div>
+        <div>
+            <form action="guestMenu.php" method="POST"> 
+                <button id="btnBack">&larr;Go Back</button>
+            </form>
         </div>
         <table class="tour">
             <tr>

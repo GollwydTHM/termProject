@@ -11,8 +11,7 @@
         session_start();
         $teamID = $_POST['teamID']; 
         ?>
-        <h1>Bowling Tournament</h1> 
-        <button id="btnList">View Games List</button>
+        <h1>Bowling Tournament</h1>  
         <input id="teamID" value="<?php echo $teamID; ?>" hidden>
         <form method="POST" action="viewTourData.php" class="inline">
             <button type="submit">&larr; Go Back</button>

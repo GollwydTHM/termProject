@@ -1,9 +1,8 @@
 var addOrUpdate;
 
 window.onload = function () {
-    
-    document.querySelector("table").addEventListener("click", selectHandler);
-    document.querySelector("#btnView").addEventListener("click", getStats); 
+    getStats();
+    document.querySelector("table").addEventListener("click", selectHandler); 
     document.querySelector("#btnTopRank").addEventListener("click", getTopRank);  
 
 

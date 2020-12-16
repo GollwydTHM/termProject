@@ -2,8 +2,7 @@ var addOrUpdate;
 
 window.onload = function () {
     getAll();
-    document.querySelector("table").addEventListener("click", selectHandler);
-    document.querySelector("#btnList").addEventListener("click", getAll);
+    document.querySelector("table").addEventListener("click", selectHandler); 
 
 //    hideAddUpdate();
 };
@@ -22,21 +21,20 @@ function selectHandler(e) {
 }
 
 function getAll() {
-    let teamID = document.querySelector("#teamID").value; 
-    console.log(teamID);
+    let teamID = document.querySelector("#teamID").value;
+ 
+
     //AJAX
-    let url = "../statsService/stats/teamID/" + teamID;
+    let url = "../statsService/stats/games/" + teamID;
     let xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
             let response = xmlhttp.responseText;
-            //console.log(response);
+            console.log(response);
             if (response.search("ERROR") >= 0) {
                 alert("Whoops!");
-                console.log(response);
             } else {
-                buildTable(xmlhttp.responseText); 
-                console.log(response);
+                buildTable(xmlhttp.responseText);
                 clearSelections();
             }
         }

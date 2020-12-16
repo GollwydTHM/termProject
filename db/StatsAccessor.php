@@ -79,10 +79,10 @@ class StatsAccessor {
         
 
         try {
-            $results = [];
+            $result = [];
             $this->getListOfGames->bindParam(":teamID", $teamID);
             $this->getListOfGames->execute(); //not what you think
-            $result =  $this->getListOfGames->fetchAll(PDO::FETCH_ASSOC);
+            $results =  $this->getListOfGames->fetchAll(PDO::FETCH_ASSOC);
             ChromePhp::log("Before foreach");
             foreach ($results as $res){
                 $gameID = $res['gameID'];
@@ -95,7 +95,7 @@ class StatsAccessor {
                         $gameNumber,
                         $teamID);
                 ChromePhp::log($obj);
-                array_push($results, $obj);
+                array_push($result, $obj);
             }
         } catch (PDOException $e) { 
             $result = null;
