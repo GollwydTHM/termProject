@@ -103,7 +103,6 @@ function deletePlayer() {
     };
     xmlhttp.open("DELETE", url, true);
     xmlhttp.send();
-
 }
 function addPlayer() {
     // Show panel, panel handler takes care of the rest

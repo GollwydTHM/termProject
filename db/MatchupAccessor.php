@@ -99,6 +99,10 @@ class MatchupAccessor {
     public function getMatchup() {
         return $this->getMatchupByQuery("SELECT * FROM matchup");
     }
+    
+    public function getMatchupByRoundID($roundID) {
+        return $this->getMatchupByQuery("SELECT * FROM matchup WHERE roundID ='".$roundID."'");
+    }
 
     public function getMatchByMatchID($matchID) {
         $result = NULL;
