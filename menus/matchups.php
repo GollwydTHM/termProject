@@ -14,22 +14,6 @@
     <body>
         <h1>Tournament Matchup List</h1>
 
-        <button id="btnView">View Matchups</button>
-        
-
-        <table>
-            <tr>
-                <th>Match ID</th>
-                <th>Round ID</th>
-                <th>Match Group</th>
-                <th>Team ID</th>
-                <th>Score</th>
-                <th>Ranking</th>
-                
-            </tr>
-            <tbody id="recordRows">
-            </tbody>
-        </table>
+        <>
     </body>
 </html>
-
