@@ -6,8 +6,19 @@
         <script src="../js/games.js"></script>
         <link rel="stylesheet" href="../mainStyleSheet.css">
         <style>
+            h1 {
+                margin-bottom: 0px;
+            }
+            #notice {
+                font-style: italic;
+                margin-top: 0px;
+            }
             button {
+                display: inline-block;
                 margin-bottom: 10px;
+            }
+            form {
+                display: inline-block;
             }
             .btnCell {
                 background-color: white;
@@ -30,9 +41,12 @@
     </head>
     <body>
         <h1>Tournament Game List</h1>
-        <p><i>Click on a game for scoring option.</i></p>
+        <p id="notice">Click on a game for scoring option.</p>
 
         <button id="btnView">View Games</button>
+        <form method="POST" action="../menus/scoreMenu.php">
+            <button type="submit">&larr; Go Back</button>
+        </form>
 
         <table>
             <tr>

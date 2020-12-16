@@ -346,5 +346,4 @@ function updateMatchup(){
     };
     xmlhttp.open("PUT", url, true);
     xmlhttp.send();
-
 }
