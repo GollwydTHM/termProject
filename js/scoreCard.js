@@ -64,6 +64,7 @@ function FillCard() {
 
     score = CalcScores();
     UpdateGame(score);
+    updateMatchup();
 }
 
 // Takes ball string and builds an array of numbers, where X = 10 and / = 10 - previous num
