@@ -26,12 +26,14 @@
                 <option value="RAND4">RAND4</option>
                 <option value="FINAL">FINAL</option>
             </select> 
-            Select match group: 
-            <select id="matchGroup">
-                <span id="optionList">
+            Select match group:
+            <span id="optionList">
+                <select id="matchGroup" name="matchGroup">
+
                     <option value="1">1</option>
-                </span>                
-            </select>
+
+                </select>
+            </span> 
         </form>
         <button id="btnView" type="submit">View Round Status</button>
         <button id="btnRank" type="submit">Generate Rankings</button>
@@ -43,7 +45,7 @@
                 <th>Team ID</th>
                 <th>Score</th>
                 <th>Ranking</th>
-                
+
             </tr>
             <tbody id="recordRows">
             </tbody>

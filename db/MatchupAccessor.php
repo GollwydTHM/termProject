@@ -103,6 +103,11 @@ class MatchupAccessor {
     public function getMatchupByRoundID($roundID) {
         return $this->getMatchupByQuery("SELECT * FROM matchup WHERE roundID ='".$roundID."'");
     }
+    
+    public function getMatchupByRoundIDAndMatchGroup($roundID,$matchRound) {
+
+        return $this->getMatchupByQuery("SELECT * FROM matchup WHERE roundID ='".$roundID."' AND matchgroup ='".$matchRound."'");
+    }
 
     public function getMatchByMatchID($matchID) {
         $result = NULL;

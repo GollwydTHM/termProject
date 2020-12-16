@@ -17,8 +17,23 @@ if ($method === "GET") {
 
 function doGet() {
     ChromePhp::log("enter doGet");
-    if(filter_has_var(INPUT_GET, 'roundID')){
+    if(filter_has_var(INPUT_GET, 'roundID') && filter_has_var(INPUT_GET, 'matchGroup')){
         ChromePhp::log("if");
+        try {
+            $round = filter_input(INPUT_GET, "roundID");
+            $match = filter_input(INPUT_GET, "matchGroup");
+            ChromePhp::log($round);
+            ChromePhp::log("Match group: ".$match);
+            $t = new MatchupAccessor();
+            $results = $t->getMatchupByRoundIDAndMatchGroup($round,$match);
+            $results = json_encode($results, JSON_NUMERIC_CHECK);
+            echo $results;
+        } catch (Exception $e) {
+            echo "ERROR " . $e->getMessage();
+        }
+    }
+    else if(filter_has_var(INPUT_GET, 'roundID')){
+        ChromePhp::log("if else 1");
         try {
             $round = filter_input(INPUT_GET, "roundID");
             $t = new MatchupAccessor();
@@ -30,7 +45,7 @@ function doGet() {
         }
     }
     else if (!filter_has_var(INPUT_GET, 'matchID')) {
-        ChromePhp::log("else if");
+        ChromePhp::log("else if 2");
         try {
             $t = new MatchupAccessor();
             $results = $t->getMatchup();

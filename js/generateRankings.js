@@ -77,9 +77,10 @@ function generateRankings() {
 
 function generateList() {
     let roundID = document.querySelector("#rounds").value;
-    
+    let matchGroup = document.querySelector("#matchGroup").value;
+    console.log(matchGroup);
     //AJAX
-    let url = "../matchupService/matchup/" + roundID;
+    let url = "../matchupService/matchup/" + roundID +"/"+matchGroup;
     let xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
@@ -121,7 +122,7 @@ function populateMatchSelect(){
     let roundID = document.querySelector("#rounds").value;
     let idNum = roundID.charAt(4);
     let total = 0;
-    let output = "";
+    let output = "<select id='matchGroup' name='matchGroup'>";
     if (idNum === "1") {
         total = 8;
     }else if(idNum === "2"){
@@ -130,7 +131,7 @@ function populateMatchSelect(){
     else if(idNum === "3"){
         total = 2
     }
-    else if(idNum === "4"){
+    else{
         total = 1
     }
     let number = 0;
@@ -138,6 +139,7 @@ function populateMatchSelect(){
         number = i + 1;
         output += "<option value='"+number+"'>"+number+"</option>";
     }
+    output += "</select>";
     document.getElementById('optionList').innerHTML = output;
     console.log(output);
 }
