@@ -8,10 +8,12 @@ class PlayerAccessor {
 
     private $getByPlayerIDStmtStr = "SELECT * "
             . "FROM player "
-            . "WHERE playerID = :playerID";
+            . "WHERE playerID = :playerID "
+            . "ORDER BY teamID, playerID";
     private $getPlayersByTeamIDStmtStr = "SELECT * "
             . "FROM player "
-            . "WHERE teamID = :teamID";
+            . "WHERE teamID = :teamID "
+            . "ORDER BY teamID, PlayerID";
     private $getByPlayerCountByTeamIDStmtStr = "SELECT COUNT(*) "
             . "FROM player "
             . "WHERE teamID = :teamID";
@@ -103,7 +105,7 @@ class PlayerAccessor {
     }
 
     public function getPlayers() {
-        return $this->getPlayersByQuery("SELECT * FROM player");
+        return $this->getPlayersByQuery("SELECT * FROM player ORDER BY teamID, playerID");
     }
 
     public function getPlayerByPlayerID($playerID) {

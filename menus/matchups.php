@@ -105,8 +105,8 @@
         <button id="btnView">View Standings</button>
         <div id="qualContainer">
             <ol>
-                <li>Just</li>
-                <li>a Trial</li>
+                <li></li>
+                <li></li>
                 <li></li>
                 <li></li>
                 <li></li>

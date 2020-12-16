@@ -22,10 +22,10 @@
         <div id="AddUpdatePanel" class="hidden">
             <div> 
                 <div>
-                    <div>Player ID</div><input id="inputID" required>
+                    <div>Team ID</div><input id="inputTeamID" required>
                 </div>
                 <div>
-                    <div>Team ID</div><input id="inputTeamID" required>
+                    <div>Player ID</div><input id="inputID" required>
                 </div>
                 <div>
                     <div>First Name</div><input id="inputFirstName" type="text" required>
@@ -48,8 +48,8 @@
 
         <table>
             <tr>
-                <th>Player ID</th>
                 <th>Team ID</th>
+                <th>Player ID</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Hometown</th>
