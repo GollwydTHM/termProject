@@ -66,7 +66,7 @@ function processForm() {
             let resp = xmlhttp.responseText;
             console.log(resp);
             if (resp.search("ERROR") >= 0 || resp != "1") {
-                
+
                 alert("Error occered when " + method);
             } else {
                 alert("Updated!");
@@ -185,8 +185,8 @@ function buildTable(text) {
     for (let i = 0; i < temp.length; i++) {
         let record = temp[i];
         html += "<tr>";
-        html += "<td>" + record.playerID + "</td>";
         html += "<td>" + record.teamID + "</td>";
+        html += "<td>" + record.playerID + "</td>";
         html += "<td>" + record.firstName + "</td>";
         html += "<td>" + record.lastName + "</td>";
         html += "<td>" + record.hometown + "</td>";

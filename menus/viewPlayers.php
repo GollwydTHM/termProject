@@ -20,8 +20,8 @@ require_once '../utils/ChromePhp.php';
         <h1>Players</h1>
         <table>
             <tr>
-                <th>Player ID</th>
                 <th>Team ID</th>
+                <th>Player ID</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Hometown</th>
