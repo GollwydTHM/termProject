@@ -14,9 +14,8 @@
     </head>
     <body>
         <h1>Reset Menu</h1>
-        <form method="POST">
-            <button name="btnInitial" id="btnInitial" type="submit">Reset to initial state</button>
-        </form>
+        <button name="btnInitial" id="btnInitial" type="submit">Reset to initial state</button>
+        <button name="btnInitial" id="btnPopulate" type="submit">Reset to populated state</button>
         <form method="POST" action="../index.php">
             <button type="submit">&larrhk; Return to index &nbsp;&nbsp;&nbsp;</button>
         </form>

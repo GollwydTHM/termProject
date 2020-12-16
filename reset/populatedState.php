@@ -6,7 +6,7 @@ try {
 //    $output = accessor::getData();
     
     $acc = new resetAccessor();
-    $output = $acc->getInitialDatabaseStatement();
+    $output = $acc->getPopulatedDatabaseStatement();
     $results = json_encode($output, JSON_NUMERIC_CHECK);
     echo $results;
 } catch (Exception $e) {
