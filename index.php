@@ -12,7 +12,7 @@
         <form method="POST" action="menus/guestMenu.php">
             <button name="guest" type="submit" class="btnMenu btnMenuTop">Guest Login</button>
         </form>
-        <form method="POST" action="menus/scoreMenu.php">
+        <form method="POST" action="menus/games.php">
             <button name="scorekeeper" type="submit" class="btnMenu">Scorekeeper Login</button>
         </form>
         <form method="POST" action="menus/adminMenu.php">
