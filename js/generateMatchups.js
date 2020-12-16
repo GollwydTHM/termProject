@@ -52,7 +52,7 @@ function generateMatchups() {
                 output.sort(function (a, b) {
                     return b[1] - a[1];
                 });
-                let top16 = output.slice(34);
+                top16 = output.slice(34);
                 top16.sort(function (a, b) {
                     return a[1] - b[1];
                 });
