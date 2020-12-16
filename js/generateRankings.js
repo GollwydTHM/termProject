@@ -16,7 +16,7 @@ function generateRankings() {
             alert("null score detected. Round cannot be ranked");
             break;
         } else if (rank !== "null") {
-            alert("null score detected. Round cannot be ranked");
+            alert("score detected. Round has already been ranked");
             break;
         } else {
 
