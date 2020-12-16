@@ -14,7 +14,7 @@
     <body>
         <h1>Players</h1>
 
-        <button id="btnView">View All Teams </button>
+        <button id="btnView">View All Players </button>
         
 
         <table>
