@@ -31,7 +31,16 @@ function doGet() {
         }
     }
     else {
-        ChromePhp::log("You are requesting the team " . filter_input(INPUT_GET, 'teamID'));
+        $teamID = filter_input(INPUT_GET, 'teamID');
+        try {
+            $t = new TeamAccessor();
+            $results = $t->getTeamByTeamID($teamID);
+            $results = json_encode($results, JSON_NUMERIC_CHECK);
+            echo $results;
+        }
+        catch (Exception $e) {
+            echo "ERROR " . $e->getMessage();
+        }
     }
 }
 

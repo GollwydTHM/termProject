@@ -1,4 +1,6 @@
 var addOrUpdate;
+var count;
+var team;
 
 window.onload = function () {
     // btn event handlers
@@ -29,7 +31,49 @@ function selectHandler(e) {
     document.querySelector("#btnDelete").removeAttribute("disabled");
 }
 
+function CheckPlayers(teamiD) {
 
+    //AJAX
+    let url = "../playerService/players/teamID/" + teamiD;
+    let xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            let response = xmlhttp.responseText;
+            if (response.search("ERROR") >= 0) {
+                alert("Check Player Failed");
+            } else {
+                count = response;
+            }
+        }
+    };
+    xmlhttp.open("GET", url, false);
+    xmlhttp.send();
+}
+
+function CheckTeam(teamiD) {
+    let temp;
+
+    //AJAX
+    let url = "../teamService/teams/" + teamiD;
+    let xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            let response = xmlhttp.responseText;
+            if (response.search("ERROR") >= 0) {
+                alert("Check Team Failed");
+            } else {
+                temp = JSON.parse(response);
+                if (temp == null) {
+                    team = false;
+                } else {
+                    team = true;
+                }
+            }
+        }
+    };
+    xmlhttp.open("GET", url, false);
+    xmlhttp.send();
+}
 
 function processForm() {
     console.log("processform start");
@@ -59,23 +103,30 @@ function processForm() {
     //determine which method do we use for AJAX call?
     let method = (addOrUpdate === "add") ? "POST" : "PUT";
 
-    //AJAX
-    let xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-            let resp = xmlhttp.responseText;
-            console.log(resp);
-            if (resp.search("ERROR") >= 0 || resp != "1") {
+    CheckPlayers(teamID);
+    CheckTeam(teamID);
 
-                alert("Error occered when " + method);
-            } else {
-                alert("Updated!");
-                getAll();
+    if ((count < 4 && team == true) || method == "PUT") {
+        //AJAX
+        let xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                let resp = xmlhttp.responseText;
+                console.log(resp);
+                if (resp.search("ERROR") >= 0 || resp != "1") {
+
+                    alert("Error occered when " + method);
+                } else {
+                    alert("Updated!");
+                    getAll();
+                }
             }
-        }
-    };
-    xmlhttp.open(method, url, true);
-    xmlhttp.send(JSON.stringify(obj));
+        };
+    } else if (team == false) {
+        alert("Could not add player, team has to exist!");
+    } else if (count >= 4) {
+        alert("Could not add player, team has to have less than 4!");
+    }
 }
 
 
@@ -126,7 +177,6 @@ function resetUpdatePanel() {
     document.querySelector("#inputProvinceCode").value = "";
 }
 
-
 function clearAddUpdate() {
     // obtain todays date for releaseDate field as placeholder.
     document.querySelector("#inputID").value = 0;
@@ -149,6 +199,8 @@ function populateUpdatePanelWithSelectedItem() {
     document.querySelector("#inputProvinceCode").value = tds[5].innerHTML;
 
 }
+
+
 function getAll() {
     //hide addUpdate incase it is opened
     hideUpdatePanel();
