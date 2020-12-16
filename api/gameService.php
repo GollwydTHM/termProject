@@ -16,10 +16,21 @@ if ($method === "GET") {
 }
 
 function doGet() {
-    if (filter_has_var(INPUT_GET, 'gameStateID')) {
+    if (filter_has_var(INPUT_GET, 'Cplt')) {
         try {
             $g = new GameAccessor();
             $results = $g->getCpltGames();
+            //ChromePhp::log($results);
+            $results = json_encode($results);
+            echo $results;
+        } catch (Exception $e) {
+            echo "ERROR " . $e->getMessage();
+        }
+    }
+    else if (filter_has_var(INPUT_GET, 'Avail')) {
+        try {
+            $g = new GameAccessor();
+            $results = $g->getAvailGames();
             //ChromePhp::log($results);
             $results = json_encode($results);
             echo $results;

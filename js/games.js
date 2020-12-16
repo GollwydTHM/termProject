@@ -40,7 +40,7 @@ function getAll() {
     //hideAddUpdate();
 
     //AJAX
-    let url = "../gameService/games";
+    let url = "../gameService/games/AvailInPrg";
     let xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {

@@ -6,18 +6,14 @@ require_once '../utils/ChromePhp.php';
 
 class GameAccessor {
 
-    private $getByGameIDStmtStr = 
-            "SELECT * "
+    private $getByGameIDStmtStr = "SELECT * "
             . "FROM game "
             . "WHERE gameID = :gameID";
-    private $deleteStmtStr = 
-            "DELETE FROM game "
+    private $deleteStmtStr = "DELETE FROM game "
             . "WHERE gameID = :gameID";
-    private $insertStmtStr = 
-            "INSERT INTO game "
+    private $insertStmtStr = "INSERT INTO game "
             . "VALUES(:gameID, :matchID, :gameNumber, :gameStateID, :score, :balls)";
-    private $updateStmtStr = 
-            "UPDATE game SET "
+    private $updateStmtStr = "UPDATE game SET "
             . "matchID = :matchID, gameNumber = :gameNumber, gameStateID = :gameStateID, score = :score, balls = :balls "
             . "WHERE gameID = :gameID";
     private $conn = null;
@@ -33,7 +29,7 @@ class GameAccessor {
         if (is_null($this->conn)) {
             throw new Exception("no connection");
         }
-        
+
         $this->getByGameIDStmt = $this->conn->prepare($this->getByGameIDStmtStr);
         if (is_null($this->getByGameIDStmt)) {
             throw new Exception("bad statement: '" . $this->getAllStmtStr . "'");
@@ -61,7 +57,7 @@ class GameAccessor {
             $stmt = $this->conn->prepare($query);
             $stmt->execute();
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            
+
             foreach ($results as $res) {
                 $gameID = $res['gameID'];
                 $matchID = $res['matchID'];
@@ -86,17 +82,15 @@ class GameAccessor {
             }
             return $result;
         }
-        
-        
     }
 
-    public function getGames() {
+    public function getAvailGames() {
         return $this->getGamesByQuery("SELECT * FROM game WHERE gameStateID = 'AVAILABLE' OR gameStateID = 'INPROGRESS'");
     }
-    
+
     public function getCpltGames() {
         return $this->getGamesByQuery("SELECT * FROM game WHERE gameStateID = 'COMPLETE'");
-    }    
+    }
 
     public function getGameByGameID($gameID) {
         $result = NULL;
@@ -185,8 +179,8 @@ class GameAccessor {
         $gameStateID = $game->getGameStateID();
         $score = $game->getScore();
         $balls = $game->getBalls();
-        
-        
+
+
         try {
             $this->updateStmt->bindParam(":gameID", $gameID);
             $this->updateStmt->bindParam(":matchID", $matchID);
@@ -205,5 +199,7 @@ class GameAccessor {
         }
     }
 
-} //end class GameAccessor
+}
+
+//end class GameAccessor
 
