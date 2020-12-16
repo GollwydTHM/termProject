@@ -9,14 +9,17 @@ window.onload = function () {
 function generateRankings() {
     let output = [];
     let allRows = document.querySelectorAll("tr");
+    let noNull = false;
     for (let i = 1; i < allRows.length; i++) {
         let currentScore = allRows[i].querySelectorAll("td")[4].innerHTML;
         let rank = allRows[i].querySelectorAll("td")[5].innerHTML;
         if (currentScore === "null") {
             alert("null score detected. Round cannot be ranked");
+            noNull = false;
             break;
         } else if (rank !== "null") {
             alert("score detected. Round has already been ranked");
+            noNull = false;
             break;
         } else {
 
@@ -29,6 +32,7 @@ function generateRankings() {
             let temp = [];
             temp = [currentMatchID, currentRoundID, currentMatchGroup, currentTeam, currentScore, rank];
             output[i - 1] = temp;
+            noNull = true;
         }
     }
     //if the if/ifelse are triggered, the output is empty. if else if triggered move ahead
