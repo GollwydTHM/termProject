@@ -21,12 +21,7 @@ function selectHandler(e) {
 
 function getAll() {
     let teamID = document.querySelector("#teamID").value;
-
-//    let obj = {
-//        "teamID": teamID,
-//        "teamName": "",
-//        "earnings": 0
-//    };
+ 
 
     //AJAX
     let url = "../playerService/players/playersByTeamID/" + teamID;

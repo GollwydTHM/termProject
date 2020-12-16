@@ -61,30 +61,7 @@ function getStats() {
     xmlhttp.send();
     
      
-}
-//function getTeamID() {
-//    var tds = document.querySelector(".highlighted").querySelectorAll("td");
-//    document.querySelector("#teamID").value = tds[0].innerHTML;
-//    let teamID = tds[0].innerHTML;
-//    //AJAX
-//    let url = "../statsService/stats/teamID/" + teamID;
-//    let xmlhttp = new XMLHttpRequest();
-//    xmlhttp.onreadystatechange = function () {
-//        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-//            let response = xmlhttp.responseText;
-//            //console.log(response);
-//            if (response.search("ERROR") >= 0) {
-//                alert("Whoops!");
-//            } else {
-//                buildTable(xmlhttp.responseText); 
-//                console.log(response);
-//                clearSelections();
-//            }
-//        }
-//    };
-//    xmlhttp.open("GET", url, true);
-//    xmlhttp.send();
-//}
+} 
 function getTopRank(){
     //AJAX
     let url = "../statsService/stats/ranks";
