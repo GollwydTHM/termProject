@@ -48,7 +48,6 @@ function getAll() {
 }
 
 function buildTable(text) {
-
     let temp = JSON.parse(text);
     //console.log(temp);
     let theTable = document.querySelector("table");
@@ -56,8 +55,8 @@ function buildTable(text) {
     for (let i = 0; i < temp.length; i++) {
         let record = temp[i];
         html += "<tr>";
-        html += "<td>" + record.playerID + "</td>";
         html += "<td>" + record.teamID + "</td>";
+        html += "<td>" + record.playerID + "</td>";
         html += "<td>" + record.firstName + "</td>";
         html += "<td>" + record.lastName + "</td>";
         html += "<td>" + record.hometown + "</td>";
