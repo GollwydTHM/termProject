@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <title>Project - Bowling Tournament</title>
         <link rel="stylesheet" href="mainStyleSheet.css">
+        
     </head>
     <body>
         <h1>Bowling Tournament</h1>
