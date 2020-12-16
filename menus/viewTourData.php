@@ -12,24 +12,19 @@
         </style>
     </head>
     <body>
+        <h1>List of Teams</h1>
+        
          
-        
-        
-        <?php
-        session_start();
-        $teamID = $_SESSION['teamID'];
-        echo '<h1>Statistics for the team ' . $teamID . '</h1>';
-        echo "<input id='teamID' value='" . $teamID . "' hidden>";
-        ?> 
         <div>
             <button id="btnView">Get Data</button>
         </div>
+        <div>
+            <button id="btnTopRank">View Top 16</button>
+        </div>
         <table>
             <tr>
-                <th>Match ID</th>
-                <th>Round ID</th>
-                <th>Match Group</th>
                 <th>Team ID</th>
+                <th>Team Name</th>
                 <th>Score</th>
                 <th>Ranking</th>
                 

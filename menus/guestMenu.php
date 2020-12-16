@@ -10,16 +10,14 @@
         <h1>Bowling Tournament</h1>
         <h2>Guest</h2>
         <form action="viewTeams.php">
-            <button type="submit" id="btnViewTeams" class="btnMenu btnMenuTop">View Teams</button>
+            <button type="submit" id="btnViewTeams" class="btnMenu btnMenuTop">View Teams/Players</button>
         </form>
         <form action="enterTeam.php">
             <button type="submit" id="btnStatistics" class="btnMenu">View Statistics</button>
         </form>
-
-        <form action="viewPlayers.php">
-            <button type="submit" id="btnViewPlayers" class="btnMenu">View Players</button>
+        <form action="viewTourData.php">
+            <button type="submit" class="btnMenu">View Tournament Data</button>
         </form>
-
         <form action="matchups.php">
             <button type="submit" class="btnMenu">Tournament Standings</button>
         </form>

@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+<?php
+require_once '../db/PlayerAccessor.php';
+require_once '../entity/Player.php';
+require_once '../utils/ChromePhp.php';
+?>
 <html> 
     <head>
         <meta charset="UTF-8">
@@ -13,10 +18,6 @@
     </head>
     <body>
         <h1>Players</h1>
-
-        <button id="btnView">View All Players </button>
-        
-
         <table>
             <tr>
                 <th>Player ID</th>
@@ -29,5 +30,11 @@
             <tbody id="recordRows">
             </tbody>
         </table>
+        <?php
+        //make teamID accessible to JS
+        session_start();
+        $teamID = $_POST["teamID"];
+        ?>
+        <input type="hidden" id="teamID" value="<?php echo $teamID; ?>">
     </body>
 </html>

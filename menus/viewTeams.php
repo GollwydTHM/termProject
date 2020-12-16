@@ -12,7 +12,9 @@
         </style>
     </head>
     <body>
-        <h1>Team Name</h1>
+        <h1>Bowling Tournament</h1>
+        <h2>Teams</h2>
+        <p id="notice">Click on a team for view player option.</p>
 
         <button id="btnView">View All Teams </button>       
 

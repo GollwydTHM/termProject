@@ -3,8 +3,9 @@ var addOrUpdate;
 window.onload = function () {
     
     document.querySelector("table").addEventListener("click", selectHandler);
-    document.querySelector("#btnView").addEventListener("click", getStatsByTeamID);
-    document.querySelector("#btnView").addEventListener("click", updateScore);
+    document.querySelector("#btnView").addEventListener("click", getStats); 
+    document.querySelector("#btnTopRank").addEventListener("click", getTopRank); 
+
 
 //    hideAddUpdate();
 };
@@ -23,10 +24,9 @@ function selectHandler(e) {
 
  
 
-function getStatsByTeamID() {
-    let teamID = document.querySelector("#teamID").value; 
+function getStats() { 
     //AJAX
-    let url = "../statsService/stats/" + teamID;
+    let url = "../statsService/stats/all";
     let xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
@@ -35,9 +35,8 @@ function getStatsByTeamID() {
             if (response.search("ERROR") >= 0) {
                 alert("Whoops!");
             } else {
-                buildTable(xmlhttp.responseText);
-                console.log(xmlhttp.responseText);
-                 
+                buildTable(xmlhttp.responseText); 
+                console.log(response);
                 clearSelections();
             }
         }
@@ -47,7 +46,26 @@ function getStatsByTeamID() {
     
      
 }
-
+function getTopRank(){
+    //AJAX
+    let url = "../statsService/stats/ranks";
+    let xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            let response = xmlhttp.responseText;
+            //console.log(response);
+            if (response.search("ERROR") >= 0) {
+                alert("Whoops!");
+            } else {
+                buildTable(xmlhttp.responseText); 
+                console.log(response);
+                clearSelections();
+            }
+        }
+    };
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+}
 
 function buildTable(text) {
     let temp = JSON.parse(text);
@@ -56,10 +74,8 @@ function buildTable(text) {
     for (let i = 0; i < temp.length; i++) {
         let record = temp[i];
         html += "<tr>";
-        html += "<td>" + record.matchID + "</td>";
-        html += "<td>" + record.roundID + "</td>";
-        html += "<td>" + record.matchgroup + "</td>";
         html += "<td>" + record.teamID + "</td>";
+        html += "<td>" + record.teamName + "</td>"; 
         html += "<td>" + record.score + "</td>";
         html += "<td>" + record.ranking + "</td>";
         html += "</tr>";
