@@ -13,15 +13,19 @@ class MatchupAccessor {
             . "WHERE matchID = :matchID";
     private $insertStmtStr = "INSERT INTO matchup "
             . "VALUES(:matchID, :roundID, :matchgroup, :teamID, :score, :ranking)";
-    private $updateStmtStr = "UPDATE matchup"
-            . "SET score = (SELECT SUM(g.score) from game g"
-            . "WHERE g.matchID = :matchID AND g.gameStateID = 'COMPLETE'"
+    private $updateStmtStr = "UPDATE matchup SET "
+            . "roundID = :roundID, matchgroup = :matchgroup, teamID = :teamID, score = :score, ranking = :ranking "
+            . "WHERE matchID = :matchID";
+    private $updateScoreByMatchIdStmtStr = "UPDATE matchup "
+            . "SET score = (SELECT SUM(g.score) from game g "
+            . "WHERE g.matchID = :matchID AND g.gameStateID = 'COMPLETE') "
             . "WHERE matchID = :matchID";
     private $conn = null;
     private $getByMatchIDStmt = null;
     private $deleteStmt = null;
     private $insertStmt = null;
     private $updateStmt = null;
+    private $updateScoreByMatchIdStmt = null;
 
     public function __construct() {
         $dbConn = new DBConnect();
@@ -49,6 +53,11 @@ class MatchupAccessor {
         $this->updateStmt = $this->conn->prepare($this->updateStmtStr);
         if (is_null($this->updateStmt)) {
             throw new Exception("bad statement: '" . $this->updateStmtStr . "'");
+        }
+        
+        $this->updateScoreByMatchIdStmt = $this->conn->prepare($this->updateScoreByMatchIdStmtStr);
+        if (is_null($this->updateScoreByMatchIdStmt)) {
+            throw new Exception("bad statement: '" . $this->updateScoreByMatchIdStmtStr . "'");
         }
     }
 
@@ -182,13 +191,36 @@ class MatchupAccessor {
         $ranking = $match->getRanking();
 
         try {
-            $this->insertStmt->bindParam(":matchID", $matchID); 
+            $this->updateStmt->bindParam(":matchID", $matchID);
+            $this->updateStmt->bindParam(":roundID", $roundID);
+            $this->updateStmt->bindParam(":matchgroup", $matchgroup);
+            $this->updateStmt->bindParam(":teamID", $teamID);
+            $this->updateStmt->bindParam(":score", $score);
+            $this->updateStmt->bindParam(":ranking", $ranking);
             $success = $this->updateStmt->execute(); //not what you think
         } catch (PDOException $e) {
             $success = false;
         } finally {
             if (!is_null($this->updateStmt)) {
                 $this->updateStmt->closeCursor();
+            }
+            return $success;
+        }
+    }
+    
+    public function updateScore($matchID) {
+        $success = false;
+
+        try {
+            $this->updateScoreByMatchIdStmt->bindParam(":matchID", $matchID);
+            $success = $this->updateScoreByMatchIdStmt->execute(); //not what you think
+        } catch (PDOException $e) {
+            ChromePhp::log("catahccatahccatahccatahccatahccatahc");
+
+            $success = false;
+        } finally {
+            if (!is_null($this->updateScoreByMatchIdStmt)) {
+                $this->updateScoreByMatchIdStmt->closeCursor();
             }
             return $success;
         }

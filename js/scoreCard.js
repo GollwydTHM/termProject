@@ -263,6 +263,7 @@ function CheckComplete() {
             document.querySelector("#frameThrowDisplay").innerHTML =
                     "Game Complete!";
             gameStateID = "COMPLETE";
+            updateMatchup();
         } else {
             UndoLast();
         }
@@ -323,4 +324,26 @@ function UpdateGame(score) {
     };
     xmlhttp.open("PUT", url, true);
     xmlhttp.send(JSON.stringify(obj));
+}
+
+function updateMatchup(){
+    let matchID = Number(document.querySelector("#matchID").value);
+
+    let url = "matchupService/matchup/ScoreMatch/" + matchID;
+
+    let xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            let resp = xmlhttp.responseText;
+            if (resp.search("ERROR") >= 0 || resp != "1") {
+                console.log(resp);
+                alert("Error occered when PUT");
+            } else {
+                //alert("Updated!");
+            }
+        }
+    };
+    xmlhttp.open("PUT", url, true);
+    xmlhttp.send();
+
 }
