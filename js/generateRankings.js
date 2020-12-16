@@ -9,54 +9,67 @@ function generateRankings() {
     let allRows = document.querySelectorAll("tr");
     for (let i = 1; i < allRows.length; i++) {
         let currentScore = allRows[i].querySelectorAll("td")[4].innerHTML;
+        let rank = allRows[i].querySelectorAll("td")[5].innerHTML;
         if (currentScore === "null") {
             alert("null score detected. Round cannot be ranked");
             break;
+        } else if (rank !== "null") {
+            alert("null score detected. Round cannot be ranked");
+            break;
         } else {
-            
+
             let currentMatchID = allRows[i].querySelectorAll("td")[0].innerHTML;
             let currentRoundID = allRows[i].querySelectorAll("td")[1].innerHTML;
             let currentMatchGroup = allRows[i].querySelectorAll("td")[2].innerHTML;
             let currentTeam = allRows[i].querySelectorAll("td")[3].innerHTML;
-            
+
             let rank = null;
             let temp = [];
-            temp = [currentMatchID, currentRoundID, currentMatchGroup, currentTeam, currentScore,rank];
+            temp = [currentMatchID, currentRoundID, currentMatchGroup, currentTeam, currentScore, rank];
             output[i - 1] = temp;
         }
     }
-    //ARRAY SORT GOES HERE
-    for (var i = 0; i < output.length; i++) {
-        output[i][5] = i+1;
-    }
+    //if the if/ifelse are triggered, the output is empty. if else if triggered move ahead
+    if (output.length > 0) {
+        //this sorts the array
+        output.sort(function (a, b) {
+            return b[4] - a[4];
+        });
+        console.log(output);
+        //this assigns rank based on the sort
+        for (var i = 0; i < output.length; i++) {
+            output[i][5] = i + 1;
+        }
 
-    console.log(output);
-    for (var i = 0; i < output.length; i++) {
-        let obj = {
-            "matchID": output[i][0],
-            "roundID":output[i][1],
-            "matchgroup":output[i][2],
-            "teamID": output[i][3],
-            "score": output[i][4],
-            "ranking":output[i][5]
-        };
-        let url = "../matchupService/matchup/" + output[i][0];
-        let xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+        for (var i = 0; i < output.length; i++) {
+            let obj = {
+                "matchID": output[i][0],
+                "roundID": output[i][1],
+                "matchgroup": output[i][2],
+                "teamID": output[i][3],
+                "score": output[i][4],
+                "ranking": output[i][5]
+            };
+            let url = "../matchupService/matchup/" + output[i][0];
+            let xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
 
-                let response = xmlhttp.responseText;
-                console.log(response);
-                if (response.search("ERROR") >= 0) {
-                    alert("Whoops!");
-                } else {
-                    alert("Round ranked! Onto the next");
+                    let response = xmlhttp.responseText;
+                    console.log(response);
+                    if (response.search("ERROR") >= 0) {
+                        alert("Whoops!");
+                    } else {
+                        //maybe rebuild the table? deal with that later
+                    }
                 }
-            }
-        };
-        xmlhttp.open("PUT", url, true);
-        xmlhttp.send(JSON.stringify(obj));
+            };
+            xmlhttp.open("PUT", url, true);
+            xmlhttp.send(JSON.stringify(obj));
+        }
+        alert("Round ranked! Onto the next");
     }
+
 }
 //NOT MY/OUR CODE REMOVE LATER
 function shuffle(array) {
@@ -88,7 +101,7 @@ function generateList() {
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
 
             let response = xmlhttp.responseText;
-            console.log(response);
+            //console.log(response);
             if (response.search("ERROR") >= 0) {
                 alert("Whoops!");
             } else {
