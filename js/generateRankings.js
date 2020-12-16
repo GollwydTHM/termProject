@@ -36,7 +36,7 @@ function generateRankings() {
         }
     }
     //if the if/ifelse are triggered, the output is empty. if else if triggered move ahead
-    if (output.length > 0) {
+    if (noNull) {
         //this sorts the array
         output.sort(function (a, b) {
             return b[4] - a[4];
@@ -132,11 +132,11 @@ function populateMatchSelect() {
     if (idNum === "1") {
         total = 8;
     } else if (idNum === "2") {
-        total = 4
+        total = 4;
     } else if (idNum === "3") {
-        total = 2
+        total = 2;
     } else {
-        total = 1
+        total = 1;
     }
     let number = 0;
     for (var i = 0; i < total; i++) {
