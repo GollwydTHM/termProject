@@ -25,7 +25,13 @@
                 <option value="RAND3">RAND3</option>
                 <option value="RAND4">RAND4</option>
                 <option value="FINAL">FINAL</option>
-            </select>           
+            </select> 
+            Select match group: 
+            <select id="matchGroup">
+                <span id="optionList">
+                    <option value="1">1</option>
+                </span>                
+            </select>
         </form>
         <button id="btnView" type="submit">View Round Status</button>
         <button id="btnRank" type="submit">Generate Rankings</button>

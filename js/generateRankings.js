@@ -2,6 +2,8 @@ window.onload = function () {
     // btn event handlers
     document.querySelector("#btnView").addEventListener("click", generateList);
     document.querySelector("#btnRank").addEventListener("click", generateRankings);
+    
+    document.querySelector("#rounds").addEventListener("change", populateMatchSelect);
 };
 
 function generateRankings() {
@@ -75,7 +77,7 @@ function generateRankings() {
 
 function generateList() {
     let roundID = document.querySelector("#rounds").value;
-
+    
     //AJAX
     let url = "../matchupService/matchup/" + roundID;
     let xmlhttp = new XMLHttpRequest();
@@ -113,4 +115,29 @@ function buildTable(text) {
         html += "</tr>";
     }
     theTable.innerHTML = html;
+}
+
+function populateMatchSelect(){
+    let roundID = document.querySelector("#rounds").value;
+    let idNum = roundID.charAt(4);
+    let total = 0;
+    let output = "";
+    if (idNum === "1") {
+        total = 8;
+    }else if(idNum === "2"){
+        total = 4
+    }
+    else if(idNum === "3"){
+        total = 2
+    }
+    else if(idNum === "4"){
+        total = 1
+    }
+    let number = 0;
+    for (var i = 0; i < total; i++) {
+        number = i + 1;
+        output += "<option value='"+number+"'>"+number+"</option>";
+    }
+    document.getElementById('optionList').innerHTML = output;
+    console.log(output);
 }
