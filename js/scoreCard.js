@@ -15,7 +15,12 @@ window.onload = function () {
     //EVENT HANDLERS
     document.querySelector("#btnAdd").addEventListener("click", AddToBalls);
     document.querySelector("#btnUndo").addEventListener("click", UndoLastMessage);
+    document.querySelector("#btnBack").addEventListener("click", PrevPage);
 };
+
+function PrevPage() {
+    window.history.back();
+}
 
 function InitializeGame() {
     balls = document.querySelector("#gameBalls").value.replace(/\s+/g, "");
