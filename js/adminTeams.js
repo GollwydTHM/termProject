@@ -1,15 +1,16 @@
 var addOrUpdate;
+count = 50;
 
 window.onload = function () {
     // btn event handlers
-    
+
     document.querySelector("#btnGet").addEventListener("click", getAll);
     document.querySelector("#btnAdd").addEventListener("click", addTeam);
     document.querySelector("#btnUpdate").addEventListener("click", updateTeam);
     document.querySelector("#btnDelete").addEventListener("click", deleteTeam);
     document.querySelector("#btnOK").addEventListener("click", processForm);
     document.querySelector("#btnCancel").addEventListener("click", hideUpdatePanel);
-      
+
 
     // event handler for table selection
     document.querySelector("table").addEventListener("click", selectHandler);
@@ -34,7 +35,7 @@ function selectHandler(e) {
 function processForm() {
     console.log("processform start");
     //variable declarations for validation
-    
+
     let teamID = Number(document.querySelector("#inputID").value);
     let teamName = document.querySelector("#inputTeamName").value;
     let earnings = Number(document.querySelector("#inputEarnings").value);
@@ -44,8 +45,8 @@ function processForm() {
         "teamName": teamName,
         "earnings": earnings
     };
-    
-       
+
+
     //determine the directory for AJAX call
     let url = "../teamService/teams/" + teamID;
     //determine which method do we use for AJAX call?
@@ -61,7 +62,7 @@ function processForm() {
                 alert("Error occered when " + method);
             } else {
                 alert("Updated!");
-                getAll(); 
+                getAll();
             }
         }
     };
@@ -73,29 +74,37 @@ function processForm() {
 
 function deleteTeam() {
     var teamID = document.querySelector(".highlighted").querySelector("td").innerHTML;
-    console.log(teamID);
-    
-     
 
-    //AJAX
-    let url = "../teamService/teams/" + teamID;
-    let xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-            let resp = xmlhttp.responseText;
-            console.log(resp);
-            if (resp.search("ERROR") >= 0 || resp != "1") {
-                alert("Team could not be deleted.");
-            } else {
-                alert("The team has been DELETED from the database.");
-                getAll();
+    CheckPlayers(teamID);
+
+    if (count == 0){
+        //AJAX
+        let url = "../teamService/teams/" + teamID;
+        let xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                let resp = xmlhttp.responseText;
+                console.log(resp);
+                if (resp.search("ERROR") >= 0 || resp != "1") {
+                    alert("Team could not be deleted.");
+                } else {
+                    alert("The team has been DELETED from the database.");
+                    getAll();
+                }
             }
-        }
-    };
-    xmlhttp.open("DELETE", url, true);
-    xmlhttp.send();
+        };
+        xmlhttp.open("DELETE", url, true);
+        xmlhttp.send();
+    }
+    else
+    {
+        alert("Could not delete, team has to have no players assigned to it!")
+
+    }
 
 }
+
+
 function addTeam() {
     // Show panel, panel handler takes care of the rest
     addOrUpdate = "add";
@@ -114,7 +123,7 @@ function resetUpdatePanel() {
     document.querySelector("#inputTeamName").value = "";
     document.querySelector("#inputEarnings").value = 0;
 }
- 
+
 
 function clearAddUpdate() {
     // obtain todays date for releaseDate field as placeholder.
@@ -133,11 +142,29 @@ function populateUpdatePanelWithSelectedItem() {
     document.querySelector("#inputID").value = tds[0].innerHTML;
     document.querySelector("#inputTeamName").value = tds[1].innerHTML;
     if (tds[2].innerHTML !== "null") {
-        document.querySelector("#inputEarnings").value = tds[2].innerHTML; 
-    }
-    else{
+        document.querySelector("#inputEarnings").value = tds[2].innerHTML;
+    } else {
         document.querySelector("#inputEarnings").value = 0;
     }
+}
+
+function CheckPlayers(teamiD) {
+
+    //AJAX
+    let url = "../playerService/players/teamID/" + teamiD;
+    let xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            let response = xmlhttp.responseText;
+            if (response.search("ERROR") >= 0) {
+                alert("Check Player Failed");
+            } else {
+                count = response;
+            }
+        }
+    };
+    xmlhttp.open("GET", url, false);
+    xmlhttp.send();
 }
 function getAll() {
     //hide addUpdate incase it is opened
@@ -162,8 +189,8 @@ function getAll() {
     };
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
-    
-    
+
+
     document.querySelector("#btnUpdate").setAttribute("disabled", "disabled");
     document.querySelector("#btnDelete").setAttribute("disabled", "disabled");
 }

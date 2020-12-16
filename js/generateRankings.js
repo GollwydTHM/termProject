@@ -83,6 +83,7 @@ function generateList() {
     let roundID = document.querySelector("#rounds").value;
     let matchGroup = document.querySelector("#matchGroup").value;
     console.log(matchGroup);
+    updateMatchup();
     //AJAX
     let url = "../matchupService/matchup/" + roundID + "/" + matchGroup;
     let xmlhttp = new XMLHttpRequest();
@@ -101,8 +102,6 @@ function generateList() {
     };
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
-    
-    updateMatchup();
 }
 
 function buildTable(text) {
@@ -164,7 +163,7 @@ function updateMatchup() {
                 }
             }
         };
-        xmlhttp.open("PUT", url, true);
+        xmlhttp.open("PUT", url, false);
         xmlhttp.send();
     }
 

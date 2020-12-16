@@ -2,13 +2,18 @@
 
 require_once 'dbconnect.php';
 require '../entity/Matchup.php';
+require '../entity/Stats.php';
+
 require_once '../utils/ChromePhp.php';
 
 class StatsAccessor {
 
-    private $getByMatchIDStmtStr = "SELECT * "
-            . "FROM matchup "
-            . "WHERE teamID = :teamID";
+    private $getTeams = "SELECT t.teamID, t.teamName, m.score, m.ranking " 
+            . "FROM team t, matchup m"
+            . "WHERE t.teamID = m.teamID";
+    private $getTopRankStmt = "SELECT t.teamID, t.teamName, m.score, m.ranking FROM team t, matchup m
+            WHERE t.teamID = m.teamID AND ranking <= 16
+            ORDER BY ranking;";
     private $updateScoreByCompleteGameState = "";
     private $conn = null;
     private $getByMatchIDStmt = null;
@@ -21,10 +26,13 @@ class StatsAccessor {
         if (is_null($this->conn)) {
             throw new Exception("no connection");
         }
-
-        $this->getByMatchIDStmt = $this->conn->prepare($this->getByMatchIDStmtStr);
-        if (is_null($this->getByMatchIDStmt)) {
-            throw new Exception("bad statement: '" . $this->getAllStmtStr . "'");
+        $this->getTopRankStmt = $this->conn->prepare($this->getTopRankStmt);
+        if (is_null($this->getTopRankStmt)){
+            throw new Exception("bad statement: '" . $this->getTopRankStmt . "'");
+        }
+        $this->getTeams = $this->conn->prepare($this->getTeams);
+        if (is_null($this->getTeams)) {
+            throw new Exception("bad statement: '" . $this->getTeams . "'");
         }
         $this->updateStmt = $this->conn->prepare($this->updateScoreByCompleteGameState);
         if (is_null($this->updateStmt)) {
@@ -40,18 +48,14 @@ class StatsAccessor {
             $stmt->execute();
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            foreach ($results as $res) {
-                $matchID = $res['matchID'];
-                $roundID = $res['roundID'];
-                $matchgroup = $res['matchgroup'];
+            foreach ($results as $res) { 
                 $teamID = $res['teamID'];
+                $teamName = $res['teamName'];
                 $score = $res['score'];
                 $ranking = $res['ranking'];
-                $obj = new Matchup(
-                        $matchID,
-                        $roundID,
-                        $matchgroup,
+                $obj = new Stats( 
                         $teamID,
+                        $teamName,
                         $score,
                         $ranking);
                 array_push($result, $obj);
@@ -67,10 +71,16 @@ class StatsAccessor {
         return $result;
     }
 
-    public function getMatchup($teamID) {
-        return $this->getMatchupByQuery("SELECT * FROM matchup WHERE teamID = $teamID");
-    }
+public function getMatchup() {
+    return $this->getMatchupByQuery("SELECT t.teamID, t.teamName, m.score, m.ranking FROM team t, matchup m
+        WHERE t.teamID = m.teamID");
+}
 
+public function getTopRank(){
+    return $this->getMatchupByQuery("SELECT t.teamID, t.teamName, m.score, m.ranking FROM team t, matchup m
+        WHERE t.teamID = m.teamID AND ranking <= 16
+        ORDER BY ranking;");
+}
 public function updateScore($match) {
         $success = false;
 

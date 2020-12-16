@@ -353,6 +353,6 @@ function updateMatchup() {
             }
         }
     };
-    xmlhttp.open("PUT", url, true);
+    xmlhttp.open("PUT", url, false);
     xmlhttp.send();
 }

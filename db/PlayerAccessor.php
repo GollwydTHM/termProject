@@ -9,6 +9,9 @@ class PlayerAccessor {
     private $getByPlayerIDStmtStr = "SELECT * "
             . "FROM player "
             . "WHERE playerID = :playerID";
+    private $getByPlayerCountByTeamIDStmtStr = "SELECT COUNT(*) "
+            . "FROM player "
+            . "WHERE teamID = :teamID";
     private $deleteStmtStr = "DELETE FROM player "
             . "WHERE playerID = :playerID";
     private $insertStmtStr = "INSERT INTO player "
@@ -18,6 +21,7 @@ class PlayerAccessor {
             . "WHERE playerID = :playerID";
     private $conn = null;
     private $getByPlayerIDStmt = null;
+    private $getByPlayerCountByTeamIDStmt = null;
     private $deleteStmt = null;
     private $insertStmt = null;
     private $updateStmt = null;
@@ -48,6 +52,11 @@ class PlayerAccessor {
         $this->updateStmt = $this->conn->prepare($this->updateStmtStr);
         if (is_null($this->updateStmt)) {
             throw new Exception("bad statement: '" . $this->updateStmtStr . "'");
+        }
+
+        $this->getByPlayerCountByTeamIDStmt = $this->conn->prepare($this->getByPlayerCountByTeamIDStmtStr);
+        if (is_null($this->getByPlayerCountByTeamIDStmt)) {
+            throw new Exception("bad statement: '" . $this->getByPlayerCountByTeamIDStmtStr . "'");
         }
     }
 
@@ -120,6 +129,24 @@ class PlayerAccessor {
         }
 
         return $result;
+    }
+
+    public function getPlayersCountByTeam($teamID) {    
+        try {
+            $this->getByPlayerCountByTeamIDStmt->bindParam(":teamID", $teamID);
+            $this->getByPlayerCountByTeamIDStmt->execute();
+            $row = $this->getByPlayerCountByTeamIDStmt->fetch(PDO::FETCH_ASSOC);
+            $result = $row['COUNT(*)'];
+
+        } catch (PDOException $e) {
+            $result = null;
+            ChromePhp::log($e);
+        } finally {
+            if (!is_null($this->getByPlayerCountByTeamIDStmt)) {
+                $this->getByPlayerCountByTeamIDStmt->closeCursor();
+            }
+            return $result;
+        }
     }
 
     public function deletePlayer($player) {

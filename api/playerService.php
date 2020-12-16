@@ -19,7 +19,19 @@ else if ($method === "PUT") {
 }
 
 function doGet() {
-    if (!filter_has_var(INPUT_GET, 'playerID')) {
+    if (filter_has_var(INPUT_GET, 'teamID')) {
+        $teamID = filter_input(INPUT_GET, 'teamID');
+        
+        try {
+            $t = new PlayerAccessor();
+            $results = $t->getPlayersCountByTeam($teamID);
+            $results = json_encode($results, JSON_NUMERIC_CHECK);
+            echo $results;
+        }
+        catch (Exception $e) {
+            echo "ERROR " . $e->getMessage();
+        }
+    }else if (!filter_has_var(INPUT_GET, 'playerID')) {
         try {
             $t = new PlayerAccessor();
             $results = $t->getPlayers();
@@ -33,6 +45,8 @@ function doGet() {
     else {
         ChromePhp::log("You are requesting the player " . filter_input(INPUT_GET, 'playerID'));
     }
+    
+    
 }
 
 function doDelete() {
