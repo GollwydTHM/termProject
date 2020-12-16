@@ -3,6 +3,7 @@ window.onload = function () {
     document.querySelector("#btnView").addEventListener("click", generateList);
     document.querySelector("#btnMatch").addEventListener("click", generateMatchups);
 
+
 };
 
 function buildTable(text) {
@@ -53,16 +54,55 @@ function generateMatchups() {
                 top16.sort(function (a, b) {
                     return a[1] - b[1];
                 });
-                for (var i = 0; i < 8; i++) {
-                    console.log(i);
-                    
-                    
-                }
 
-                //console.log(top16);
-//                for (var i = 0; i < 8; i++) {
+
+                console.log(top16);
+                let allRows = document.querySelectorAll("tr");
+
+                console.log(allRows);
+                let matchGroup;
+                for (var i = 0; i < 8; i++) {
+                    matchGroup = i + 1;
+                    let matchID;
+                    for (var i3 = 1; i3 < allRows.length; i3++) {
+                        let tableGroup = allRows[i3].querySelectorAll("td")[2].innerHTML;
+                        if (tableGroup == matchGroup) {
+                            matchID = allRows[i3].querySelectorAll("td")[0].innerHTML;
+                            console.log(matchID);
+                            let teamID;
+                            if (i3 % 2 === 0) {
+                                teamID = top16[top16.length - 1];
+                            } else {
+                                teamID = top16[0];
+                            }
+
+                            let url = "../matchupService/matchup/" + matchID + "/" + teamID;
+                            let xmlhttp = new XMLHttpRequest();
+                            xmlhttp.onreadystatechange = function () {
+                                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+
+                                    let response = xmlhttp.responseText;
+                                    console.log(response);
+                                    if (response.search("ERROR") >= 0) {
+                                        alert("Whoops!");
+                                    } else {
+                                        generateList();
+                                    }
+                                }
+                            };
+                            xmlhttp.open("PUT", url, true);
+                            xmlhttp.send();
+                        }
+                        top16.splice(top16.length - 1);
+                        top16.shift();
+                    }
+
+                    //AJAX
+
+
+//                    let last = top16.length - 1;
 //                    
-//                }
+                }
             }
         }
     };
@@ -72,6 +112,7 @@ function generateMatchups() {
 
 function generateList() {
     let roundID = document.querySelector("#rounds").value;
+
     //AJAX
     let url = "../matchupService/matchup/" + roundID;
     let xmlhttp = new XMLHttpRequest();

@@ -26,6 +26,8 @@
                 <option value="RAND4">RAND4</option>
                 <option value="FINAL">FINAL</option>
             </select> 
+
+            
         </form>
         <button id="btnView" type="submit">View Rankings</button>
         <button id="btnMatch" type="submit">Generate Matchups</button>

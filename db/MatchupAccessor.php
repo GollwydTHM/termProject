@@ -20,12 +20,17 @@ class MatchupAccessor {
             . "SET score = (SELECT SUM(g.score) from game g "
             . "WHERE g.matchID = :matchID AND g.gameStateID = 'COMPLETE') "
             . "WHERE matchID = :matchID";
+    private $updateTeamIDByMatchStr = "UPDATE matchup "
+            . "SET teamID = :teamID "
+            . "WHERE matchID = :matchID";
     private $conn = null;
     private $getByMatchIDStmt = null;
     private $deleteStmt = null;
     private $insertStmt = null;
     private $updateStmt = null;
     private $updateScoreByMatchIdStmt = null;
+    private $updateTeamIDByMatchStmt = null;
+    
 
     public function __construct() {
         $dbConn = new DBConnect();
@@ -58,6 +63,10 @@ class MatchupAccessor {
         $this->updateScoreByMatchIdStmt = $this->conn->prepare($this->updateScoreByMatchIdStmtStr);
         if (is_null($this->updateScoreByMatchIdStmt)) {
             throw new Exception("bad statement: '" . $this->updateScoreByMatchIdStmtStr . "'");
+        }
+        $this->updateTeamIDByMatchStmt = $this->conn->prepare($this->updateTeamIDByMatchStr);
+        if (is_null($this->updateTeamIDByMatchStmt)) {
+            throw new Exception("bad statement: '" . $this->updateTeamIDByMatchStr . "'");
         }
     }
 
@@ -226,6 +235,22 @@ class MatchupAccessor {
         } catch (PDOException $e) {
             ChromePhp::log("catahccatahccatahccatahccatahccatahc");
 
+            $success = false;
+        } finally {
+            if (!is_null($this->updateScoreByMatchIdStmt)) {
+                $this->updateScoreByMatchIdStmt->closeCursor();
+            }
+            return $success;
+        }
+    }
+    
+    public function updateTeam($teamID,$matchID){
+        $success = false;
+        try {
+            $this->updateTeamIDByMatchStmt->bindParam(":matchID", $matchID);
+            $this->updateTeamIDByMatchStmt->bindParam(":teamID", $teamID);
+            $success = $this->updateScoreByMatchIdStmt->execute(); //not what you think
+        } catch (PDOException $e) {
             $success = false;
         } finally {
             if (!is_null($this->updateScoreByMatchIdStmt)) {

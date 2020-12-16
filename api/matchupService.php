@@ -85,6 +85,13 @@ function doPost() {
 }
 
 function doPut() {
+    if (filter_has_var(INPUT_GET, 'teamID')&& filter_has_var(INPUT_GET, 'matchID')) {
+        $teamID = filter_input(INPUT_GET, "teamID");
+        $matchID = filter_input(INPUT_GET, "matchID");
+        $t = new MatchupAccessor();
+        $success = $t->updateTeam($teamID,$matchID);
+        echo $success;
+    }
     if (filter_has_var(INPUT_GET, 'ScoreMatchID')) {
         $ScoreMatchID = filter_input(INPUT_GET, "ScoreMatchID");
         //ChromePhp::log($ScoreMatchID);
@@ -93,7 +100,7 @@ function doPut() {
         $success = $t->updateScore($ScoreMatchID);
         echo $success;
     }
-
+    
     if (filter_has_var(INPUT_GET, 'matchID')) {
         $body = file_get_contents('php://input');
         $contents = json_decode($body, true);
