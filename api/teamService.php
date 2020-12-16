@@ -19,7 +19,7 @@ else if ($method === "PUT") {
 }
 
 function doGet() {
-    if (!filter_has_var(INPUT_GET, 'title')) {
+    if (!filter_has_var(INPUT_GET, 'teamID')) {
         try {
             $t = new TeamAccessor();
             $results = $t->getTeams();
