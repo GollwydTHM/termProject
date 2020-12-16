@@ -10,7 +10,7 @@
         <h1>Bowling Tournament</h1>
         <h2>Guest</h2>
         <form action="viewTeams.php">
-            <button type="submit" id="btnViewTeams" class="btnMenu btnMenuTop">View Teams</button>
+            <button type="submit" id="btnViewTeams" class="btnMenu btnMenuTop">View Teams/Players</button>
         </form>
         <form action="enterTeam.php">
             <button type="submit" id="btnStatistics" class="btnMenu">View Statistics</button>
