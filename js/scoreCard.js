@@ -295,7 +295,7 @@ function UpdateGame(score) {
         document.querySelector("#btnAdd").disabled = true;
         document.querySelector("#btnUndo").disabled = true;
     }
-    
+
     //update gameState in GUI
     document.querySelector("#subtitleGameState").innerHTML = gameStateID;
 
