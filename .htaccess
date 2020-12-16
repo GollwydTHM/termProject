@@ -15,5 +15,6 @@ RewriteRule ^matchupService/matchup/(\S+)/(\S+)$ api/matchupService.php?roundID=
 RewriteRule ^playerService/players$ api/playerService.php [NC]
 RewriteRule ^playerService/players/([0-2][0-9][0-9]|[0-9][0-9]|[0-9])$ api/playerService.php?playerID=$1 [NC]
 RewriteRule ^playerService/players/teamID/([0-9][0-9]|[0-9])$ api/playerService.php?teamID=$1 [NC]
-RewriteRule ^statsService/stats$ api/statsService.php [NC]
+RewriteRule ^statsService/stats/(all)$ api/statsService.php?all=$1 [NC]
 RewriteRule ^statsService/stats/([0-9][0-9]|[0-9])$ api/statsService.php?teamID=$1 [NC]
+RewriteRule ^statsService/stats/(ranks)$ api/statsService.php?ranks=$1 [NC]

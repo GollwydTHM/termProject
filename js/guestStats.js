@@ -4,6 +4,8 @@ window.onload = function () {
     
     document.querySelector("table").addEventListener("click", selectHandler);
     document.querySelector("#btnView").addEventListener("click", getStats); 
+    document.querySelector("#btnTopRank").addEventListener("click", getTopRank); 
+
 
 //    hideAddUpdate();
 };
@@ -24,7 +26,7 @@ function selectHandler(e) {
 
 function getStats() { 
     //AJAX
-    let url = "../statsService/stats";
+    let url = "../statsService/stats/all";
     let xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
@@ -44,7 +46,26 @@ function getStats() {
     
      
 }
-
+function getTopRank(){
+    //AJAX
+    let url = "../statsService/stats/ranks";
+    let xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            let response = xmlhttp.responseText;
+            //console.log(response);
+            if (response.search("ERROR") >= 0) {
+                alert("Whoops!");
+            } else {
+                buildTable(xmlhttp.responseText); 
+                console.log(response);
+                clearSelections();
+            }
+        }
+    };
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+}
 
 function buildTable(text) {
     let temp = JSON.parse(text);

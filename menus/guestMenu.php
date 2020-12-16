@@ -19,7 +19,9 @@
         <form action="viewPlayers.php">
             <button type="submit" id="btnViewPlayers" class="btnMenu">View Players</button>
         </form>
-
+        <form action="viewTourData.php">
+            <button type="submit" class="btnMenu">View Tournament Data</button>
+        </form>
         <form action="matchups.php">
             <button type="submit" class="btnMenu">Tournament Standings</button>
         </form>

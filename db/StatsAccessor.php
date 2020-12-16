@@ -11,6 +11,9 @@ class StatsAccessor {
     private $getTeams = "SELECT t.teamID, t.teamName, m.score, m.ranking " 
             . "FROM team t, matchup m"
             . "WHERE t.teamID = m.teamID";
+    private $getTopRankStmt = "SELECT t.teamID, t.teamName, m.score, m.ranking FROM team t, matchup m
+            WHERE t.teamID = m.teamID AND ranking <= 16
+            ORDER BY ranking;";
     private $updateScoreByCompleteGameState = "";
     private $conn = null;
     private $getByMatchIDStmt = null;
@@ -23,7 +26,10 @@ class StatsAccessor {
         if (is_null($this->conn)) {
             throw new Exception("no connection");
         }
-
+        $this->getTopRankStmt = $this->conn->prepare($this->getTopRankStmt);
+        if (is_null($this->getTopRankStmt)){
+            throw new Exception("bad statement: '" . $this->getTopRankStmt . "'");
+        }
         $this->getTeams = $this->conn->prepare($this->getTeams);
         if (is_null($this->getTeams)) {
             throw new Exception("bad statement: '" . $this->getTeams . "'");
@@ -65,11 +71,16 @@ class StatsAccessor {
         return $result;
     }
 
-    public function getMatchup() {
-        return $this->getMatchupByQuery("SELECT t.teamID, t.teamName, m.score, m.ranking FROM team t, matchup m
-            WHERE t.teamID = m.teamID;");
-    }
+public function getMatchup() {
+    return $this->getMatchupByQuery("SELECT t.teamID, t.teamName, m.score, m.ranking FROM team t, matchup m
+        WHERE t.teamID = m.teamID");
+}
 
+public function getTopRank(){
+    return $this->getMatchupByQuery("SELECT t.teamID, t.teamName, m.score, m.ranking FROM team t, matchup m
+        WHERE t.teamID = m.teamID AND ranking <= 16
+        ORDER BY ranking;");
+}
 public function updateScore($match) {
         $success = false;
 
