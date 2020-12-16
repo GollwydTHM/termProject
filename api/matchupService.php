@@ -87,7 +87,7 @@ function doPost() {
 function doPut() {
     if (filter_has_var(INPUT_GET, 'ScoreMatchID')) {
         $ScoreMatchID = filter_input(INPUT_GET, "ScoreMatchID");
-        ChromePhp::log($ScoreMatchID);
+        //ChromePhp::log($ScoreMatchID);
         
         $t = new MatchupAccessor();
         $success = $t->updateScore($ScoreMatchID);

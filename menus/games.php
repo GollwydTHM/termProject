@@ -6,13 +6,6 @@
         <script src="../js/games.js"></script>
         <link rel="stylesheet" href="../mainStyleSheet.css">
         <style>
-            h1 {
-                margin-bottom: 0px;
-            }
-            #notice {
-                font-style: italic;
-                margin-top: 0px;
-            }
             button {
                 display: inline-block;
                 margin-bottom: 10px;
@@ -40,7 +33,8 @@
         </style>
     </head>
     <body>
-        <h1>Tournament Game List</h1>
+        <h1>Bowling Tournament</h1>
+        <h2>Scorekeeper > Games to Score</h2>
         <p id="notice">Click on a game for scoring option.</p>
 
         <button id="btnView">View Games</button>

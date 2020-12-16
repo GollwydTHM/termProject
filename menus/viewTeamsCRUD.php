@@ -12,7 +12,8 @@
         </style>
     </head>
     <body>
-        <h1>Team Name</h1>
+        <h1>Bowling Tournament</h1>
+        <h2>Admin Menu > Teams</h2>
         <button id="btnGet">Get Data</button>
         <button id="btnAdd">Add Team</button>
         <button id="btnUpdate" disabled>Update Team</button>

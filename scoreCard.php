@@ -15,6 +15,10 @@ require 'utils/chromePhp.php';
             .subtitle {
                 margin-top: 0px;
             }
+            .lightWeight {
+                font-weight: 300;
+                color: #666666;
+            }
             table, tr, th, td {
                 border: 1px solid black;
                 border-collapse: collapse;
@@ -87,8 +91,10 @@ require 'utils/chromePhp.php';
         <input type="hidden" id="gameStateID" value="<?php echo $gameStateID ?>">
         <input type="hidden" id="gameBalls" value="<?php echo $gameBalls ?>">
 
-        <h1 class="title">Game ID: <?php echo $gameID; ?></h1>
-        <h2 class="subtitle">Status: "<?php echo $gameStateID; ?>"</h2>
+        <h1 class="title">Bowling Tournament</h1>
+        <h2 class="subtitle">
+            Game ID: <span class="lightWeight"><?php echo $gameID; ?></span> 
+            Status: <span id="subtitleGameState" class="lightWeight"><?php echo $gameStateID; ?></span></h2>
         <span id="frameThrowDisplay"></span> <input id="ballValue" type="text" maxlength="1">
         <button type="submit" id="btnAdd">Enter Value</button><span id="inputErr" class="hidden"></span>
         <table>

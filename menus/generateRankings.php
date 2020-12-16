@@ -12,7 +12,8 @@
         </style>
     </head>
     <body>
-        <h1>Generate Rankings</h1>
+        <h1>Bowling Tournament</h1>
+        <h2>Admin Menu > Generate Rankings</h2>
         <form>
             <select id="rounds" name="rounds">                
                 <option value="QUAL" selected="selected">QUAL</option>

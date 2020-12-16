@@ -294,13 +294,16 @@ function UpdateGame(score) {
         document.querySelector("#btnAdd").disabled = true;
         document.querySelector("#btnUndo").disabled = true;
     }
+    
+    //update gameState in GUI
+    document.querySelector("#subtitleGameState").innerHTML = gameStateID;
 
-    console.log("gameID--->" + gameID + " is a " + typeof gameID);
-    console.log("matchID--->" + matchID + " is a " + typeof matchID);
-    console.log("gameNumber--->" + gameNumber + " is a " + typeof gameNumber);
-    console.log("gameStateID--->" + gameStateID + " is a " + typeof gameStateID);
-    console.log("score--->" + score + " is a " + typeof score);
-    console.log("balls--->" + balls + " is a " + typeof balls);
+//    console.log("gameID--->" + gameID + " is a " + typeof gameID);
+//    console.log("matchID--->" + matchID + " is a " + typeof matchID);
+//    console.log("gameNumber--->" + gameNumber + " is a " + typeof gameNumber);
+//    console.log("gameStateID--->" + gameStateID + " is a " + typeof gameStateID);
+//    console.log("score--->" + score + " is a " + typeof score);
+//    console.log("balls--->" + balls + " is a " + typeof balls);
 
     //validation successful, create team object
     let obj = {

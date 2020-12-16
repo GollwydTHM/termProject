@@ -4,6 +4,12 @@ h1 {
 
 h2 {
     margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#notice {
+    font-style: italic;
+    margin-top: 0px;
 }
 
 table, td, th {
@@ -19,6 +25,15 @@ th {
     background-color: midnightblue;
     color: white;
     font-weight: bold;
+}
+
+.btnMenuTop {
+    margin-top: 10px;
+}
+
+.btnMenu {
+    width: 175px;
+    margin-bottom: 10px;
 }
 
 #AddUpdatePanel {
