@@ -83,6 +83,9 @@ button {
 .cellBtn {
     margin: 0px;
 }
+.btnGames{
+    margin: 0px;
+}
 .hidden {
     visibility: hidden;
 }

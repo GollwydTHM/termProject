@@ -21,13 +21,13 @@
         <div>
             <button id="btnTopRank">View Top 16</button>
         </div>
-        <table>
+        <table class="tour">
             <tr>
                 <th>Team ID</th>
                 <th>Team Name</th>
                 <th>Score</th>
-                <th>Ranking</th>
-                
+                <th>Ranking</th> 
+
             </tr>
             <tbody id="recordRows">
             </tbody>

@@ -57,6 +57,9 @@ function getAll() {
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
 }
+function getPlayer(){
+    
+}
 
 function buildTable(text) {
     let temp = JSON.parse(text);

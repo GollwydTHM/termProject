@@ -3,6 +3,8 @@ var addOrUpdate;
 window.onload = function () {
     getAll();
     document.querySelector("table").addEventListener("click", selectHandler);
+    document.querySelector("#btnList").addEventListener("click", getAll);
+
 //    hideAddUpdate();
 };
 
@@ -20,25 +22,21 @@ function selectHandler(e) {
 }
 
 function getAll() {
-    let teamID = document.querySelector("#teamID").value;
-
-//    let obj = {
-//        "teamID": teamID,
-//        "teamName": "",
-//        "earnings": 0
-//    };
-
+    let teamID = document.querySelector("#teamID").value; 
+    console.log(teamID);
     //AJAX
-    let url = "../playerService/players/playersByTeamID/" + teamID;
+    let url = "../statsService/stats/teamID/" + teamID;
     let xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
             let response = xmlhttp.responseText;
-            console.log(response);
+            //console.log(response);
             if (response.search("ERROR") >= 0) {
                 alert("Whoops!");
+                console.log(response);
             } else {
-                buildTable(xmlhttp.responseText);
+                buildTable(xmlhttp.responseText); 
+                console.log(response);
                 clearSelections();
             }
         }
@@ -48,6 +46,7 @@ function getAll() {
 }
 
 function buildTable(text) {
+
     let temp = JSON.parse(text);
     //console.log(temp);
     let theTable = document.querySelector("table");
@@ -55,12 +54,10 @@ function buildTable(text) {
     for (let i = 0; i < temp.length; i++) {
         let record = temp[i];
         html += "<tr>";
+        html += "<td>" + record.gameID + "</td>";
+        html += "<td>" + record.matchID + "</td>";
+        html += "<td>" + record.gameNumber + "</td>";
         html += "<td>" + record.teamID + "</td>";
-        html += "<td>" + record.playerID + "</td>";
-        html += "<td>" + record.firstName + "</td>";
-        html += "<td>" + record.lastName + "</td>";
-        html += "<td>" + record.hometown + "</td>";
-        html += "<td>" + record.provinceCode + "</td>";
         html += "</tr>";
     }
     theTable.innerHTML = html;

@@ -14,10 +14,11 @@ class StatsAccessor {
     private $getTopRankStmt = "SELECT t.teamID, t.teamName, m.score, m.ranking FROM team t, matchup m
             WHERE t.teamID = m.teamID AND ranking <= 16
             ORDER BY ranking;";
+    private $getListOfGamesStmt = "SELECT g.gameID,  g.matchID,  g.gameNumber, m.teamID FROM game g, matchup m
+            WHERE g.matchID = m.teamID AND m.teamID = :teamID";
     private $updateScoreByCompleteGameState = "";
     private $conn = null;
-    private $getByMatchIDStmt = null;
-    private $updateStmt = null;
+    private $getListOfGames = null;  
 
     public function __construct() {
         $dbConn = new DBConnect();
@@ -25,6 +26,10 @@ class StatsAccessor {
         $this->conn = $dbConn->connect_db();
         if (is_null($this->conn)) {
             throw new Exception("no connection");
+        }
+        $this->getListOfGames = $this->conn->prepare($this->getListOfGamesStmt);
+        if (is_null($this->getListOfGames)) {
+            throw new Exception("bad statement: '" . $this->getListOfGamesStmt . "'");
         }
         $this->getTopRankStmt = $this->conn->prepare($this->getTopRankStmt);
         if (is_null($this->getTopRankStmt)){
@@ -70,7 +75,38 @@ class StatsAccessor {
 
         return $result;
     }
+    public function getGamesByTeamID($teamID) {
+        
 
+        try {
+            $results = [];
+            $this->getListOfGames->bindParam(":teamID", $teamID);
+            $this->getListOfGames->execute(); //not what you think
+            $result =  $this->getListOfGames->fetchAll(PDO::FETCH_ASSOC);
+            ChromePhp::log("Before foreach");
+            foreach ($results as $res){
+                $gameID = $res['gameID'];
+                $matchID = $res['matchID'];
+                $gameNumber = $res['gameNumber'];
+                $teamID = $res['teamID'];  
+                $obj = new ListGame(
+                        $gameID,
+                        $matchID,
+                        $gameNumber,
+                        $teamID);
+                ChromePhp::log($obj);
+                array_push($results, $obj);
+            }
+        } catch (PDOException $e) { 
+            $result = null;
+        } finally {
+            if (!is_null($this->getListOfGames)) {
+                $this->getListOfGames->closeCursor();
+            }
+            return $results;
+        }
+    }
+ 
 public function getMatchup() {
     return $this->getMatchupByQuery("SELECT t.teamID, t.teamName, m.score, m.ranking FROM team t, matchup m
         WHERE t.teamID = m.teamID");
@@ -81,30 +117,7 @@ public function getTopRank(){
         WHERE t.teamID = m.teamID AND ranking <= 16
         ORDER BY ranking;");
 }
-public function updateScore($match) {
-        $success = false;
 
-        $matchID = $match->getMatchID();
-        $roundID = $match->getRoundID();
-        $matchgroup = $match->getMatchgroup();
-        $teamID = $match->getTeamID();
-        $score = $match->getScore(); 
-        $ranking = $match->getRanking();
-        
-        try {
-            $this->updateStmt->bindParam(":matchID", $matchID); 
-            $success = $this->updateStmt->execute(); //not what you think
-        } catch (PDOException $e) {
-            $success = false;
-        } finally {
-            if (!is_null($this->updateStmt)) {
-                $this->updateStmt->closeCursor();
-            }
-            return $success;
-        }
-    }
-
-   
 
 }
 
