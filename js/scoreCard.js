@@ -8,7 +8,7 @@ let complete = false;
 
 window.onload = function () {
     //get current ball value from record (only runs once in onload)
-    initializeGame();
+    InitializeGame();
     //fill the card with any values already in balls string (from InProgress game)
     FillCard();
 
@@ -17,8 +17,8 @@ window.onload = function () {
     document.querySelector("#btnUndo").addEventListener("click", UndoLastMessage);
 };
 
-function initializeGame() {
-    balls = document.querySelector("#gameBalls").value;
+function InitializeGame() {
+    balls = document.querySelector("#gameBalls").value.trim();
     gameStateID = document.querySelector("#gameStateID").value;
     //console.log(balls);
 }

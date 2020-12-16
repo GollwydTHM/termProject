@@ -6,6 +6,12 @@
         <script src=""></script>
 
         <style>
+            h1 {
+                margin-bottom: 0px;
+            }
+            h2 {
+                margin-top: 0px;
+            }
             button {
                 width: 175px;
                 margin-bottom: 10px;
@@ -13,7 +19,8 @@
         </style>
     </head>
     <body>
-        <h1>Welcome</h1>
+        <h1>Bowling Tournament</h1>
+        <h2>Main Menu</h2>
         <form method="POST" action="menus/guestMenu.php">
             <button name="guest" type="submit">Guest Login</button>
         </form>
