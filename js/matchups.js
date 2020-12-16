@@ -40,10 +40,9 @@ function getAll() {
         }
     };
     xmlhttp.open("GET", url, true);
-    xmlhttp.send();
-    
-     
+    xmlhttp.send();     
 }
+
 function updateScore(){
     
     console.log("im hhere");
@@ -54,8 +53,7 @@ function updateScore(){
     let teamID = tds[3].innerHTML;
     let score = tds[4].innerHTML;
     let ranking = tds[5].innerHTML;
-    
-    
+        
     let obj = {
         "matchID": matchID,
         "roundID": roundID,
@@ -82,6 +80,7 @@ function updateScore(){
     xmlhttp.open("PUT", url, true);
     xmlhttp.send(JSON.stringify(obj));
 }
+
 function buildTable(text) {
     
     let temp = JSON.parse(text);
