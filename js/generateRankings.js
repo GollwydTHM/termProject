@@ -60,7 +60,7 @@ function generateRankings() {
                     if (response.search("ERROR") >= 0) {
                         alert("Whoops!");
                     } else {
-                        //maybe rebuild the table? deal with that later
+                        generateList();
                     }
                 }
             };
@@ -70,24 +70,6 @@ function generateRankings() {
         alert("Round ranked! Onto the next");
     }
 
-}
-//NOT MY/OUR CODE REMOVE LATER
-function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
-
-        // Pick a remaining element...
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-
-        // And swap it with the current element.
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
-    return array;
 }
 
 
