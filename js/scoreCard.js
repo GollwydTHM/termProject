@@ -285,6 +285,7 @@ function UpdateGame(score) {
     if (gameStateID !== "COMPLETE") {
         if (balls === "") {
             gameStateID = "AVAILABLE";
+            score = null;
         } else {
             gameStateID = "INPROGRESS";
         }
