@@ -281,6 +281,11 @@ function UpdateGame(score) {
         } else {
             gameStateID = "INPROGRESS";
         }
+    } else {
+        //lock all inputs
+        document.querySelector("#ballValue").disabled = true;
+        document.querySelector("#btnAdd").disabled = true;
+        document.querySelector("#btnUndo").disabled = true;
     }
 
     console.log("gameID--->" + gameID + " is a " + typeof gameID);

@@ -80,7 +80,7 @@ function buildTable(text) {
                 "<input type='hidden' name='gameNumber' value='" + record.gameNumber + "'>" +
                 "<input type='hidden' name='gameStateID' value='" + record.gameStateID + "'>" +
                 "<input type='hidden' name='gameBalls' value='" + ((record.balls === null) ? "" : record.balls) + "'>" +
-                "<button type='submit' class='cellBtn'>Play</button>" +
+                "<button type='submit' class='cellBtn'>Recap</button>" +
                 "</form>" +
                 "</td>";
         html += "</tr>";
