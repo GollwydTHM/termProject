@@ -105,16 +105,15 @@ function processForm() {
 
     CheckPlayers(teamID);
     CheckTeam(teamID);
-
     if ((count < 4 && team == true) || method == "PUT") {
         //AJAX
+        console.log("HEEEEEEyyy");
         let xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
                 let resp = xmlhttp.responseText;
-                console.log(resp);
                 if (resp.search("ERROR") >= 0 || resp != "1") {
-
+                    console.log(resp);
                     alert("Error occered when " + method);
                 } else {
                     alert("Updated!");
@@ -122,10 +121,16 @@ function processForm() {
                 }
             }
         };
+        xmlhttp.open(method, url, true);
+        xmlhttp.send(JSON.stringify(obj));
+        
     } else if (team == false) {
         alert("Could not add player, team has to exist!");
     } else if (count >= 4) {
         alert("Could not add player, team has to have less than 4!");
+
+    } else {
+        alert("sOMETHIN ELSE");
     }
 }
 
@@ -134,8 +139,6 @@ function processForm() {
 function deletePlayer() {
     var playerID = document.querySelector(".highlighted").querySelector("td").innerHTML;
     console.log(playerID);
-
-
 
     //AJAX
     let url = "../playerService/players/" + playerID;
