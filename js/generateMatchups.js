@@ -75,14 +75,18 @@ function generateMatchups() {
                             } else {
                                 teamID = top16[0];
                             }
+                            let obj = {
+                                "matchID": matchID,
+                                "teamID": teamID
 
+                            };
                             let url = "../matchupService/matchup/" + matchID + "/" + teamID;
                             let xmlhttp = new XMLHttpRequest();
                             xmlhttp.onreadystatechange = function () {
                                 if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
 
                                     let response = xmlhttp.responseText;
-                                    console.log(response);
+                                    //console.log(response);
                                     if (response.search("ERROR") >= 0) {
                                         alert("Whoops!");
                                     } else {
@@ -91,7 +95,7 @@ function generateMatchups() {
                                 }
                             };
                             xmlhttp.open("PUT", url, true);
-                            xmlhttp.send();
+                            xmlhttp.send(JSON.stringify(obj));
                         }
                         top16.splice(top16.length - 1);
                         top16.shift();
