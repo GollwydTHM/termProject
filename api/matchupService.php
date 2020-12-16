@@ -7,14 +7,11 @@ require_once '../utils/ChromePhp.php';
 $method = filter_input(INPUT_SERVER, 'REQUEST_METHOD');
 if ($method === "GET") {
     doGet();
-}
-else if ($method === "POST") {
+} else if ($method === "POST") {
     doPost();
-}
-else if ($method === "DELETE") {
+} else if ($method === "DELETE") {
     doDelete();
-}
-else if ($method === "PUT") {
+} else if ($method === "PUT") {
     doPut();
 }
 
@@ -25,12 +22,10 @@ function doGet() {
             $results = $t->getMatchup();
             $results = json_encode($results, JSON_NUMERIC_CHECK);
             echo $results;
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             echo "ERROR " . $e->getMessage();
         }
-    }
-    else {
+    } else {
         ChromePhp::log("You are requesting the match " . filter_input(INPUT_GET, 'matchID'));
     }
 }
@@ -38,8 +33,7 @@ function doGet() {
 function doDelete() {
     if (!filter_has_var(INPUT_GET, 'matchID')) {
         ChromePhp::log("You can not delete more than one match at a time.");
-    }
-    else {
+    } else {
         $matchID = filter_input(INPUT_GET, "matchID");
 
         $matchupObj = new Matchup($matchID, "Dummy", 0, 0, 0, 0);
@@ -62,12 +56,23 @@ function doPost() {
 }
 
 function doPut() {
-    $body = file_get_contents('php://input');
-    $contents = json_decode($body, true);
+    if (filter_has_var(INPUT_GET, 'ScoreMatchID')) {
+        $ScoreMatchID = filter_input(INPUT_GET, "ScoreMatchID");
+        ChromePhp::log($ScoreMatchID);
+        
+        $t = new MatchupAccessor();
+        $success = $t->updateScore($ScoreMatchID);
+        echo $success;
+    }
 
-    $statsObj = new Team($contents['matchID'], $contents['roundID'], $contents['matchgroup'], $contents['teamID'], $contents['score'], $contents['ranking']);
+    if (filter_has_var(INPUT_GET, 'matchID')) {
+        $body = file_get_contents('php://input');
+        $contents = json_decode($body, true);
 
-    $t = new StatsAccessor();
-    $success = $t->updateScore($statsObj);
-    echo $success;
+        $matchupObj = new Matchup($contents['matchID'], $contents['roundID'], $contents['matchgroup'], $contents['teamID'], $contents['score'], $contents['ranking']);
+
+        $t = new MatchupAccessor();
+        $success = $t->updateMatch($matchupObj);
+        echo $success;
+    }
 }
