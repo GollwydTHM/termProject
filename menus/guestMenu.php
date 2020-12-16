@@ -15,10 +15,6 @@
         <form action="enterTeam.php">
             <button type="submit" id="btnStatistics" class="btnMenu">View Statistics</button>
         </form>
-
-        <form action="viewPlayers.php">
-            <button type="submit" id="btnViewPlayers" class="btnMenu">View Players</button>
-        </form>
         <form action="viewTourData.php">
             <button type="submit" class="btnMenu">View Tournament Data</button>
         </form>

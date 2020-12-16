@@ -35,12 +35,7 @@ function selectHandler(e) {
     row[3].classList.remove("hidden");
 }
 
-
-
 function getAll() {
-    //hide addUpdate incase it is opened
-//    hideAddUpdate();
-
     //AJAX
     let url = "../teamService/teams";
     let xmlhttp = new XMLHttpRequest();
@@ -58,8 +53,6 @@ function getAll() {
     };
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
-
-
 }
 
 function buildTable(text) {
@@ -73,13 +66,9 @@ function buildTable(text) {
         html += "<td>" + record.teamName + "</td>";
         html += "<td>" + record.earnings + "</td>";
         html += "<td class='btnCell hidden'>" +
-                "<form action='../scoreCard.php' method='POST'>" +
-                "<input type='hidden' name='gameID' value='" + record.gameID + "'>" +
-                "<input type='hidden' name='matchID' value='" + record.matchID + "'>" +
-                "<input type='hidden' name='gameNumber' value='" + record.gameNumber + "'>" +
-                "<input type='hidden' name='gameStateID' value='" + record.gameStateID + "'>" +
-                "<input type='hidden' name='gameBalls' value='" + ((record.balls === null) ? "" : record.balls) + "'>" +
-                "<button type='submit' class='cellBtn'>Play</button>" +
+                "<form action='viewPlayers.php' method='POST'>" +
+                "<input type='hidden' name='teamID' value='" + record.teamID + "'>" +
+                "<button type='submit' class='cellBtn'>View Players</button>" +
                 "</form>" +
                 "</td>";
         html += "</tr>";

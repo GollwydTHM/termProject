@@ -1,30 +1,35 @@
 var addOrUpdate;
 
 window.onload = function () {
-    
+    getAll();
     document.querySelector("table").addEventListener("click", selectHandler);
-    document.querySelector("#btnView").addEventListener("click", getAll);
 //    hideAddUpdate();
 };
+
 function clearSelections() {
     var trs = document.querySelectorAll("tr");
     for (var i = 0; i < trs.length; i++) {
         trs[i].classList.remove("highlighted");
     }
 }
+
 function selectHandler(e) {
     //add style to parent of clicked cell
     clearSelections();
     e.target.parentElement.classList.add("highlighted");
-     
 }
 
 function getAll() {
-    //hide addUpdate incase it is opened
-    //hideAddUpdate();
+    let teamID = document.querySelector("#teamID").value;
+
+    let obj = {
+        "teamID": teamID,
+        "teamName": "",
+        "earnings": 0
+    };
 
     //AJAX
-    let url = "../playerService/players";
+    let url = "../playerService/players/playersByTeamID/" + teamID;
     let xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
@@ -39,15 +44,13 @@ function getAll() {
         }
     };
     xmlhttp.open("GET", url, true);
-    xmlhttp.send();
-    
-     
+    xmlhttp.send(obj);
 }
 
 function buildTable(text) {
-    
+
     let temp = JSON.parse(text);
-    console.log(temp);
+    //console.log(temp);
     let theTable = document.querySelector("table");
     let html = theTable.querySelector("tr").innerHTML;
     for (let i = 0; i < temp.length; i++) {

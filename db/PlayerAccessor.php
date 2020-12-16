@@ -9,6 +9,9 @@ class PlayerAccessor {
     private $getByPlayerIDStmtStr = "SELECT * "
             . "FROM player "
             . "WHERE playerID = :playerID";
+    private $getPlayersByTeamIDStmtStr = "SELECT * "
+            . "FROM player "
+            . "WHERE teamID = :teamID";
     private $getByPlayerCountByTeamIDStmtStr = "SELECT COUNT(*) "
             . "FROM player "
             . "WHERE teamID = :teamID";
@@ -21,7 +24,8 @@ class PlayerAccessor {
             . "WHERE playerID = :playerID";
     private $conn = null;
     private $getByPlayerIDStmt = null;
-    private $getByPlayerCountByTeamIDStmt = null;
+    private $getPlayersByTeamIDStmt = null;
+    private $getPlayerCountByTeamIDStmt = null;
     private $deleteStmt = null;
     private $insertStmt = null;
     private $updateStmt = null;
@@ -39,6 +43,16 @@ class PlayerAccessor {
             throw new Exception("bad statement: '" . $this->getAllStmtStr . "'");
         }
 
+        $this->getPlayersByTeamIDStmt = $this->conn->prepare($this->getPlayersByTeamIDStmtStr);
+        if (is_null($this->getPlayersByTeamIDStmt)) {
+            throw new Exception("bad statement: '" . $this->getAllStmtStr . "'");
+        }
+
+        $this->getPlayerCountByTeamIDStmt = $this->conn->prepare($this->getByPlayerCountByTeamIDStmtStr);
+        if (is_null($this->getPlayerCountByTeamIDStmt)) {
+            throw new Exception("bad statement: '" . $this->getByPlayerCountByTeamIDStmtStr . "'");
+        }
+
         $this->deleteStmt = $this->conn->prepare($this->deleteStmtStr);
         if (is_null($this->deleteStmt)) {
             throw new Exception("bad statement: '" . $this->deleteStmtStr . "'");
@@ -52,11 +66,6 @@ class PlayerAccessor {
         $this->updateStmt = $this->conn->prepare($this->updateStmtStr);
         if (is_null($this->updateStmt)) {
             throw new Exception("bad statement: '" . $this->updateStmtStr . "'");
-        }
-
-        $this->getByPlayerCountByTeamIDStmt = $this->conn->prepare($this->getByPlayerCountByTeamIDStmtStr);
-        if (is_null($this->getByPlayerCountByTeamIDStmt)) {
-            throw new Exception("bad statement: '" . $this->getByPlayerCountByTeamIDStmtStr . "'");
         }
     }
 
@@ -131,19 +140,52 @@ class PlayerAccessor {
         return $result;
     }
 
-    public function getPlayersCountByTeam($teamID) {    
+    public function getPlayersByTeam($teamID) {
         try {
-            $this->getByPlayerCountByTeamIDStmt->bindParam(":teamID", $teamID);
-            $this->getByPlayerCountByTeamIDStmt->execute();
-            $row = $this->getByPlayerCountByTeamIDStmt->fetch(PDO::FETCH_ASSOC);
-            $result = $row['COUNT(*)'];
+            $result = [];
+            $this->getPlayersByTeamIDStmt->bindParam(":teamID", $teamID);
+            $this->getPlayersByTeamIDStmt->execute();
+            $results = $this->getPlayersByTeamIDStmt->fetchAll(PDO::FETCH_ASSOC); //not fetchAll
 
+            foreach ($results as $res) {
+                $playerID = $res['playerID'];
+                $teamID = $res['teamID'];
+                $firstName = $res['firstName'];
+                $lastName = $res['lastName'];
+                $hometown = $res['hometown'];
+                $provinceCode = $res['provinceCode'];
+                $obj = new Player(
+                        $playerID,
+                        $teamID,
+                        $firstName,
+                        $lastName,
+                        $hometown,
+                        $provinceCode);
+                array_push($result, $obj);
+            }
         } catch (PDOException $e) {
             $result = null;
             ChromePhp::log($e);
         } finally {
-            if (!is_null($this->getByPlayerCountByTeamIDStmt)) {
-                $this->getByPlayerCountByTeamIDStmt->closeCursor();
+            if (!is_null($this->getPlayersByTeamIDStmt)) {
+                $this->getPlayersByTeamIDStmt->closeCursor();
+            }
+            return $result;
+        }
+    }
+
+    public function getPlayersCountByTeam($teamID) {
+        try {
+            $this->getPlayerCountByTeamIDStmt->bindParam(":teamID", $teamID);
+            $this->getPlayerCountByTeamIDStmt->execute();
+            $row = $this->getPlayerCountByTeamIDStmt->fetch(PDO::FETCH_ASSOC);
+            $result = $row['COUNT(*)'];
+        } catch (PDOException $e) {
+            $result = null;
+            ChromePhp::log($e);
+        } finally {
+            if (!is_null($this->getPlayerCountByTeamIDStmt)) {
+                $this->getPlayerCountByTeamIDStmt->closeCursor();
             }
             return $result;
         }
