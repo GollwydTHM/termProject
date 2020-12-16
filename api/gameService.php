@@ -7,31 +7,36 @@ require_once '../utils/ChromePhp.php';
 $method = filter_input(INPUT_SERVER, 'REQUEST_METHOD');
 if ($method === "GET") {
     doGet();
-}
-else if ($method === "POST") {
+} else if ($method === "POST") {
     doPost();
-}
-else if ($method === "DELETE") {
+} else if ($method === "DELETE") {
     doDelete();
-}
-else if ($method === "PUT") {
+} else if ($method === "PUT") {
     doPut();
 }
 
 function doGet() {
-    if (!filter_has_var(INPUT_GET, 'gameID')) {
+    if (filter_has_var(INPUT_GET, 'gameStateID')) {
+        try {
+            $g = new GameAccessor();
+            $results = $g->getCpltGames();
+            //ChromePhp::log($results);
+            $results = json_encode($results);
+            echo $results;
+        } catch (Exception $e) {
+            echo "ERROR " . $e->getMessage();
+        }
+    } else if (!filter_has_var(INPUT_GET, 'gameID')) {
         try {
             $g = new GameAccessor();
             $results = $g->getGames();
             //ChromePhp::log($results);
             $results = json_encode($results);
             echo $results;
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             echo "ERROR " . $e->getMessage();
         }
-    }
-    else {
+    } else {
         ChromePhp::log("You are requesting the game " . filter_input(INPUT_GET, 'gameID'));
     }
 }
@@ -39,8 +44,7 @@ function doGet() {
 function doDelete() {
     if (!filter_has_var(INPUT_GET, 'gameID')) {
         ChromePhp::log("You can not delete more than one game at a time.");
-    }
-    else {
+    } else {
         $gameID = filter_input(INPUT_GET, "gameID");
 
         $gameObj = new Game($gameID, 0, 0, "dummy", 0, 0);
@@ -67,7 +71,7 @@ function doPut() {
     $contents = json_decode($body, true);
 
     $gameObj = new Game($contents['gameID'], $contents['matchID'], $contents['gameNumber'], $contents['gameStateID'], $contents['score'], strval($contents['balls']));
-    
+
     $g = new GameAccessor();
     $success = $g->updateGame($gameObj);
     echo $success;
