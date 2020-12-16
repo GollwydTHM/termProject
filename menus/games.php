@@ -30,7 +30,7 @@
     </head>
     <body>
         <h1>Tournament Game List</h1>
-        <p>Click on a game for scoring option.</p>
+        <p><i>Click on a game for scoring option.</i></p>
 
         <button id="btnView">View Games</button>
 
