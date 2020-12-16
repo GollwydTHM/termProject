@@ -65,9 +65,9 @@ function doPut() {
     $body = file_get_contents('php://input');
     $contents = json_decode($body, true);
 
-    $matchupObj = new Matchup($contents['matchID'], $contents['roundID'], $contents['matchgroup'], $contents['teamID'], $contents['score'], $contents['ranking']);
+    $statsObj = new Team($contents['matchID'], $contents['roundID'], $contents['matchgroup'], $contents['teamID'], $contents['score'], $contents['ranking']);
 
-    $t = new MatchupAccessor();
-    $success = $t->updateMatch($matchupObj);
+    $t = new StatsAccessor();
+    $success = $t->updateScore($statsObj);
     echo $success;
 }

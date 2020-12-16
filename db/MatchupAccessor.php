@@ -13,8 +13,9 @@ class MatchupAccessor {
             . "WHERE matchID = :matchID";
     private $insertStmtStr = "INSERT INTO matchup "
             . "VALUES(:matchID, :roundID, :matchgroup, :teamID, :score, :ranking)";
-    private $updateStmtStr = "UPDATE matchup SET "
-            . "roundID = :roundID, matchgroup = :matchgroup, teamID = :teamID, score = :score, ranking = :ranking "
+    private $updateStmtStr = "UPDATE matchup"
+            . "SET score = (SELECT SUM(g.score) from game g"
+            . "WHERE g.matchID = :matchID AND g.gameStateID = 'COMPLETE'"
             . "WHERE matchID = :matchID";
     private $conn = null;
     private $getByMatchIDStmt = null;
@@ -181,12 +182,7 @@ class MatchupAccessor {
         $ranking = $match->getRanking();
 
         try {
-            $this->insertStmt->bindParam(":matchID", $matchID);
-            $this->insertStmt->bindParam(":roundID", $roundID);
-            $this->insertStmt->bindParam(":matchgroup", $matchgroup);
-            $this->insertStmt->bindParam(":teamID", $teamID);
-            $this->insertStmt->bindParam(":score", $score);
-            $this->insertStmt->bindParam(":ranking", $ranking);
+            $this->insertStmt->bindParam(":matchID", $matchID); 
             $success = $this->updateStmt->execute(); //not what you think
         } catch (PDOException $e) {
             $success = false;

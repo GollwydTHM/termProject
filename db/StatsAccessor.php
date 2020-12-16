@@ -9,12 +9,10 @@ class StatsAccessor {
     private $getByMatchIDStmtStr = "SELECT * "
             . "FROM matchup "
             . "WHERE teamID = :teamID";
-    private $updateScoreByCompleteGameState = "UPDATE matchup"
-            . "SET score = (SELECT SUM(g.score) from game g"
-            . "WHERE g.matchID = :matchID AND g.gameStateID = 'COMPLETE'"
-            . "WHERE matchID = :matchID;";
+    private $updateScoreByCompleteGameState = "";
     private $conn = null;
     private $getByMatchIDStmt = null;
+    private $updateStmt = null;
 
     public function __construct() {
         $dbConn = new DBConnect();
@@ -27,6 +25,10 @@ class StatsAccessor {
         $this->getByMatchIDStmt = $this->conn->prepare($this->getByMatchIDStmtStr);
         if (is_null($this->getByMatchIDStmt)) {
             throw new Exception("bad statement: '" . $this->getAllStmtStr . "'");
+        }
+        $this->updateStmt = $this->conn->prepare($this->updateScoreByCompleteGameState);
+        if (is_null($this->updateStmt)) {
+            throw new Exception("bad statement: '" . $this->updateScoreByCompleteGameState . "'");
         }
     }
 
@@ -69,40 +71,28 @@ class StatsAccessor {
         return $this->getMatchupByQuery("SELECT * FROM matchup WHERE teamID = $teamID");
     }
 
-//    public function getMatchByTeamID($teamID) {
-//        $result = NULL;
-//         
-//        try {
-//            ChromePhp::log("start of the try");
-//            $this->getByMatchIDStmt->bindParam(":teamID", $teamID);
-//            $this->getByMatchIDStmt->execute();
-//            $res = $this->getByMatchIDStmt->fetch(PDO::FETCH_ASSOC); //not fetchAll
-//             
-//            if ($res) {
-//                $matchID = $res['matchID'];
-//                $roundID = $res['roundID'];
-//                $matchgroup = $res['matchgroup'];
-//                $teamID = $res['teamID'];
-//                $score = $res['score'];
-//                $ranking = $res['ranking'];
-//                $result = new Matchup(
-//                        $matchID,
-//                        $roundID,
-//                        $matchgroup,
-//                        $teamID,
-//                        $score,
-//                        $ranking);
-//            }
-//        } catch (Exception $e) {
-//            $result = NULL;
-//        } finally {
-//            if (!is_null($this->getByMatchIDStmt)) {
-//                $this->getByMatchIDStmt->closeCursor();
-//            }
-//        }
-//
-//        return $result;
-//    }
+public function updateScore($match) {
+        $success = false;
+
+        $matchID = $match->getMatchID();
+        $roundID = $match->getRoundID();
+        $matchgroup = $match->getMatchgroup();
+        $teamID = $match->getTeamID();
+        $score = $match->getScore(); 
+        $ranking = $match->getRanking();
+        
+        try {
+            $this->updateStmt->bindParam(":matchID", $matchID); 
+            $success = $this->updateStmt->execute(); //not what you think
+        } catch (PDOException $e) {
+            $success = false;
+        } finally {
+            if (!is_null($this->updateStmt)) {
+                $this->updateStmt->closeCursor();
+            }
+            return $success;
+        }
+    }
 
    
 

@@ -4,6 +4,8 @@ window.onload = function () {
     
     document.querySelector("table").addEventListener("click", selectHandler);
     document.querySelector("#btnView").addEventListener("click", getStatsByTeamID);
+    document.querySelector("#btnView").addEventListener("click", updateScore);
+
 //    hideAddUpdate();
 };
 function clearSelections() {
@@ -45,6 +47,7 @@ function getStatsByTeamID() {
     
      
 }
+
 
 function buildTable(text) {
     let temp = JSON.parse(text);
