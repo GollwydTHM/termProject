@@ -7,6 +7,7 @@
 
         <style>
             button {
+                width: 175px;
                 margin-bottom: 10px;
             }
         </style>

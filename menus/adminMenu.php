@@ -4,9 +4,10 @@
         <meta charset="UTF-8">
         <title>Project - Bowling Tournament</title>
         <!--<script src="mainMenu.js"></script>-->
-        
+
         <style>
             button {
+                width: 175px;
                 margin-bottom: 10px;
             }
         </style>
@@ -24,6 +25,9 @@
         </form>
         <form action="generateMatchups.php">
             <button type="submit">Generate Matchups</button>
+        </form>
+        <form method="POST" action="../index.php">
+            <button type="submit">&larrhk; Return to index &nbsp;&nbsp;&nbsp;</button>
         </form>
     </body>
 </html>

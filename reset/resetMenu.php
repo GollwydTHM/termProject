@@ -7,6 +7,7 @@
 
         <style>
             button {
+                width: 175px;
                 margin-bottom: 10px;
             }
         </style>
@@ -16,9 +17,8 @@
         <form method="POST">
             <button name="btnInitial" id="btnInitial" type="submit">Reset to initial state</button>
         </form>
-        
         <form method="POST" action="../index.php">
-            <button type="submit">Return to index</button>
+            <button type="submit">&larrhk; Return to index &nbsp;&nbsp;&nbsp;</button>
         </form>
     </body>
 </html>
