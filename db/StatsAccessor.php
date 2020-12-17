@@ -3,6 +3,7 @@
 require_once 'dbconnect.php';
 require '../entity/Matchup.php';
 require '../entity/Stats.php';
+require '../entity/Pay.php';
 
 require_once '../utils/ChromePhp.php';
 
@@ -16,9 +17,13 @@ class StatsAccessor {
             ORDER BY ranking;";
     private $getListOfGamesStmt = "SELECT g.gameID,  g.matchID,  g.gameNumber, g.gameStateID, g.score, g.balls, m.teamID FROM game g, matchup m
             WHERE g.matchID = m.teamID AND m.teamID = :teamID";
+    private $updateEarningsStmtStr = "Update team
+            SET earnings = 400
+            WHERE teamID = :teamID";
     private $updateScoreByCompleteGameState = "";
     private $conn = null;
     private $getListOfGames = null;  
+    private $updateEarningsStmt = null;
 
     public function __construct() {
         $dbConn = new DBConnect();
@@ -39,9 +44,9 @@ class StatsAccessor {
         if (is_null($this->getTeams)) {
             throw new Exception("bad statement: '" . $this->getTeams . "'");
         }
-        $this->updateStmt = $this->conn->prepare($this->updateScoreByCompleteGameState);
-        if (is_null($this->updateStmt)) {
-            throw new Exception("bad statement: '" . $this->updateScoreByCompleteGameState . "'");
+        $this->updateEarningsStmt = $this->conn->prepare($this->updateEarningsStmtStr);
+        if (is_null($this->updateEarningsStmt)) {
+            throw new Exception("bad statement: '" . $this->updateEarningsStmtStr . "'");
         }
     }
 
@@ -121,7 +126,23 @@ public function getTopRank(){
         WHERE t.teamID = m.teamID AND ranking <= 16
         ORDER BY ranking;");
 }
+public function updatePay($obj) {
+    $success = false;
 
+    $teamID = $obj->getTeamID(); 
+    ChromePhp::log($teamID);
+    try {
+        $this->updateEarningsStmt->bindParam(":teamID", $teamID); 
+        $success = $this->updateEarningsStmt->execute(); //not what you think
+    } catch (PDOException $e) {
+        $success = false;
+    } finally {
+        if (!is_null($this->updateEarningsStmt)) {
+            $this->updateEarningsStmt->closeCursor();
+        }
+        return $success;
+    }
+}
 
 }
 

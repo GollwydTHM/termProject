@@ -4,7 +4,7 @@ window.onload = function () {
     getStats();
     document.querySelector("table").addEventListener("click", selectHandler); 
     document.querySelector("#btnTopRank").addEventListener("click", getTopRank);  
-
+    document.querySelector("#btnPay").addEventListener("click", getPayouts); 
 
 //    hideAddUpdate();
 };
@@ -36,7 +36,41 @@ function selectHandler(e) {
     row[4].classList.remove("hidden");
     row[5].classList.remove("hidden");
 }
-
+function getPayouts(text){
+    var arrayRank = [];
+    let table = document.querySelector("table");
+    
+    for (let i = 1; i < table.rows.length; i++) { 
+        let record = table.rows[i].cells[0].textContent;
+        arrayRank[i-1] = record;
+        
+    }
+     console.log(arrayRank);
+    for (var i = 0; i < arrayRank.length; i++) {
+        let teamID = arrayRank[i];
+        let obj = {
+            "teamID": teamID
+        };
+        //AJAX
+        let url = "../statsService/teams/" + teamID;
+        let xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                let response = xmlhttp.responseText;
+                //console.log(response);
+                if (response.search("ERROR") >= 0) {
+                    alert("Whoops!");
+                } else {
+                    console.log("DONE!");
+                    console.log(response);
+                    clearSelections();
+                }
+            }
+        };
+        xmlhttp.open("PUT", url, true);
+        xmlhttp.send(JSON.stringify(obj));
+    }
+}
  
 //get statistics
 function getStats() { 
@@ -84,11 +118,13 @@ function getTopRank(){
 }
 
 function buildTable(text) {
+   
     let temp = JSON.parse(text);
     let theTable = document.querySelector("table");
     let html = theTable.querySelector("tr").innerHTML;
     for (let i = 0; i < temp.length; i++) {
         let record = temp[i];
+        
         html += "<tr>";
         html += "<td>" + record.teamID + "</td>";
         html += "<td>" + record.teamName + "</td>"; 
@@ -107,6 +143,8 @@ function buildTable(text) {
                 "</form>" +
                 "</td>";
         html += "</tr>";
+        
+        
     }
     theTable.innerHTML = html;
 }

@@ -2,6 +2,8 @@
 
 require_once '../db/StatsAccessor.php';
 require_once '../entity/Stats.php';
+require_once '../entity/Pay.php';
+
 require_once '../utils/ChromePhp.php';
 
 $method = filter_input(INPUT_SERVER, 'REQUEST_METHOD');
@@ -57,6 +59,15 @@ function doGet() {
         }
     }
 }
- 
+function doPut() {
+    $body = file_get_contents('php://input');
+    $contents = json_decode($body, true);
+
+    $payObj = new Pay($contents['teamID']);
+    ChromePhp::log($payObj);
+    $t = new StatsAccessor();
+    $success = $t->updatePay($payObj);
+    echo $success;
+}
 
 

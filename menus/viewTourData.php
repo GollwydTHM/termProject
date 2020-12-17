@@ -19,6 +19,9 @@
             <button id="btnTopRank">View Top 16</button>
         </div>
         <div>
+            <button id="btnPay">Pay</button>
+        </div>
+        <div>
             <form action="guestMenu.php" method="POST"> 
                 <button id="btnBack">&larr;Go Back</button>
             </form>
