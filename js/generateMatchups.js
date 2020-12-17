@@ -56,27 +56,29 @@ function getRanks() {
 
             };
             lastMatchID++;
-            let url = "../matchupService/matchup/" + teamID;
-
-            let xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-                    let response = xmlhttp.responseText;
-                    //console.log(response);
-                    if (response.search("ERROR") >= 0) {
-                        alert("Whoops!");
-                    } else {
-                        console.log("test");
-                    }
-                }
-            };
-            xmlhttp.open("PUT", url, false);
-            xmlhttp.send(JSON.stringify(obj));
+            sendUpdate(obj)
         }
 
     }
+}
 
+function sendUpdate(obj) {
+    let url = "../matchupService/matchup/Team";
 
+    let xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            let response = xmlhttp.responseText;
+            console.log(response);
+            if (response.search("ERROR") >= 0) {
+                alert("Whoops!");
+            } else {
+                console.log("test");
+            }
+        }
+    };
+    xmlhttp.open("PUT", url, false);
+    xmlhttp.send(JSON.stringify(obj));
 }
 
 function setSEEDPairs(inArray) {

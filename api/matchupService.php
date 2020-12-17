@@ -104,13 +104,17 @@ function doPost() {
 
 function doPut() {
     ChromePhp::log("enter doPut");
-    if (filter_has_var(INPUT_GET, 'teamID')) {
-        ChromePhp::log("entered if");
+    if (filter_has_var(INPUT_GET, 'Team')) {
+        ChromePhp::log("entered team if ");
+
+        $body = file_get_contents('php://input');
         $contents = json_decode($body, true);
-        $matchupObj = new Matchup($contents['matchID'], $contents['teamID']);
+        $matchupObj = new Matchup($contents['matchID'], "sda", 0, $contents['teamID'], 0, 0);
 
         $t = new MatchupAccessor();
         $success = $t->updateTeam($matchupObj);
+        ChromePhp::log($success);
+
         echo $success;
     } else if (filter_has_var(INPUT_GET, 'ScoreMatchID')) {
         ChromePhp::log("entered else if ");
@@ -129,6 +133,20 @@ function doPut() {
 
         $t = new MatchupAccessor();
         $success = $t->updateMatch($matchupObj);
+        echo $success;
+    }
+    else {
+        $body = file_get_contents('php://input');
+        $contents = json_decode($body, true);
+        ChromePhp::log($contents);
+        $matchupObj = new Matchup($contents['matchID'], "sda", 0, $contents['teamID'], 0, 0);
+        ChromePhp::log($matchupObj);
+        ChromePhp::log("entered2");
+
+        $t = new MatchupAccessor();
+        $success = $t->updateTeam($matchupObj);
+        ChromePhp::log($success);
+
         echo $success;
     }
 }

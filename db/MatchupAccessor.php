@@ -9,10 +9,10 @@ class MatchupAccessor {
     private $getByMatchIDStmtStr = "SELECT * "
             . "FROM matchup "
             . "WHERE matchID = :matchID";
-     private $getTournamentQualTankStmtStr = "SELECT  m.ranking, t.teamName "
+    private $getTournamentQualTankStmtStr = "SELECT  m.ranking, t.teamName "
             . "FROM  matchup m, team t "
             . "WHERE m.teamID = t.teamID and m.roundID = 'QUAL' ORDER BY m.ranking";
-     private $getTournamentTreeStmtStr = "SELECT  m.matchID, t.teamName "
+    private $getTournamentTreeStmtStr = "SELECT  m.matchID, t.teamName "
             . "FROM  matchup m, team t "
             . "WHERE m.teamID = t.teamID and m.roundID not like 'QUAL' ORDER BY m.matchID";
     private $deleteStmtStr = "DELETE FROM matchup "
@@ -29,6 +29,9 @@ class MatchupAccessor {
     private $updateTeamIDByMatchStr = "UPDATE matchup "
             . "SET teamID = :teamID "
             . "WHERE matchID = :matchID";
+    private $updateGameStateStr = "UPDATE game "
+            . "SET gameStateID = 'AVAILABLE' "
+            . "WHERE matchID = :matchID";
     private $conn = null;
     private $getByMatchIDStmt = null;
     private $deleteStmt = null;
@@ -38,6 +41,7 @@ class MatchupAccessor {
     private $updateTeamIDByMatchStmt = null;
     private $getTournamentQualTankStmt = null;
     private $getTournamentTreeStmt = null;
+    private $updateGameStateStmt = null;
 
     public function __construct() {
         $dbConn = new DBConnect();
@@ -75,15 +79,20 @@ class MatchupAccessor {
         if (is_null($this->updateTeamIDByMatchStmt)) {
             throw new Exception("bad statement: '" . $this->updateTeamIDByMatchStr . "'");
         }
-        
-         $this->getTournamentQualTankStmt = $this->conn->prepare($this->getTournamentQualTankStmtStr);
+
+        $this->getTournamentQualTankStmt = $this->conn->prepare($this->getTournamentQualTankStmtStr);
         if (is_null($this->getTournamentQualTankStmt)) {
             throw new Exception("bad statement: '" . $this->getTournamentQualTankStmtStr . "'");
         }
-        
-         $this->getTournamentTreeStmt = $this->conn->prepare($this->getTournamentTreeStmtStr);
+
+        $this->getTournamentTreeStmt = $this->conn->prepare($this->getTournamentTreeStmtStr);
         if (is_null($this->getTournamentTreeStmt)) {
             throw new Exception("bad statement: '" . $this->getTournamentTreeStmtStr . "'");
+        }
+
+        $this->updateGameStateStmt = $this->conn->prepare($this->updateGameStateStr);
+        if (is_null($this->updateGameStateStmt)) {
+            throw new Exception("bad statement: '" . $this->updateGameStateStr . "'");
         }
     }
 
@@ -121,7 +130,7 @@ class MatchupAccessor {
 
         return $result;
     }
-    
+
     public function getTournamentQual() {
         $result = [];
 
@@ -150,7 +159,7 @@ class MatchupAccessor {
 
         return $result;
     }
-    
+
     public function getTournamentTree() {
         $result = [];
 
@@ -321,18 +330,25 @@ class MatchupAccessor {
 
     public function updateTeam($match) {
         $success = false;
+        ChromePhp::log("SSSSSSSSSSSSSSSSSSSSSSSSSSSs");
+
         try {
             $matchID = $match->getMatchID();
             $teamID = $match->getTeamID();
 
             $this->updateTeamIDByMatchStmt->bindParam(":matchID", $matchID);
+            $this->updateGameStateStmt->bindParam(":matchID", $matchID);
             $this->updateTeamIDByMatchStmt->bindParam(":teamID", $teamID);
-            $success = $this->updateScoreByMatchIdStmt->execute(); //not what you think
+            $success = $this->updateTeamIDByMatchStmt->execute(); //not what you think
+            $success = $this->updateGameStateStmt->execute(); //not what you think
+
+            ChromePhp::log($success);
         } catch (PDOException $e) {
             $success = false;
         } finally {
-            if (!is_null($this->updateScoreByMatchIdStmt)) {
-                $this->updateScoreByMatchIdStmt->closeCursor();
+            if (!is_null($this->updateTeamIDByMatchStmt) && !is_null($this->updateGameStateStmt)) {
+                $this->updateTeamIDByMatchStmt->closeCursor();
+                $this->updateGameStateStmt->closeCursor();
             }
             return $success;
         }
