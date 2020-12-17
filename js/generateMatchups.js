@@ -40,28 +40,40 @@ function getRanks() {
     console.log(pairs);
     lastMatchID++;
     console.log(lastMatchID);
-    for (var i = 0; i < pairs.length * 2; i++) {
-        if (i % 2 === 0) {
-            teamID = pair[i][1];
-        } else {
-            teamID = pair[i][0];
+    console.log(teamID = pairs[0][1]);
+    for (var i = 0; i < pairs.length; i++) {
+        console.log(i);
+        for (var i2 = 0; i2 < 2; i2++) {
+            if (i % 2 === 0) {
+
+                teamID = pairs[i2][1];
+            } else {
+                teamID = pairs[i2][0];
+            }
+            let obj = {
+                "matchID": lastMatchID,
+                "teamID": teamID
+
+            };
+            lastMatchID++;
+            let url = "../matchupService/matchup/" + teamID;
+
+            let xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                    let response = xmlhttp.responseText;
+                    //console.log(response);
+                    if (response.search("ERROR") >= 0) {
+                        alert("Whoops!");
+                    } else {
+                        console.log("test");
+                    }
+                }
+            };
+            xmlhttp.open("PUT", url, false);
+            xmlhttp.send(JSON.stringify(obj));
         }
 
-        let url = "../matchupService/matchup/" + teamID;
-        let xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-                let response = xmlhttp.responseText;
-                //console.log(response);
-                if (response.search("ERROR") >= 0) {
-                    alert("Whoops!");
-                } else {
-                    console.log("test");
-                }
-            }
-        };
-        xmlhttp.open("PUT", url, false);
-        xmlhttp.send(JSON.stringify(obj));
     }
 
 
