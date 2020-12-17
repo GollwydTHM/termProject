@@ -12,6 +12,9 @@ class MatchupAccessor {
      private $getTournamentQualTankStmtStr = "SELECT  m.ranking, t.teamName "
             . "FROM  matchup m, team t "
             . "WHERE m.teamID = t.teamID and m.roundID = 'QUAL' ORDER BY m.ranking";
+     private $getTournamentTreeStmtStr = "SELECT  m.matchID, t.teamName "
+            . "FROM  matchup m, team t "
+            . "WHERE m.teamID = t.teamID and m.roundID not like 'QUAL' ORDER BY m.matchID";
     private $deleteStmtStr = "DELETE FROM matchup "
             . "WHERE matchID = :matchID";
     private $insertStmtStr = "INSERT INTO matchup "
@@ -34,6 +37,7 @@ class MatchupAccessor {
     private $updateScoreByMatchIdStmt = null;
     private $updateTeamIDByMatchStmt = null;
     private $getTournamentQualTankStmt = null;
+    private $getTournamentTreeStmt = null;
 
     public function __construct() {
         $dbConn = new DBConnect();
@@ -75,6 +79,11 @@ class MatchupAccessor {
          $this->getTournamentQualTankStmt = $this->conn->prepare($this->getTournamentQualTankStmtStr);
         if (is_null($this->getTournamentQualTankStmt)) {
             throw new Exception("bad statement: '" . $this->getTournamentQualTankStmtStr . "'");
+        }
+        
+         $this->getTournamentTreeStmt = $this->conn->prepare($this->getTournamentTreeStmtStr);
+        if (is_null($this->getTournamentTreeStmt)) {
+            throw new Exception("bad statement: '" . $this->getTournamentTreeStmtStr . "'");
         }
     }
 
@@ -135,6 +144,35 @@ class MatchupAccessor {
         } finally {
             if (!is_null($this)) {
                 $this->getTournamentQualTankStmt->closeCursor();
+            }
+        }
+        //ChromePhp::log($result);
+
+        return $result;
+    }
+    
+    public function getTournamentTree() {
+        $result = [];
+
+        try {
+            $this->getTournamentTreeStmt->execute();
+            $results = $this->getTournamentTreeStmt->fetchAll(PDO::FETCH_ASSOC);
+            ChromePhp::log($results);
+            foreach ($results as $res) {
+                $matchID = $res['matchID'];
+                $teamName = $res['teamName'];
+                $obj = new stdClass();
+                $obj->rank = $matchID;
+                $obj->teamName = $teamName;
+                //ChromePhp::log($obj);
+
+                array_push($result, $obj);
+            }
+        } catch (Exception $e) {
+            $result = [];
+        } finally {
+            if (!is_null($this)) {
+                $this->getTournamentTreeStmt->closeCursor();
             }
         }
         //ChromePhp::log($result);

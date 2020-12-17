@@ -38,14 +38,25 @@ function doGet() {
             $t = new MatchupAccessor();
             $results = $t->getMatchupByRoundID($round);
             $results = json_encode($results, JSON_NUMERIC_CHECK);
+            //ChromePhp::log($results);
+
             echo $results;
         } catch (Exception $e) {
             echo "ERROR " . $e->getMessage();
         }
-    } else if (filter_has_var(INPUT_GET, 'qual')) { //////////////////////////////////////////////////////////////////////////////////////////////////////
+    } else if (filter_has_var(INPUT_GET, 'qualTournament')) { //////////////////////////////////////////////////////////////////////////////////////////////////////
         try {
             $t = new MatchupAccessor();
             $results = $t->getTournamentQual();
+            $results = json_encode($results, JSON_NUMERIC_CHECK);
+            echo $results;
+        } catch (Exception $e) {
+            echo "ERROR " . $e->getMessage();
+        }
+    } else if (filter_has_var(INPUT_GET, 'matchTree')) {
+        try {
+            $t = new MatchupAccessor();
+            $results = $t->getTournamentTree();
             $results = json_encode($results, JSON_NUMERIC_CHECK);
             echo $results;
         } catch (Exception $e) {
