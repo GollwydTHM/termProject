@@ -14,7 +14,7 @@ class StatsAccessor {
     private $getTopRankStmt = "SELECT t.teamID, t.teamName, m.score, m.ranking FROM team t, matchup m
             WHERE t.teamID = m.teamID AND ranking <= 16
             ORDER BY ranking;";
-    private $getListOfGamesStmt = "SELECT g.gameID,  g.matchID,  g.gameNumber, m.teamID FROM game g, matchup m
+    private $getListOfGamesStmt = "SELECT g.gameID,  g.matchID,  g.gameNumber, g.gameStateID, g.score, g.balls, m.teamID FROM game g, matchup m
             WHERE g.matchID = m.teamID AND m.teamID = :teamID";
     private $updateScoreByCompleteGameState = "";
     private $conn = null;
@@ -76,8 +76,6 @@ class StatsAccessor {
         return $result;
     }
     public function getGamesByTeamID($teamID) {
-        
-
         try {
             $result = [];
             $this->getListOfGames->bindParam(":teamID", $teamID);
@@ -88,11 +86,17 @@ class StatsAccessor {
                 $gameID = $res['gameID'];
                 $matchID = $res['matchID'];
                 $gameNumber = $res['gameNumber'];
+                $gameStateID = $res['gameStateID'];
+                $score = $res['score'];
+                $balls = $res['balls'];
                 $teamID = $res['teamID'];  
                 $obj = new ListGame(
                         $gameID,
                         $matchID,
                         $gameNumber,
+                        $gameStateID,
+                        $score,
+                        $balls,
                         $teamID);
                 ChromePhp::log($obj);
                 array_push($result, $obj);

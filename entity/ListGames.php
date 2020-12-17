@@ -5,12 +5,18 @@ class ListGame implements JsonSerializable{
     private $matchID;
     private $gameNumber; 
     private $teamID;
-
-    public function __construct($gameID, $matchID, $gameNumber, $teamID) {
+    private $gameStateID;
+    private $score;
+    private $balls;
+    
+    public function __construct($gameID, $matchID, $gameNumber,$gameStateID, $score, $balls, $teamID) {
         $this->gameID = $gameID;
         $this->matchID = $matchID;
         $this->gameNumber = $gameNumber; 
         $this->teamID = $teamID;
+        $this->gameStateID = $gameStateID;
+        $this->score = $score;
+        $this->balls = $balls;
     } 
     function setGameID() {
         $this->gameID;

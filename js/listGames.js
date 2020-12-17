@@ -9,17 +9,32 @@ window.onload = function () {
 
 function clearSelections() {
     var trs = document.querySelectorAll("tr");
-    for (var i = 0; i < trs.length; i++) {
+    for (var i = 1; i < trs.length; i++) {
         trs[i].classList.remove("highlighted");
+
+        // hide 'play' button on each row
+        let tds = trs[i].querySelectorAll("td");
+        tds[7].classList.add("hidden");
     }
+    
 }
 
 function selectHandler(e) {
     //add style to parent of clicked cell
     clearSelections();
     e.target.parentElement.classList.add("highlighted");
+    let rows = document.querySelector("table").querySelectorAll("tr");
+    let selection;
+    for (let i = 0; i < rows.length; i++) {
+        if (rows[i].classList.contains("highlighted")) {
+            selection = i;
+            break;
+        }
+    }
+    let row = rows[selection].querySelectorAll("td");
+    row[7].classList.remove("hidden");
 }
-
+//get all objects from dataset
 function getAll() {
     let teamID = document.querySelector("#teamID").value;
  
@@ -42,7 +57,7 @@ function getAll() {
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
 }
-
+//build table
 function buildTable(text) {
 
     let temp = JSON.parse(text);
@@ -55,7 +70,20 @@ function buildTable(text) {
         html += "<td>" + record.gameID + "</td>";
         html += "<td>" + record.matchID + "</td>";
         html += "<td>" + record.gameNumber + "</td>";
+        html += "<td>" + record.gameStateID + "</td>";
+        html += "<td>" + record.score + "</td>";
+        html += "<td>" + record.balls + "</td>";
         html += "<td>" + record.teamID + "</td>";
+        html += "<td class='btnCell hidden'>" +
+                "<form action='../scoreCard.php' method='POST'>" +
+                "<input type='hidden' name='gameID' value='" + record.gameID + "'>" +
+                "<input type='hidden' name='matchID' value='" + record.matchID + "'>" +
+                "<input type='hidden' name='gameNumber' value='" + record.gameNumber + "'>" +
+                "<input type='hidden' name='gameStateID' value='" + record.gameStateID + "'>" +
+                "<input type='hidden' name='gameBalls' value='" + ((record.balls === null) ? "" : record.balls) + "'>" +
+                "<button type='submit' class='cellBtn'>Recap</button>" +
+                "</form>" +
+                "</td>";
         html += "</tr>";
     }
     theTable.innerHTML = html;

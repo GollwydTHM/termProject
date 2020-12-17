@@ -47,7 +47,20 @@ function doGet() {
         } catch (Exception $e) {
             echo "ERROR " . $e->getMessage();
         }
-    } else {
+    } else if (filter_has_var(INPUT_GET, 'gameByID')){
+        $gameID = filter_input(INPUT_GET, 'gameByID');
+        try { 
+            ChromePhp::log($gameID . " inside");
+            $t = new GameAccessor();
+            $results = $t->getGameByGameID($gameID);
+            
+            $results = json_encode($results,JSON_NUMERIC_CHECK);
+            ChromePhp::log($results);
+            echo $results;
+        } catch (Exception $e) {
+            echo "ERROR " . $e->getMessage();
+        }
+    }   else {
         ChromePhp::log("You are requesting the game " . filter_input(INPUT_GET, 'gameID'));
     }
 }

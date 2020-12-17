@@ -38,7 +38,7 @@ function selectHandler(e) {
 }
 
  
-
+//get statistics
 function getStats() { 
     //AJAX
     let url = "../statsService/stats/all";
@@ -61,6 +61,7 @@ function getStats() {
     
      
 } 
+//sort by rank
 function getTopRank(){
     //AJAX
     let url = "../statsService/stats/ranks";

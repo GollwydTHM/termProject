@@ -22,7 +22,10 @@
                 <th>Game ID</th>
                 <th>Match ID</th>
                 <th>Game Number</th>
-                <th>Team ID</th> 
+                <th>Game State</th>
+                <th>Score</th>
+                <th>Balls</th>
+                <th>Team ID</th>  
             </tr>
             <tbody id="recordRows">
             </tbody>

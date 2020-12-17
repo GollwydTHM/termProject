@@ -6,7 +6,7 @@ require_once '../utils/ChromePhp.php';
 
 class GameAccessor {
 
-    private $getByGameIDStmtStr = "SELECT * "
+    private $getByGameIDStmtStr = "SELECT gameID, matchID, gameNumber, gameStateID, score, balls "
             . "FROM game "
             . "WHERE gameID = :gameID";
     private $deleteStmtStr = "DELETE FROM game "
@@ -32,7 +32,7 @@ class GameAccessor {
 
         $this->getByGameIDStmt = $this->conn->prepare($this->getByGameIDStmtStr);
         if (is_null($this->getByGameIDStmt)) {
-            throw new Exception("bad statement: '" . $this->getAllStmtStr . "'");
+            throw new Exception("bad statement: '" . $this->getByGameIDStmtStr . "'");
         }
 
         $this->deleteStmt = $this->conn->prepare($this->deleteStmtStr);
@@ -92,28 +92,30 @@ class GameAccessor {
         return $this->getGamesByQuery("SELECT * FROM game WHERE gameStateID = 'COMPLETE'");
     }
 
-    public function getGameByGameID($gameID) {
-        $result = NULL;
-
+    public function getGameByGameID($gameID) { 
         try {
+            ChromePhp::log($gameID);
+            $result = [];
             $this->getByGameIDStmt->bindParam(":gameID", $gameID);
             $this->getByGameIDStmt->execute();
-            $res = $this->getByGameIDStmt->fetch(PDO::FETCH_ASSOC); //not fetchAll
-
-            if ($res) {
+            $results = $this->getByGameIDStmt->fetch(PDO::FETCH_ASSOC); //not fetchAll
+            ChromePhp::log("before for each loop ");
+            foreach ($results as $res) {
                 $gameID = $res['gameID'];
                 $matchID = $res['matchID'];
                 $gameNumber = $res['gameNumber'];
                 $gameStateID = $res['gameStateID'];
                 $score = $res['score'];
                 $balls = $res['balls'];
-                $result = new Game(
+                $obj = new Game(
                         $gameID,
                         $matchID,
                         $gameNumber,
                         $gameStateID,
                         $score,
                         $balls);
+                array_push($result, $obj);
+                ChromePhp::log($result);
             }
         } catch (Exception $e) {
             $result = NULL;
@@ -121,9 +123,10 @@ class GameAccessor {
             if (!is_null($this->getByGameIDStmt)) {
                 $this->getByGameIDStmt->closeCursor();
             }
+            return $result;
         }
 
-        return $result;
+        
     }
 
     public function deleteGame($game) {
