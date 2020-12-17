@@ -17,22 +17,21 @@ if ($method === "GET") {
 
 function doGet() {
     ChromePhp::log("enter doGet");
-    if(filter_has_var(INPUT_GET, 'roundID') && filter_has_var(INPUT_GET, 'matchGroup')){
+    if (filter_has_var(INPUT_GET, 'roundID') && filter_has_var(INPUT_GET, 'matchGroup')) {
         ChromePhp::log("if");
         try {
             $round = filter_input(INPUT_GET, "roundID");
             $match = filter_input(INPUT_GET, "matchGroup");
             ChromePhp::log($round);
-            ChromePhp::log("Match group: ".$match);
+            ChromePhp::log("Match group: " . $match);
             $t = new MatchupAccessor();
-            $results = $t->getMatchupByRoundIDAndMatchGroup($round,$match);
+            $results = $t->getMatchupByRoundIDAndMatchGroup($round, $match);
             $results = json_encode($results, JSON_NUMERIC_CHECK);
             echo $results;
         } catch (Exception $e) {
             echo "ERROR " . $e->getMessage();
         }
-    }
-    else if(filter_has_var(INPUT_GET, 'roundID')){
+    } else if (filter_has_var(INPUT_GET, 'roundID')) {
         ChromePhp::log("if else 1");
         try {
             $round = filter_input(INPUT_GET, "roundID");
@@ -43,8 +42,16 @@ function doGet() {
         } catch (Exception $e) {
             echo "ERROR " . $e->getMessage();
         }
-    }
-    else if (!filter_has_var(INPUT_GET, 'matchID')) {
+    } else if (filter_has_var(INPUT_GET, 'qual')) { //////////////////////////////////////////////////////////////////////////////////////////////////////
+        try {
+            $t = new MatchupAccessor();
+            $results = $t->getTournamentQual();
+            $results = json_encode($results, JSON_NUMERIC_CHECK);
+            echo $results;
+        } catch (Exception $e) {
+            echo "ERROR " . $e->getMessage();
+        }
+    } else if (!filter_has_var(INPUT_GET, 'matchID')) {
         ChromePhp::log("else if 2");
         try {
             $t = new MatchupAccessor();
@@ -89,22 +96,20 @@ function doPut() {
     if (filter_has_var(INPUT_GET, 'teamID')) {
         ChromePhp::log("entered if");
         $contents = json_decode($body, true);
-        $matchupObj = new Matchup($contents['matchID'],$contents['teamID']);
+        $matchupObj = new Matchup($contents['matchID'], $contents['teamID']);
 
         $t = new MatchupAccessor();
         $success = $t->updateTeam($matchupObj);
         echo $success;
-    }
-    else if (filter_has_var(INPUT_GET, 'ScoreMatchID')) {
+    } else if (filter_has_var(INPUT_GET, 'ScoreMatchID')) {
         ChromePhp::log("entered else if ");
         $ScoreMatchID = filter_input(INPUT_GET, "ScoreMatchID");
         //ChromePhp::log($ScoreMatchID);
-        
+
         $t = new MatchupAccessor();
         $success = $t->updateScore($ScoreMatchID);
         echo $success;
-    }
-    else if (filter_has_var(INPUT_GET, 'matchID')) {
+    } else if (filter_has_var(INPUT_GET, 'matchID')) {
         ChromePhp::log("entered else if2");
         $body = file_get_contents('php://input');
         $contents = json_decode($body, true);

@@ -9,6 +9,9 @@ class MatchupAccessor {
     private $getByMatchIDStmtStr = "SELECT * "
             . "FROM matchup "
             . "WHERE matchID = :matchID";
+     private $getTournamentQualTankStmtStr = "SELECT  m.ranking, t.teamName "
+            . "FROM  matchup m, team t "
+            . "WHERE m.teamID = t.teamID and m.roundID = 'QUAL' ORDER BY m.ranking";
     private $deleteStmtStr = "DELETE FROM matchup "
             . "WHERE matchID = :matchID";
     private $insertStmtStr = "INSERT INTO matchup "
@@ -30,6 +33,7 @@ class MatchupAccessor {
     private $updateStmt = null;
     private $updateScoreByMatchIdStmt = null;
     private $updateTeamIDByMatchStmt = null;
+    private $getTournamentQualTankStmt = null;
 
     public function __construct() {
         $dbConn = new DBConnect();
@@ -67,6 +71,11 @@ class MatchupAccessor {
         if (is_null($this->updateTeamIDByMatchStmt)) {
             throw new Exception("bad statement: '" . $this->updateTeamIDByMatchStr . "'");
         }
+        
+         $this->getTournamentQualTankStmt = $this->conn->prepare($this->getTournamentQualTankStmtStr);
+        if (is_null($this->getTournamentQualTankStmt)) {
+            throw new Exception("bad statement: '" . $this->getTournamentQualTankStmtStr . "'");
+        }
     }
 
     public function getMatchupByQuery($query) {
@@ -100,6 +109,35 @@ class MatchupAccessor {
                 $stmt->closeCursor();
             }
         }
+
+        return $result;
+    }
+    
+    public function getTournamentQual() {
+        $result = [];
+
+        try {
+            $this->getTournamentQualTankStmt->execute();
+            $results = $this->getTournamentQualTankStmt->fetchAll(PDO::FETCH_ASSOC);
+            ChromePhp::log($results);
+            foreach ($results as $res) {
+                $rank = $res['ranking'];
+                $teamName = $res['teamName'];
+                $obj = new stdClass();
+                $obj->rank = $rank;
+                $obj->teamName = $teamName;
+                //ChromePhp::log($obj);
+
+                array_push($result, $obj);
+            }
+        } catch (Exception $e) {
+            $result = [];
+        } finally {
+            if (!is_null($this)) {
+                $this->getTournamentQualTankStmt->closeCursor();
+            }
+        }
+        //ChromePhp::log($result);
 
         return $result;
     }
