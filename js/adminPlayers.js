@@ -137,8 +137,7 @@ function processForm() {
 
 
 function deletePlayer() {
-    var playerID = document.querySelector(".highlighted").querySelector("td").innerHTML;
-    console.log(playerID);
+    var playerID = document.querySelector(".highlighted").querySelectorAll("td")[1].innerHTML;
 
     //AJAX
     let url = "../playerService/players/" + playerID;
