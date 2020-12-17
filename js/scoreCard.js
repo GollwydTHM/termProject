@@ -307,6 +307,7 @@ function UpdateGame(score) {
 //    console.log("balls--->" + balls + " is a " + typeof balls);
 
     //validation successful, create team object
+
     let obj = {
         "gameID": gameID,
         "matchID": matchID,

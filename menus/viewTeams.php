@@ -16,7 +16,7 @@
         <h2>Teams</h2>
         <p id="notice">Click on a team for view player option.</p>
 
-        <button id="btnView">View All Teams </button>       
+        <button id="btnView">Refresh</button>       
 
         <table>
             <tr>

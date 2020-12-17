@@ -10,14 +10,10 @@ require_once '../utils/ChromePhp.php';
         <title>Project - Bowling Tournament</title>
         <script src="../js/guestPlayers.js"></script>
         <link rel="stylesheet" href="../mainStyleSheet.css">
-        <style>
-            button {
-                margin-bottom: 10px;
-            }
-        </style>
     </head>
     <body>
         <h1>Players</h1>
+        <button type="submit" id="btnBack">&larr; Go Back</button>
         <table>
             <tr>
                 <th>Team ID</th>

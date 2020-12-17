@@ -10,7 +10,7 @@
         <h1>Tournament Game List</h1>
         <p id="notice">Click on a game for scoring option.</p>
 
-        <button id="btnView">View Games</button>
+        <button id="btnView">Refresh</button>
         <form method="POST" action="../menus/guestMenu.php" class="inline">
             <button type="submit">&larr; Go Back</button>
         </form>

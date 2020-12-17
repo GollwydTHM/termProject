@@ -11,8 +11,8 @@
         <h2>Scorekeeper > Games to Score</h2>
         <p id="notice">Click on a game for scoring option.</p>
 
-        <button id="btnView">View Games</button>
-        <form method="POST" action="../menus/scoreMenu.php" class="inline">
+        <button id="btnView">Refresh</button>
+        <form method="POST" action="../index.php" class="inline">
             <button type="submit">&larr; Go Back</button>
         </form>
 

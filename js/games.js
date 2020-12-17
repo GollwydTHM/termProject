@@ -1,6 +1,7 @@
 var addOrUpdate;
 
 window.onload = function () {
+    getAll();
     document.querySelector("table").addEventListener("click", selectHandler);
     document.querySelector("#btnView").addEventListener("click", getAll);
 //    hideAddUpdate();
@@ -73,7 +74,7 @@ function buildTable(text) {
         html += "<td>" + record.gameNumber + "</td>";
         html += "<td>" + record.gameStateID + "</td>";
         html += "<td>" + ((record.score === null) ? "" : record.score) + "</td>";
-        html += "<td>" + ((record.balls === null) ? "" : record.balls) + "</td>";
+        html += "<td>" + ((record.balls === null) ? "" : record.balls.split("").join(" ")) + "</td>";
         html += "<td class='btnCell hidden'>" +
                 "<form action='../scoreCard.php' method='POST'>" +
                 "<input type='hidden' name='gameID' value='" + record.gameID + "'>" +

@@ -14,7 +14,7 @@
     <body>
         <h1>Bowling Tournament</h1>
         <h2>Admin Menu > Players</h2>
-        <button id="btnGet">Get Data</button>
+        <button id="btnGet">Refresh</button>
         <button id="btnAdd">Add Player</button>
         <button id="btnUpdate" disabled>Update Player</button>
         <button id="btnDelete" disabled>Delete Player</button>

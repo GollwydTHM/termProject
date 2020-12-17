@@ -2,7 +2,6 @@ window.onload = function () {
     // btn event handlers
     document.querySelector("#btnView").addEventListener("click", generateList);
     document.querySelector("#btnRank").addEventListener("click", generateRankings);
-
     document.querySelector("#rounds").addEventListener("change", populateMatchSelect);
 };
 

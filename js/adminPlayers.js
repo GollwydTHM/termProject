@@ -3,8 +3,8 @@ var count;
 var team;
 
 window.onload = function () {
+    getAll();
     // btn event handlers
-
     document.querySelector("#btnGet").addEventListener("click", getAll);
     document.querySelector("#btnAdd").addEventListener("click", addPlayer);
     document.querySelector("#btnUpdate").addEventListener("click", updatePlayer);
@@ -123,7 +123,7 @@ function processForm() {
         };
         xmlhttp.open(method, url, true);
         xmlhttp.send(JSON.stringify(obj));
-        
+
     } else if (team == false) {
         alert("Could not add player, team has to exist!");
     } else if (count >= 4) {

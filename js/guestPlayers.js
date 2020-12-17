@@ -2,9 +2,14 @@ var addOrUpdate;
 
 window.onload = function () {
     getAll();
+    document.querySelector("#btnBack").addEventListener("click", PrevPage);
     document.querySelector("table").addEventListener("click", selectHandler);
 //    hideAddUpdate();
 };
+
+function PrevPage() {
+    window.history.back();
+}
 
 function clearSelections() {
     var trs = document.querySelectorAll("tr");
@@ -21,7 +26,7 @@ function selectHandler(e) {
 
 function getAll() {
     let teamID = document.querySelector("#teamID").value;
- 
+
 
     //AJAX
     let url = "../playerService/players/playersByTeamID/" + teamID;
@@ -49,7 +54,7 @@ function buildTable(text) {
     let html = theTable.querySelector("tr").innerHTML;
     for (let i = 0; i < temp.length; i++) {
         let record = temp[i];
-        html += "<tr>";
+        html += "<tr class=\"nonHover\">";
         html += "<td>" + record.teamID + "</td>";
         html += "<td>" + record.playerID + "</td>";
         html += "<td>" + record.firstName + "</td>";

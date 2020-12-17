@@ -2,8 +2,8 @@ var addOrUpdate;
 count = 50;
 
 window.onload = function () {
+    getAll();
     // btn event handlers
-
     document.querySelector("#btnGet").addEventListener("click", getAll);
     document.querySelector("#btnAdd").addEventListener("click", addTeam);
     document.querySelector("#btnUpdate").addEventListener("click", updateTeam);
