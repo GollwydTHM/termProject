@@ -7,12 +7,13 @@ class Stats implements JsonSerializable {
     private $teamName;
     private $score;
     private $ranking;
-
-    function __construct($teamID, $teamName, $score, $ranking) {
+    private $earnings;
+    function __construct($teamID, $teamName, $score, $ranking, $earnings) {
         $this->teamID = $teamID;
         $this->teamName = $teamName;
         $this->score = $score;
         $this->ranking = $ranking;
+        $this->earnings = $earnings;
     }
  
 
@@ -30,8 +31,11 @@ class Stats implements JsonSerializable {
     function getRanking() {
         return $this->ranking;
     }
+    function getEarnings() {
+        return $this->earnings;
+    }
 
-    public function jsonSerialize() {
+        public function jsonSerialize() {
         return get_object_vars($this);
     }
 

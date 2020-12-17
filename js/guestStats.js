@@ -15,8 +15,8 @@ function clearSelections() {
 
         // hide 'play' button on each row
         let tds = trs[i].querySelectorAll("td");
-        tds[4].classList.add("hidden");
         tds[5].classList.add("hidden");
+        tds[6].classList.add("hidden");
     }
 }
 function selectHandler(e) {
@@ -33,8 +33,8 @@ function selectHandler(e) {
         }
     }
     let row = rows[selection].querySelectorAll("td");
-    row[4].classList.remove("hidden");
     row[5].classList.remove("hidden");
+    row[6].classList.remove("hidden");
 }
 function getPayouts(text){
     var arrayRank = [];
@@ -64,12 +64,14 @@ function getPayouts(text){
                     console.log("DONE!");
                     console.log(response);
                     clearSelections();
+                    getStats();
                 }
             }
         };
         xmlhttp.open("PUT", url, true);
         xmlhttp.send(JSON.stringify(obj));
     }
+    document.querySelector("#btnPay").setAttribute("disabled", "disabled");
 }
  
 //get statistics
@@ -110,6 +112,7 @@ function getTopRank(){
                 buildTable(xmlhttp.responseText); 
                 console.log(response);
                 clearSelections();
+                document.querySelector("#btnPay").removeAttribute("disabled");
             }
         }
     };
@@ -130,6 +133,7 @@ function buildTable(text) {
         html += "<td>" + record.teamName + "</td>"; 
         html += "<td>" + record.score + "</td>";
         html += "<td>" + record.ranking + "</td>";
+        html += "<td>" + record.earnings + "</td>";
         html += "<td class='btnCell hidden'>" +
                 "<form action='viewPlayers.php' method='POST'>" + 
                 "<input type='hidden' name='teamID' value='" + record.teamID + "'>" +

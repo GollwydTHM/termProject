@@ -15,6 +15,9 @@
         <form action="viewPlayersCRUD.php">
             <button type="submit" id="btnViewTeams" class="btnMenu">View Players</button>
         </form>
+        <form action="viewTourCRUD.php">
+            <button type="submit" class="btnMenu">Pay</button>
+        </form>
         <form action="generateRankings.php">
             <button type="submit" class="btnMenu">Generate Rankings</button>
         </form>

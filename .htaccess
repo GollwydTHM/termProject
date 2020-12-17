@@ -4,6 +4,7 @@ RewriteEngine on
 
 RewriteRule ^teamService/teams$ api/teamService.php [NC]
 RewriteRule ^teamService/teams/([0-9][0-9]|[0-9])$ api/teamService.php?teamID=$1 [NC]
+RewriteRule ^teamService/games/(pay)$ api/teamService.php?Pay=$1 [NC]
 RewriteRule ^gameService/games$ api/gameService.php [NC]
 RewriteRule ^gameService/games/([0-5][8][0-6]|[0-5][0-7][0-9]|[0-4][0-9][0-9]|[0-9][0-9]|[0-9])$ api/gameService.php?gameID=$1 [NC]
 RewriteRule ^gameService/games/(Cplt)$ api/gameService.php?Cplt=$1 [NC]

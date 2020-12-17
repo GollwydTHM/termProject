@@ -64,7 +64,7 @@ function doPut() {
     $contents = json_decode($body, true);
 
     $payObj = new Pay($contents['teamID']);
-    ChromePhp::log($payObj);
+     
     $t = new StatsAccessor();
     $success = $t->updatePay($payObj);
     echo $success;

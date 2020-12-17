@@ -17,7 +17,10 @@
         
         <div>
             <button id="btnTopRank">View Top 16</button>
-        </div> 
+        </div>
+        <div>
+            <button id="btnPay" disabled>Qualification Payout</button>
+        </div>
         <div>
             <form action="guestMenu.php" method="POST"> 
                 <button id="btnBack">&larr;Go Back</button>

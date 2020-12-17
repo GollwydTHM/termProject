@@ -3,7 +3,7 @@ var addOrUpdate;
 window.onload = function () {
     getAll();
     document.querySelector("table").addEventListener("click", selectHandler);
-    document.querySelector("#btnView").addEventListener("click", getAll);
+    document.querySelector("#btnView").addEventListener("click", getAll);  
 //    hideAddUpdate();
 };
 

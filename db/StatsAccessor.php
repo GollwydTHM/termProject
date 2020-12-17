@@ -9,10 +9,10 @@ require_once '../utils/ChromePhp.php';
 
 class StatsAccessor {
 
-    private $getTeams = "SELECT t.teamID, t.teamName, m.score, m.ranking " 
+    private $getTeams = "SELECT t.teamID, t.teamName, m.score, m.ranking, t.earnings " 
             . "FROM team t, matchup m"
             . "WHERE t.teamID = m.teamID";
-    private $getTopRankStmt = "SELECT t.teamID, t.teamName, m.score, m.ranking FROM team t, matchup m
+    private $getTopRankStmt = "SELECT t.teamID, t.teamName, m.score, m.ranking, t.earnings FROM team t, matchup m
             WHERE t.teamID = m.teamID AND ranking <= 16
             ORDER BY ranking;";
     private $getListOfGamesStmt = "SELECT g.gameID,  g.matchID,  g.gameNumber, g.gameStateID, g.score, g.balls, m.teamID FROM game g, matchup m
@@ -63,11 +63,14 @@ class StatsAccessor {
                 $teamName = $res['teamName'];
                 $score = $res['score'];
                 $ranking = $res['ranking'];
+                $earnings = $res['earnings'];
+                ChromePhp::log($earnings);
                 $obj = new Stats( 
                         $teamID,
                         $teamName,
                         $score,
-                        $ranking);
+                        $ranking,
+                        $earnings);
                 array_push($result, $obj);
             }
         } catch (Exception $e) {
@@ -117,12 +120,12 @@ class StatsAccessor {
     }
  
 public function getMatchup() {
-    return $this->getMatchupByQuery("SELECT t.teamID, t.teamName, m.score, m.ranking FROM team t, matchup m
+    return $this->getMatchupByQuery("SELECT t.teamID, t.teamName, m.score, m.ranking, t.earnings FROM team t, matchup m
         WHERE t.teamID = m.teamID");
 }
 
 public function getTopRank(){
-    return $this->getMatchupByQuery("SELECT t.teamID, t.teamName, m.score, m.ranking FROM team t, matchup m
+    return $this->getMatchupByQuery("SELECT t.teamID, t.teamName, m.score, m.ranking, t.earnings FROM team t, matchup m
         WHERE t.teamID = m.teamID AND ranking <= 16
         ORDER BY ranking;");
 }
